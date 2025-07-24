@@ -12,8 +12,8 @@ const Navbar = () => {
           <Image
   src="/images/Logo.png"
   alt="Logo"
-  width={140} // increased width
-  height={75} // increased height
+  width={180} 
+  height={90} 
   priority
 />
 

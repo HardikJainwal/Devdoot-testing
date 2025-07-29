@@ -2,7 +2,7 @@
 
 import Footer from "./components/Footer";
 import "./globals.css";
-import Navbar from "@/app/Components/Navbar";
+import Navbar from '@/app/components/Navbar'
 
 
 

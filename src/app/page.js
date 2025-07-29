@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo, faHouse, faStar, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Poppins } from 'next/font/google';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { fetchCoaches } from '@/lib/api/coaches';
+
 import {
   faAmbulance,
   faUserMd,
@@ -116,80 +118,70 @@ const medicalServices = [
   },
 ];
 
-
 const DoctorsSection = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     loadFeaturedDoctors();
   }, []);
 
-const loadFeaturedDoctors = async () => {
-  try {
-    setLoading(true);
-    const response = await fetchCoaches(1, 12);
-    
-
-   
-    if (!response || !response.success) {
-      throw new Error(response?.message || 'Failed to fetch featured doctors');
-    }
-
-    
-    let doctorsData;
-    
-    if (response.data) {
-  
-      if (Array.isArray(response.data)) {
-        doctorsData = response.data;
+  const loadFeaturedDoctors = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchCoaches(1, 12);
+      
+      if (!response || !response.success) {
+        throw new Error(response?.message || 'Failed to fetch featured doctors');
       }
-   
-      else if (response.data.data && Array.isArray(response.data.data)) {
-        doctorsData = response.data.data;
-      }
-     
-      else {
-        
+
+      let doctorsData;
+      
+      if (response.data) {
+        if (Array.isArray(response.data)) {
+          doctorsData = response.data;
+        }
+        else if (response.data.data && Array.isArray(response.data.data)) {
+          doctorsData = response.data.data;
+        }
+        else {
+          doctorsData = [];
+        }
+      } else {
         doctorsData = [];
       }
-    } else {
-      doctorsData = [];
+
+      const mappedDoctors = doctorsData.map(doctor => ({
+        _id: doctor._id,
+        name: doctor.coachName, 
+        profilePicture: doctor.profilePhoto, 
+        specialization: doctor.specialization,
+        experience: doctor.experienceYear, 
+        rating: doctor.rating,
+        fees: Math.round(doctor.pricePerMinute * doctor.sessionTime), 
+        consultationModes: ['video', 'home'], 
+        isOnline: true 
+      }));
+
+      const featuredDoctors = mappedDoctors.slice(0, 4);
+      
+      setDoctors(featuredDoctors);
+      setError(null);
+      
+    } catch (error) {
+      setError(error.message);
+      setDoctors([]); 
+    } finally {
+      setLoading(false);
     }
+  };
 
-    
-
-    
-    const mappedDoctors = doctorsData.map(doctor => ({
-      _id: doctor._id,
-      name: doctor.coachName, 
-      profilePicture: doctor.profilePhoto, 
-      specialization: doctor.specialization,
-      experience: doctor.experienceYear, 
-      rating: doctor.rating,
-      fees: Math.round(doctor.pricePerMinute * doctor.sessionTime), 
-      consultationModes: ['video', 'home'], 
-      isOnline: true 
-    }));
-
-    const featuredDoctors = mappedDoctors.slice(0, 4);
-    
-    
-    setDoctors(featuredDoctors);
-    setError(null); // Clear any previous errors
-    
-  } catch (error) {
-    
-    setError(error.message);
-    setDoctors([]); 
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
+  // Function to handle coach card click
+  const handleCoachClick = (coachId) => {
+    router.push(`/doctors/${coachId}`);
+  };
 
   const getInitials = (name) => {
     if (!name) return 'DR';
@@ -206,14 +198,57 @@ const loadFeaturedDoctors = async () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}>
-              Our Trusted Doctors
+              Our Trusted Coaches
             </h2>
             <p className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
               Qualified and experienced healthcare professionals
             </p>
           </div>
-          <div className="flex justify-center items-center py-12">
-            <FontAwesomeIcon icon={faSpinner} className="text-blue-500 text-4xl animate-spin" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(4)].map((_, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-md p-6 border border-gray-100"
+              >
+                {/* Doctor Image Shimmer */}
+                <div className="relative mb-6">
+                  <div className="w-24 h-24 mx-auto rounded-full bg-gray-200 animate-pulse" />
+                  <div className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2">
+                    <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse" />
+                  </div>
+                </div>
+
+                {/* Doctor Info Shimmer */}
+                <div className="text-center mb-4 space-y-2">
+                  <div className={`${poppins.className} h-6 w-2/3 bg-gray-200 rounded animate-pulse mx-auto`} />
+                  <div className={`${poppins.className} h-5 w-1/2 bg-gray-200 rounded animate-pulse mx-auto`} />
+                  <div className={`${poppins.className} h-4 w-1/3 bg-gray-200 rounded animate-pulse mx-auto`} />
+                </div>
+
+                {/* Rating Shimmer */}
+                <div className="flex items-center justify-center mb-4">
+                  <div className="flex items-center space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-4 h-4 bg-gray-200 rounded animate-pulse" />
+                    ))}
+                    <div className={`${poppins.className} h-4 w-8 bg-gray-200 rounded animate-pulse ml-2`} />
+                  </div>
+                </div>
+
+                {/* Services Shimmer */}
+                <div className="flex flex-wrap gap-2 justify-center mb-6">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={`${poppins.className} h-6 w-16 bg-gray-200 rounded-full animate-pulse`}
+                    />
+                  ))}
+                </div>
+
+                {/* Button Shimmer */}
+                <div className={`${poppins.className} h-10 w-full bg-gray-200 rounded-lg animate-pulse`} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -268,6 +303,7 @@ const loadFeaturedDoctors = async () => {
               viewport={{ once: true }}
               whileHover={{ y: -10, scale: 1.02 }}
               className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 group cursor-pointer"
+              onClick={() => handleCoachClick(doctor._id)} // Add click handler to entire card
             >
               {/* Doctor Image */}
               <div className="relative mb-6">
@@ -348,7 +384,13 @@ const loadFeaturedDoctors = async () => {
               </div>
 
               {/* Book Appointment Button */}
-              <button className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:shadow-md flex items-center justify-center space-x-2`}>
+              <button 
+                className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:shadow-md flex items-center justify-center space-x-2`}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click when button is clicked
+                  handleCoachClick(doctor._id);
+                }}
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>

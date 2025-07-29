@@ -1,7 +1,7 @@
-// app/doctors/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -10,7 +10,6 @@ import {
   faMapMarkerAlt, 
   faCalendarAlt, 
   faStar, 
-  faSpinner,
   faFilter,
   faHeart,
   faLanguage,
@@ -21,6 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Poppins } from 'next/font/google';
 import { fetchCoaches } from '@/lib/api/coaches';
+import Shimmer from '../components/Shimmer';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -28,6 +28,7 @@ const poppins = Poppins({
 });
 
 export default function AllDoctorsPage() {
+  const router = useRouter();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,62 +63,52 @@ export default function AllDoctorsPage() {
     }
   }, [doctors]);
 
-const loadDoctors = async (page) => {
-  try {
-    setLoading(true);
-    const response = await fetchCoaches(page, 12);
-    
-    
-    if (!response || !response.success) {
-      setError(response?.message || 'Failed to load doctors');
-      setLoading(false);
-      return;
-    }
+  const loadDoctors = async (page) => {
+    try {
+      setLoading(true);
+      const response = await fetchCoaches(page, 12);
+      
+      if (!response || !response.success) {
+        setError(response?.message || 'Failed to load doctors');
+        setLoading(false);
+        return;
+      }
 
-    // Your API response structure: response.data.data contains the coaches array
-    const doctorsData = response.data?.data || [];
-    const totalCount = response.data?.total_results || 0;
-    
-   
-    
-    if (!Array.isArray(doctorsData)) {
-     
-      setError('Invalid data format received from API');
+      const doctorsData = response.data?.data || [];
+      const totalCount = response.data?.total_results || 0;
+      
+      if (!Array.isArray(doctorsData)) {
+        setError('Invalid data format received from API');
+        setLoading(false);
+        return;
+      }
+      
+      const mappedDoctors = doctorsData.map((doctor, index) => ({
+        _id: doctor._id || `doctor-${index}`,
+        name: doctor.coachName || `Doctor ${index + 1}`,
+        specialization: doctor.specialization || 'General Physician',
+        profilePicture: doctor.profilePhoto,
+        experience: doctor.experienceYear || 5,
+        rating: doctor.rating || Math.random() * 2 + 3.5,
+        sessionTime: doctor.sessionTime || 45,
+        pricePerMinute: doctor.pricePerMinute || 20,
+        languages: doctor.languages || ['English'],
+        currency: doctor.currency || 'INR',
+        fees: Math.round((doctor.pricePerMinute || 20) * (doctor.sessionTime || 45)),
+        isOnline: Math.random() > 0.5,
+        consultationModes: ['video', 'home'],
+        location: 'Available Online'
+      }));
+      
+      setDoctors(mappedDoctors);
+      setTotalPages(Math.ceil(totalCount / 12));
+      
+    } catch (err) {
+      setError(`Error loading doctors: ${err.message}`);
+    } finally {
       setLoading(false);
-      return;
     }
-    
-    // Transform the API response to match component structure
-    const mappedDoctors = doctorsData.map((doctor, index) => ({
-      _id: doctor._id || `doctor-${index}`,
-      name: doctor.coachName || `Doctor ${index + 1}`,
-      specialization: doctor.specialization || 'General Physician',
-      profilePicture: doctor.profilePhoto,
-      experience: doctor.experienceYear || 5,
-      rating: doctor.rating || Math.random() * 2 + 3.5,
-      sessionTime: doctor.sessionTime || 45,
-      pricePerMinute: doctor.pricePerMinute || 20,
-      languages: doctor.languages || ['English'],
-      currency: doctor.currency || 'INR',
-      fees: Math.round((doctor.pricePerMinute || 20) * (doctor.sessionTime || 45)),
-      isOnline: Math.random() > 0.5,
-      consultationModes: ['video', 'home'],
-      location: 'Available Online'
-    }));
-    
-    setDoctors(mappedDoctors);
-    setTotalPages(Math.ceil(totalCount / 12));
-    
-    
-    
-  } catch (err) {
-    
-    setError(`Error loading doctors: ${err.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const extractFilterOptions = () => {
     const specializations = [...new Set(doctors.map(d => d.specialization).filter(Boolean))];
@@ -152,6 +143,9 @@ const loadDoctors = async (page) => {
     });
   };
 
+  const handleCoachClick = (coachId) => {
+    router.push(`/doctors/${coachId}`);
+  };
 
   const filteredDoctors = doctors.filter(doctor => {
     const matchesSearch = doctor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -185,14 +179,7 @@ const loadDoctors = async (page) => {
   };
 
   if (loading && doctors.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <FontAwesomeIcon icon={faSpinner} className="text-blue-500 text-4xl animate-spin mb-4" />
-          <p className={`${poppins.className} text-lg text-gray-600`}>Loading doctors...</p>
-        </div>
-      </div>
-    );
+    return <Shimmer variant="list" />;
   }
 
   if (error) {
@@ -213,8 +200,7 @@ const loadDoctors = async (page) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-12 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-[#2C8C91] to-[#345268] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <motion.h1
@@ -238,7 +224,6 @@ const loadDoctors = async (page) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
-          {/* Filters Sidebar */}
           <div className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-80 bg-white rounded-lg shadow-sm p-6 h-fit`}>
             <div className="flex items-center justify-between mb-6">
               <h3 className={`${poppins.className} text-lg font-semibold text-gray-900`}>
@@ -252,24 +237,23 @@ const loadDoctors = async (page) => {
                 Clear All
               </button>
             </div>
-{/* Country Filter */}
-<div className="mb-6">
-  <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
-    Country
-  </label>
-  <select
-    value={filters.country}
-    onChange={(e) => handleFilterChange('country', e.target.value)}
-    className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-  >
-    <option value="">All Countries</option>
-    {availableFilters.countries.map(country => (
-      <option key={country} value={country}>{country}</option>
-    ))}
-  </select>
-</div>
 
-            {/* Specialization Filter */}
+            <div className="mb-6">
+              <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
+                Country
+              </label>
+              <select
+                value={filters.country}
+                onChange={(e) => handleFilterChange('country', e.target.value)}
+                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              >
+                <option value="">All Countries</option>
+                {availableFilters.countries.map(country => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
+            </div>
+
             <div className="mb-6">
               <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
                 Specialization
@@ -286,7 +270,6 @@ const loadDoctors = async (page) => {
               </select>
             </div>
 
-            {/* Language Filter */}
             <div className="mb-6">
               <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
                 <FontAwesomeIcon icon={faLanguage} className="mr-1" />
@@ -304,7 +287,6 @@ const loadDoctors = async (page) => {
               </select>
             </div>
 
-            {/* Price Range Filter */}
             <div className="mb-6">
               <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
                 <FontAwesomeIcon icon={faRupeeSign} className="mr-1" />
@@ -321,7 +303,6 @@ const loadDoctors = async (page) => {
               />
             </div>
 
-            {/* Experience Filter */}
             <div className="mb-6">
               <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
                 <FontAwesomeIcon icon={faGraduationCap} className="mr-1" />
@@ -338,7 +319,6 @@ const loadDoctors = async (page) => {
               />
             </div>
 
-            {/* Rating Filter */}
             <div className="mb-6">
               <label className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}>
                 Minimum Rating
@@ -357,9 +337,7 @@ const loadDoctors = async (page) => {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="flex-1">
-            {/* Search and Toggle Filters */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="relative flex-1 max-w-md">
@@ -396,7 +374,6 @@ const loadDoctors = async (page) => {
               </div>
             </div>
 
-            {/* Doctors List */}
             <div className="space-y-4">
               {filteredDoctors.length === 0 ? (
                 <div className="text-center py-12 bg-white rounded-lg">
@@ -411,10 +388,10 @@ const loadDoctors = async (page) => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100"
+                    className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100 cursor-pointer"
+                    onClick={() => handleCoachClick(doctor._id)}
                   >
                     <div className="flex flex-col sm:flex-row gap-6">
-                      {/* Doctor Image and Basic Info */}
                       <div className="flex items-start gap-4">
                         <div className="relative">
                           <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200">
@@ -456,12 +433,14 @@ const loadDoctors = async (page) => {
                               </p>
                             </div>
                             
-                            <button className="text-gray-400 hover:text-red-500 transition-colors">
+                            <button 
+                              className="text-gray-400 hover:text-red-500 transition-colors"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <FontAwesomeIcon icon={faHeart} className="w-5 h-5" />
                             </button>
                           </div>
 
-                          {/* Rating and Reviews */}
                           <div className="flex items-center mb-3">
                             <div className="flex items-center space-x-1 mr-3">
                               {[...Array(5)].map((_, i) => (
@@ -481,13 +460,11 @@ const loadDoctors = async (page) => {
                             </div>
                           </div>
 
-                          {/* Description */}
                           <p className={`${poppins.className} text-sm text-gray-600 mb-4 line-clamp-2`}>
                             Energetic, motivated, loving healthcare professional with extensive experience in {doctor.specialization?.toLowerCase() || 'healthcare'}. 
                             Dedicated to providing excellent patient care and treatment.
                           </p>
 
-                          {/* Languages and Services */}
                           <div className="flex flex-wrap gap-2 mb-4">
                             {doctor.languages?.slice(0, 3).map(lang => (
                               <span key={lang} className={`px-2 py-1 rounded-full text-xs font-medium ${poppins.className} bg-gray-100 text-gray-700`}>
@@ -512,7 +489,6 @@ const loadDoctors = async (page) => {
                         </div>
                       </div>
 
-                      {/* Price and Book Button */}
                       <div className="sm:w-48 flex flex-col justify-between">
                         <div className="text-right mb-4">
                           <div className="text-right mb-2">
@@ -529,7 +505,10 @@ const loadDoctors = async (page) => {
                           </div>
                         </div>
 
-                        <button className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}>
+                        <button 
+                          className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <FontAwesomeIcon icon={faCalendarAlt} className="w-4 h-4" />
                           <span>Book Session</span>
                         </button>
@@ -540,36 +519,42 @@ const loadDoctors = async (page) => {
               )}
             </div>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex justify-center items-center space-x-4 mt-8">
                 <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                    currentPage === 1
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-blue-500 hover:bg-blue-600 text-white'
-                  }`}
-                >
-                  Previous
-                </button>
+  onClick={() => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }}
+  disabled={currentPage === 1}
+  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+    currentPage === 1
+      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+      : 'bg-blue-500 hover:bg-blue-600 text-white'
+  }`}
+>
+  Previous
+</button>
+
                 
                 <span className={`${poppins.className} text-gray-600`}>
                   Page {currentPage} of {totalPages}
                 </span>
                 
                 <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                    currentPage === totalPages
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-blue-500 hover:bg-blue-600 text-white'
-                  }`}
-                >
-                  Next
-                </button>
+  onClick={() => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }}
+  disabled={currentPage === totalPages}
+  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+    currentPage === totalPages
+      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+      : 'bg-blue-500 hover:bg-blue-600 text-white'
+  }`}
+>
+  Next
+</button>
               </div>
             )}
           </div>

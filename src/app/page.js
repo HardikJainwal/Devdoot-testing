@@ -489,8 +489,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
-              Our Medical Services
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
+              Our Medical <span className="text-[#C42323]"> Services</span>
             </h2>
             <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
               Comprehensive healthcare solutions tailored to your needs,
@@ -573,12 +573,12 @@ export default function Home() {
       </div>
 
       {/* How Devdoot Works Section */}
-      <div className="bg-[#f8f9fa] py-16 px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-r from-[#246e72] via-[#2C8C91] to-[#3fa4aa] py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h2
-            className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+            className={`${poppins.className} text-3xl sm:text-4xl font-bold text-white mb-4`}
           >
-            How Devdoot Works
+            How <span className ="text-[#C42323]">Devdoot</span> Works
           </h2>
           <p
             className={`${poppins.className} text-sm sm:text-base text-gray-600 mb-10`}
@@ -593,7 +593,8 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                className="bg-[#e0f3f4]/70 backdrop-blur-sm p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#2C8C91]/20"
+
               >
                 <div className="bg-blue-100 text-blue-600 w-10 h-10 flex items-center justify-center rounded-full font-semibold mb-3 mx-auto">
                   {step.number}
@@ -622,8 +623,8 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="mt-12 font-poppins text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-          Why Choose <span className="text-gradient">Us</span>?
+        <h2 className="mt-12 font-poppins text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
+          Why Choose <span className="text-gradient text-[#C42323]">Devdoot?</span>
         </h2>
         <p className="font-poppins text-xl text-gray-600 mb-8">
           We do not just plan weddings; we create experiences that celebrate your unique love story 

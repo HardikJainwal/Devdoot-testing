@@ -22,7 +22,6 @@ export const fetchCoaches = async (page = 1, limit = 12) => {
 
     const apiData = await response.json();
     
-    
     // Return the API response as-is, your frontend will handle the transformation
     return apiData;
     
@@ -35,6 +34,37 @@ export const fetchCoaches = async (page = 1, limit = 12) => {
         data: [],
         total_results: 0
       }
+    };
+  }
+};
+
+// New function to fetch individual coach profile by ID
+export const fetchCoachById = async (coachId) => {
+  try {
+    console.log(`Fetching coach profile: id=${coachId}`);
+    
+    const response = await fetch(`${API_BASE_URL}/coach?id=${coachId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': DUMMY_TOKEN,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const apiData = await response.json();
+    
+    return apiData;
+    
+  } catch (error) {
+    console.error('Error fetching coach profile:', error);
+    return {
+      success: false,
+      message: error.message,
+      data: null
     };
   }
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
-const Navbar = () => {
+const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -13,6 +13,11 @@ const Navbar = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleSignupClick = () => {
+    closeMenu(); // Close mobile menu if open
+    onSignupClick(); // Call parent function to show popup
   };
 
   return (
@@ -62,9 +67,13 @@ const Navbar = () => {
           <span className="text-[#C42323] text-lg font-semibold">
             Be Our Partner!
           </span>
-          <Link href="/Signup">
-            <span className="text-gray-700 text-lg hover:underline">Sign Up</span>
-          </Link>
+          {/* Changed from Link to button */}
+          <button 
+            onClick={handleSignupClick}
+            className="text-gray-700 text-lg hover:underline"
+          >
+            Sign Up
+          </button>
           <Link href="/Login">
             <button className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded hover:bg-teal-200 transition">
               Log in
@@ -133,9 +142,13 @@ const Navbar = () => {
               Be Our Partner!
             </div>
             <div className="flex flex-col space-y-3">
-              <Link href="/Signup" onClick={closeMenu}>
-                <span className="text-gray-700 text-lg hover:underline">Sign Up</span>
-              </Link>
+              {/* Changed from Link to button */}
+              <button 
+                onClick={handleSignupClick}
+                className="text-gray-700 text-lg hover:underline text-left"
+              >
+                Sign Up
+              </button>
               <Link href="/Login" onClick={closeMenu}>
                 <button className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full">
                   Log in
@@ -150,7 +163,7 @@ const Navbar = () => {
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
         
         body {
-          padding-top: 80px; /* Add padding to account for fixed navbar */
+          padding-top: 80px;
         }
       `}</style>
     </nav>

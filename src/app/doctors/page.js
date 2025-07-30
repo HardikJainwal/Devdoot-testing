@@ -113,7 +113,7 @@ export default function AllDoctorsPage() {
   const extractFilterOptions = () => {
     const specializations = [...new Set(doctors.map(d => d.specialization).filter(Boolean))];
     const languages = [...new Set(doctors.flatMap(d => d.languages || []))];
-    const countries = [...new Set(doctors.map(d=>d.location).filter(Boolean))]
+    const countries = [...new Set(doctors.map(d => d.location).filter(Boolean))]
     
     setAvailableFilters({
       specializations,
@@ -139,7 +139,8 @@ export default function AllDoctorsPage() {
       language: '',
       priceRange: [0, 5000],
       experienceRange: [0, 50],
-      rating: 0
+      rating: 0,
+      country: '',
     });
   };
 
@@ -164,9 +165,10 @@ export default function AllDoctorsPage() {
                              doctor.experience <= filters.experienceRange[1];
     
     const matchesRating = doctor.rating >= filters.rating;
+    const matchesCountry = !filters.country || doctor.location === filters.country;
 
     return matchesSearch && matchesSpecialization && matchesLanguage && 
-           matchesPrice && matchesExperience && matchesRating;
+           matchesPrice && matchesExperience && matchesRating && matchesCountry;
   });
 
   const getInitials = (name) => {
@@ -400,13 +402,14 @@ export default function AllDoctorsPage() {
                                 src={doctor.profilePicture}
                                 alt={doctor.name}
                                 className="w-full h-full object-cover"
+                                onError={(e) => { e.target.src = '/images/logo.png'; }} // Fallback to logo.png if image fails to load
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                                <span className="text-white text-lg font-bold">
-                                  {getInitials(doctor.name)}
-                                </span>
-                              </div>
+                              <img
+                                src="/images/logo.png" // Default to logo.png if no profilePicture
+                                alt="Default Logo"
+                                className="w-14 h-14 object-contain"
+                              />
                             )}
                           </div>
                           {doctor.isOnline && (
@@ -479,12 +482,7 @@ export default function AllDoctorsPage() {
                               </span>
                             )}
                             
-                            {doctor.consultationModes?.includes('home') && (
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${poppins.className} bg-blue-100 text-blue-700`}>
-                                <FontAwesomeIcon icon={faHouse} className="mr-1 w-3 h-3" />
-                                Home Visit
-                              </span>
-                            )}
+                            
                           </div>
                         </div>
                       </div>
@@ -522,19 +520,19 @@ export default function AllDoctorsPage() {
             {totalPages > 1 && (
               <div className="flex justify-center items-center space-x-4 mt-8">
                 <button
-  onClick={() => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }}
-  disabled={currentPage === 1}
-  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-    currentPage === 1
-      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-      : 'bg-blue-500 hover:bg-blue-600 text-white'
-  }`}
->
-  Previous
-</button>
+                  onClick={() => {
+                    setCurrentPage(prev => Math.max(prev - 1, 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === 1}
+                  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                    currentPage === 1
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600 text-white'
+                  }`}
+                >
+                  Previous
+                </button>
 
                 
                 <span className={`${poppins.className} text-gray-600`}>
@@ -542,19 +540,19 @@ export default function AllDoctorsPage() {
                 </span>
                 
                 <button
-  onClick={() => {
-    setCurrentPage(prev => Math.min(prev + 1, totalPages));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }}
-  disabled={currentPage === totalPages}
-  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-    currentPage === totalPages
-      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-      : 'bg-blue-500 hover:bg-blue-600 text-white'
-  }`}
->
-  Next
-</button>
+                  onClick={() => {
+                    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className={`${poppins.className} px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                    currentPage === totalPages
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-500 hover:bg-blue-600 text-white'
+                  }`}
+                >
+                  Next
+                </button>
               </div>
             )}
           </div>

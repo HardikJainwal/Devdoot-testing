@@ -38,6 +38,39 @@ const poppins = Poppins({
   subsets: ['latin'],
 });
 
+// Add this new function to fetch appointment slots
+const fetchAppointmentSlots = async (coachId, startDate, endDate, timeZone = 'Asia/Calcutta') => {
+  try {
+    const API_BASE_URL = 'https://devdoot-backend.onrender.com/v1/api';
+    const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MGYwZjM4ZjdjY2UwOTgyN2IxODE0NSIsInVzZXJUeXBlIjoicGF0aWVudCIsImVtYWlsIjoibWFkYWFuZGhydXY1NEBnbWFpbC5jb20ifSwiaXNWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzUzNjg0MDc2LCJleHAiOjE3NTM5NDMyNzZ9.qs_rYVCH4ZIVJL3GVsn9ZABG7wOcTIKJ1Fvd56_EaJc';
+
+    const url = `${API_BASE_URL}/booking/appointment-slot?coachId=${coachId}&startDate=${startDate}&endDate=${endDate}&timeZone=${encodeURIComponent(timeZone)}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': DUMMY_TOKEN,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const apiData = await response.json();
+    return apiData;
+    
+  } catch (error) {
+    console.error('Error fetching appointment slots:', error);
+    return {
+      success: false,
+      message: error.message,
+      data: []
+    };
+  }
+};
+
 export default function CoachProfilePage() {
   const params = useParams();
   const router = useRouter();
@@ -50,6 +83,8 @@ export default function CoachProfilePage() {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
   const [selectedTimeCategory, setSelectedTimeCategory] = useState('morning');
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -57,6 +92,13 @@ export default function CoachProfilePage() {
       loadRelatedCoaches();
     }
   }, [params.id]);
+
+  // Load slots when date changes
+  useEffect(() => {
+    if (selectedDate && coach?._id) {
+      loadAvailableSlots();
+    }
+  }, [selectedDate, coach?._id]);
 
   const loadCoachProfile = async (coachId) => {
     try {
@@ -99,6 +141,180 @@ export default function CoachProfilePage() {
       setLoading(false);
     }
   };
+
+  const loadAvailableSlots = async () => {
+  try {
+    setSlotsLoading(true);
+    
+    // Calculate start and end dates based on selected date
+    const today = new Date();
+    let startDate, endDate;
+    
+    switch (selectedDate) {
+      case 'today':
+        startDate = new Date(today);
+        endDate = new Date(today);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case 'tomorrow':
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() + 1);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(startDate);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case 'day-after':
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() + 2);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(startDate);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      default:
+        return;
+    }
+
+    console.log('Date range:', { 
+      selectedDate, 
+      startDate: startDate.toISOString(), 
+      endDate: endDate.toISOString() 
+    });
+
+    const response = await fetchAppointmentSlots(
+      coach._id,
+      startDate.toISOString(),
+      endDate.toISOString(),
+      'Asia/Calcutta'
+    );
+
+    console.log('API Response:', response);
+
+    if (response.success && response.data) {
+      console.log('Raw slots data:', response.data);
+      
+      // Transform API response to match frontend expectations
+      const transformedSlots = response.data.map((slot, index) => ({
+        id: `slot-${index}`,
+        startTime: slot.utc[0], // Use UTC start time
+        endTime: slot.utc[1],   // Use UTC end time
+        localStartTime: slot.local[0], // Keep local time for reference
+        localEndTime: slot.local[1]
+      }));
+      
+      console.log('Transformed slots:', transformedSlots);
+      setAvailableSlots(transformedSlots);
+    } else {
+      console.error('Failed to load slots:', response.message);
+      setAvailableSlots([]);
+    }
+    
+  } catch (error) {
+    console.error('Error loading available slots:', error);
+    setAvailableSlots([]);
+  } finally {
+    setSlotsLoading(false);
+  }
+};
+
+// Updated categorizeSlots function with better debugging
+const categorizeSlots = (slots) => {
+  console.log('Categorizing slots:', slots);
+  
+  const categorized = {
+    morning: [],
+    afternoon: [],
+    evening: []
+  };
+
+  slots.forEach(slot => {
+    // Convert UTC to Indian time for categorization
+    const date = new Date(slot.startTime);
+    console.log('Original UTC time:', slot.startTime);
+    console.log('Converted to Date object:', date);
+    
+    // Convert to IST
+    const istTime = new Date(date.toLocaleString("en-US", {timeZone: "Asia/Calcutta"}));
+    const hour = istTime.getHours();
+    
+    console.log('IST time:', istTime);
+    console.log('Hour:', hour);
+    
+    if (hour >= 6 && hour < 12) {
+      categorized.morning.push(slot);
+      console.log('Added to morning');
+    } else if (hour >= 12 && hour < 17) {
+      categorized.afternoon.push(slot);
+      console.log('Added to afternoon');
+    } else {
+      categorized.evening.push(slot);
+      console.log('Added to evening');
+    }
+  });
+
+  console.log('Categorized slots:', categorized);
+  return categorized;
+};
+
+// Alternative categorizeSlots using local time directly
+const categorizeSlotsByLocalTime = (slots) => {
+  console.log('Categorizing slots by local time:', slots);
+  
+  const categorized = {
+    morning: [],
+    afternoon: [],
+    evening: []
+  };
+
+  slots.forEach(slot => {
+    // Parse local time string: "2025-07-30 22:30:00"
+    const localTimeStr = slot.localStartTime;
+    console.log('Local time string:', localTimeStr);
+    
+    // Extract hour from local time string
+    const timePart = localTimeStr.split(' ')[1]; // "22:30:00"
+    const hour = parseInt(timePart.split(':')[0]); // 22
+    
+    console.log('Extracted hour from local time:', hour);
+    
+    if (hour >= 6 && hour < 12) {
+      categorized.morning.push(slot);
+      console.log('Added to morning');
+    } else if (hour >= 12 && hour < 17) {
+      categorized.afternoon.push(slot);
+      console.log('Added to afternoon');
+    } else {
+      categorized.evening.push(slot);
+      console.log('Added to evening');
+    }
+  });
+
+  console.log('Categorized slots by local time:', categorized);
+  return categorized;
+};
+
+// Updated formatTimeSlot to use local time strings directly
+const formatTimeSlotFromLocal = (slot) => {
+  // Parse local time strings: "2025-07-30 22:30:00"
+  const parseLocalTime = (localTimeStr) => {
+    const [datePart, timePart] = localTimeStr.split(' ');
+    const [hour, minute] = timePart.split(':');
+    return { hour: parseInt(hour), minute: parseInt(minute) };
+  };
+  
+  const startTime = parseLocalTime(slot.localStartTime);
+  const endTime = parseLocalTime(slot.localEndTime);
+  
+  const formatTime = (timeObj) => {
+    const hour12 = timeObj.hour > 12 ? timeObj.hour - 12 : (timeObj.hour === 0 ? 12 : timeObj.hour);
+    const ampm = timeObj.hour >= 12 ? 'PM' : 'AM';
+    const minute = timeObj.minute.toString().padStart(2, '0');
+    return `${hour12}:${minute} ${ampm}`;
+  };
+  
+  return `${formatTime(startTime)} - ${formatTime(endTime)}`;
+};
+
+
 
   useEffect(() => {
     if (showReviewModal) {
@@ -167,12 +383,6 @@ export default function CoachProfilePage() {
     setNewReview({ rating: 5, comment: '' });
   };
 
-  const timeSlots = {
-    morning: ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-    afternoon: ['2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'],
-    evening: ['6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM']
-  };
-
   if (loading) {
     return <Shimmer />;
   }
@@ -195,6 +405,9 @@ export default function CoachProfilePage() {
       </div>
     );
   }
+
+  // Get categorized slots
+  const categorizedSlots = categorizeSlots(availableSlots);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -324,11 +537,6 @@ export default function CoachProfilePage() {
                     <span className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-300`}>
                       <FontAwesomeIcon icon={faVideo} className="mr-2 w-3 h-3" />
                       Video Consultation
-                    </span>
-                    
-                    <span className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-300`}>
-                      <FontAwesomeIcon icon={faHouse} className="mr-2 w-3 h-3" />
-                      Home Visit
                     </span>
                   </div>
                 </div>
@@ -503,59 +711,85 @@ export default function CoachProfilePage() {
                 </select>
               </div>
 
-              <div className="mb-4">
-                <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
-                  Preferred Time
-                </label>
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  {[
-                    { key: 'morning', label: 'Morning' },
-                    { key: 'afternoon', label: 'Afternoon' },
-                    { key: 'evening', label: 'Evening' }
-                  ].map((category) => (
-                    <button
-                      key={category.key}
-                      onClick={() => setSelectedTimeCategory(category.key)}
-                      className={`${poppins.className} py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 ${
-                        selectedTimeCategory === category.key
-                          ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white transform scale-105'
-                          : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
-                      }`}
-                    >
-                      <div className="text-lg mb-1">{category.icon}</div>
-                      {category.label}
-                    </button>
-                  ))}
+              {selectedDate && (
+                <div className="mb-4">
+                  <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                    Preferred Time
+                  </label>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {[
+                      { key: 'morning', label: 'Morning' },
+                      { key: 'afternoon', label: 'Afternoon' },
+                      { key: 'evening', label: 'Evening' }
+                    ].map((category) => (
+                      <button
+                        key={category.key}
+                        onClick={() => setSelectedTimeCategory(category.key)}
+                        className={`${poppins.className} py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 ${
+                          selectedTimeCategory === category.key
+                            ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white transform scale-105'
+                            : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                        }`}
+                      >
+                        {category.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="mb-6">
-                <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
-                  Available Slots
-                </label>
-                <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-                  {timeSlots[selectedTimeCategory].map((time) => (
-                    <button
-                      key={time}
-                      onClick={() => setSelectedTimeSlot(time)}
-                      className={`${poppins.className} py-2 px-3 text-sm font-medium rounded-lg border transition-all duration-300 ${
-                        selectedTimeSlot === time
-                          ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white border-blue-500 transform scale-105'
-                          : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
-                      }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
+              {selectedDate && (
+                <div className="mb-6">
+                  <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                    Available Slots
+                  </label>
+                  
+                  {slotsLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2C8C91]"></div>
+                      <span className={`${poppins.className} ml-3 text-gray-600`}>Loading slots...</span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto">
+                      {categorizedSlots[selectedTimeCategory]?.length > 0 ? (
+                        categorizedSlots[selectedTimeCategory].map((slot, index) => (
+                          <button
+                            key={`${slot.startTime}-${index}`}
+                            onClick={() => setSelectedTimeSlot(slot)}
+                            className={`${poppins.className} py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 ${
+                              selectedTimeSlot?.id === slot.id
+                                ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white border-blue-500 transform scale-105'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                            }`}
+                          >
+                            {formatTimeSlot(slot.startTime, slot.endTime)}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="text-center py-6">
+                          <p className={`${poppins.className} text-gray-500 text-sm`}>
+                            No slots available for {selectedTimeCategory}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
 
               <button
                 onClick={handleBookConsultation}
-                className={`${poppins.className} w-full bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white py-4 px-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 mb-4 shadow-lg`}
+                disabled={!selectedDate || !selectedTimeSlot}
+                className={`${poppins.className} w-full py-4 px-4 rounded-xl font-semibold transition-all duration-300 transform flex items-center justify-center space-x-2 mb-4 shadow-lg ${
+                  selectedDate && selectedTimeSlot
+                    ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white hover:scale-105'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
               >
                 <FontAwesomeIcon icon={faCalendarAlt} className="w-5 h-5" />
-                <span>Confirm Appointment</span>
+                <span>
+                  {selectedDate && selectedTimeSlot ? 'Confirm Appointment' : 'Select Date & Time'}
+                </span>
               </button>
 
               <p className={`${poppins.className} text-xs text-gray-500 text-center`}>

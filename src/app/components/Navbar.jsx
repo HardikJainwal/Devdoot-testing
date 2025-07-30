@@ -1,10 +1,11 @@
+// components/Navbar.jsx
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
-const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
+const Navbar = ({ onSignupClick, onLoginClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -16,8 +17,13 @@ const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
   };
 
   const handleSignupClick = () => {
-    closeMenu(); // Close mobile menu if open
-    onSignupClick(); // Call parent function to show popup
+    closeMenu();
+    onSignupClick();
+  };
+
+  const handleLoginClick = () => {
+    closeMenu();
+    onLoginClick();
   };
 
   return (
@@ -25,13 +31,15 @@ const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
       <div className="flex items-center justify-between px-6 py-4">
         {/* Left: Logo */}
         <div className="flex items-center space-x-2">
-          <Image
-            src="/images/Logo.png"
-            alt="Logo"
-            width={180}
-            height={90}
-            priority
-          />
+          <Link href="/" onClick={closeMenu} className="flex items-center space-x-2">
+            <Image
+              src="/images/Logo.png"
+              alt="Logo"
+              width={180}
+              height={90}
+              priority
+            />
+          </Link>
         </div>
 
         {/* Center: Navigation Links (Desktop) */}
@@ -67,18 +75,18 @@ const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
           <span className="text-[#C42323] text-lg font-semibold">
             Be Our Partner!
           </span>
-          {/* Changed from Link to button */}
-          <button 
+          <button
             onClick={handleSignupClick}
             className="text-gray-700 text-lg hover:underline"
           >
             Sign Up
           </button>
-          <Link href="/Login">
-            <button className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded hover:bg-teal-200 transition">
-              Log in
-            </button>
-          </Link>
+          <button
+            onClick={handleLoginClick}
+            className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded hover:bg-teal-200 transition"
+          >
+            Log in
+          </button>
         </div>
 
         {/* Hamburger Menu Button (Mobile) */}
@@ -142,18 +150,18 @@ const Navbar = ({ onSignupClick }) => { // Add prop to handle signup
               Be Our Partner!
             </div>
             <div className="flex flex-col space-y-3">
-              {/* Changed from Link to button */}
-              <button 
+              <button
                 onClick={handleSignupClick}
                 className="text-gray-700 text-lg hover:underline text-left"
               >
                 Sign Up
               </button>
-              <Link href="/Login" onClick={closeMenu}>
-                <button className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full">
-                  Log in
-                </button>
-              </Link>
+              <button
+                onClick={handleLoginClick}
+                className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full"
+              >
+                Log in
+              </button>
             </div>
           </div>
         </div>

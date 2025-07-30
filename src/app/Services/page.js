@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { 
   Heart, 
   Users, 
@@ -38,6 +40,7 @@ const services = [
 
 export default function Services() {
   const [toasts, setToasts] = useState([]);
+  const router = useRouter(); 
   
   const showToast = (service) => {
     const id = Date.now();
@@ -72,6 +75,7 @@ export default function Services() {
               style={{
                 animation: 'slideInRight 0.3s ease-out forwards'
               }}
+              
             >
               <div className={`p-2 rounded-xl bg-gradient-to-br ${toast.color}`}>
                 <IconComponent className="w-5 h-5 text-white" />
@@ -111,7 +115,14 @@ export default function Services() {
               <div
                 key={idx}
                 className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 overflow-hidden`}
-                onClick={() => showToast(service)}
+                onClick={() => {
+  if (service.title === "Coach Match") {
+    router.push("/doctors");
+  } else {
+    showToast(service);
+  }
+}}
+
               >
                 {/* Gradient overlay on hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />

@@ -1,12 +1,37 @@
-'use client';
+"use client";
 
-import Navbar from './Navbar';
+import { useState } from "react";
+import Navbar from "./Navbar";
+import LoginModal from "./LoginModal";
+import SignupModal from "./SignupModal";
 
-export default function NavbarWrapper() {
-  const handleSignupClick = () => {
-    console.log('Signup clicked');
-    // Add modal logic or routing here
+const NavbarWrapper = () => {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+
+  const handleLoginClick = () => {
+    setIsLoginOpen(true);
   };
 
-  return <Navbar onSignupClick={handleSignupClick} />;
-}
+  const handleSignupClick = () => {
+    setIsSignupOpen(true);
+  };
+
+  const handleCloseLogin = () => {
+    setIsLoginOpen(false);
+  };
+
+  const handleCloseSignup = () => {
+    setIsSignupOpen(false);
+  };
+
+  return (
+    <>
+      <Navbar onSignupClick={handleSignupClick} onLoginClick={handleLoginClick} />
+      <LoginModal isOpen={isLoginOpen} onClose={handleCloseLogin} />
+      <SignupModal isOpen={isSignupOpen} onClose={handleCloseSignup} />
+    </>
+  );
+};
+
+export default NavbarWrapper;

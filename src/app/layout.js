@@ -1,6 +1,8 @@
+// app/layout.js
 import Footer from "./components/Footer";
 import "./globals.css";
-import NavbarWrapper from "@/app/components/NavbarWrapper";
+import NavbarWrapper from "./components/NavbarWrapper";
+import ChatFidget from "./components/ChatFidget";
 
 export const metadata = {
   title: "Devdoot",
@@ -14,6 +16,7 @@ export default function RootLayout({ children }) {
         <NavbarWrapper />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <ChatFidget />
       </body>
     </html>
   );

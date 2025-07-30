@@ -47,17 +47,17 @@ const steps = [
   {
     number: 1,
     title: "Choose Your Service",
-    desc: "Select from doctor consultations, lab tests, medicine delivery, or other services.",
+    desc: "Browse and select from a wide range of healthcare solutions including doctor consultations, emergency assistance, lab tests, medicine delivery, pet care, and more..",
   },
   {
     number: 2,
-    title: "Book Appointment",
-    desc: "Select date, time and location. Pay securely online or choose cash on delivery.",
+    title: "Book Instantly",
+    desc: "Pick your preferred date, time, and location. Enjoy seamless booking with secure online payment or opt for cash on delivery.",
   },
   {
     number: 3,
-    title: "Get Healthcare",
-    desc: "Receive your service at home, clinic, or via video consultation as per your booking.",
+    title: "Get Care, Anytime, Anywhere",
+    desc: "Whether at home, in a clinic, or via video consultation receive trusted medical services exactly how and where you need them.",
   },
 ];
 
@@ -370,12 +370,7 @@ const DoctorsSection = () => {
                     Video
                   </span>
                 )}
-                {doctor.consultationModes?.includes('home') && (
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-blue-100 text-blue-700`}>
-                    <FontAwesomeIcon icon={faHouse} className="mr-1 w-3 h-3" />
-                    Home Visit
-                  </span>
-                )}
+                
                 {doctor.fees && (
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-purple-100 text-purple-700`}>
                     ₹{doctor.fees}
@@ -625,7 +620,7 @@ export default function Home() {
           <p
             className={`${poppins.className} text-sm sm:text-base text-gray-600 mb-10`}
           >
-            Simple steps to access quality healthcare
+            Access quality healthcare in just a few simple steps
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-18 max-w-4xl mx-auto">
             {steps.map((step, index) => (
@@ -669,18 +664,18 @@ export default function Home() {
           Why Choose <span className="text-gradient text-[#C42323]">Devdoot?</span>
         </h2>
         <p className="font-poppins text-xl text-gray-600 mb-8">
-          We do not just plan weddings; we create experiences that celebrate your unique love story 
-          with elegance, creativity, and flawless execution.
+         We’re not just a service platform — we are your dependable health and 
+         wellness companion. At Devdoot, we simplify access to critical medical services, ensuring care reaches you when and where you need it most.
         </p>
 
         <div className="space-y-4">
           {[
-            'Personalized planning approach for every couple',
-            'Extensive network of premium vendors',
-            'End-to-end wedding management services',
-            'Transparent communication with no hidden costs',
-            '24/7 support throughout your wedding journey',
-            'Post-wedding support and documentation'
+            'Personalized care coordination for every individual and family',
+            'Robust network of verified doctors, paramedics, labs, and health vendors',
+            'Comprehensive solutions from emergency response to daily wellness needs',
+            'Transparent pricing with no hidden charges',
+            '24/7 real-time assistance via our app and helpline',
+            'Support beyond emergencies including medical documentation, follow-ups, and virtual health coaching'
           ].map((feature, index) => (
             <motion.div
               key={feature}

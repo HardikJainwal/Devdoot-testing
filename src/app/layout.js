@@ -1,10 +1,6 @@
-
-
 import Footer from "./components/Footer";
 import "./globals.css";
-import Navbar from "@/app/Components/Navbar";
-
-
+import NavbarWrapper from "@/app/components/NavbarWrapper";
 
 export const metadata = {
   title: "Devdoot",
@@ -15,9 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar />
+        <NavbarWrapper />
         <main className="min-h-screen">{children}</main>
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

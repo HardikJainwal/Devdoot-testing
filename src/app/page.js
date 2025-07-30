@@ -714,13 +714,7 @@ export default function Home() {
           </div>
         </div>
 
-        <motion.div
-          className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-[#36A0A4] to-[#10B981] rounded-full flex items-center justify-center shadow-xl"
-          animate={{ y: [-10, 10, -10] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Star className="w-10 h-10 text-white" fill="currentColor" />
-        </motion.div>
+        
       </motion.div>
     </div>
   </div>

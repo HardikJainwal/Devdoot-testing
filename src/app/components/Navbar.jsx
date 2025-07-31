@@ -70,7 +70,7 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
           </li>
         </ul>
 
-        {/* Right: Buttons (Desktop) */}
+        
         <div className="hidden md:flex items-center space-x-6 text-sm font-['Poppins']">
           <span className="text-[#C42323] text-lg font-semibold">
             Be Our Partner!

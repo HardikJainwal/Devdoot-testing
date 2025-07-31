@@ -3,18 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faVideo,
   faHouse,
   faStar,
   faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import { Poppins } from "next/font/google";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { fetchCoaches } from "@/lib/api/coaches";
-
-import {
   faAmbulance,
   faUserMd,
   faVial,
@@ -27,21 +21,36 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { Poppins } from "next/font/google";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { fetchCoaches } from "@/lib/api/coaches";
 import {
-  Ambulance,
+  Heart,
+  Users,
+  Activity,
+  Shield,
+  Stethoscope,
+  PawPrint,
+  Leaf,
+  Brain,
+  Cross,
+  Search,
+  Droplets,
+  Baby,
+  Utensils,
+  Sparkles,
   UserCheck,
+  Ambulance,
   Video,
   TestTube,
-  Pill,
   Plus,
   ArrowRight,
-  PawPrint,
-  Clock,
-  MapPin,
-  Heart,
-  Star,
-  CheckCircle,
 } from "lucide-react";
+import { MapPinIcon } from '@heroicons/react/24/outline';
+import Slider from "react-slick"; // Import react-slick for carousel
+import "slick-carousel/slick/slick.css"; // Import slick carousel styles
+import "slick-carousel/slick/slick-theme.css"; // Import slick theme styles
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -49,24 +58,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const steps = [
-  {
-    number: 1,
-    title: "Choose Your Service",
-    desc: "Browse and select from a wide range of healthcare solutions including doctor consultations, emergency assistance, lab tests, medicine delivery, pet care, and more..",
-  },
-  {
-    number: 2,
-    title: "Book Instantly",
-    desc: "Pick your preferred date, time, and location. Enjoy seamless booking with secure online payment or opt for cash on delivery.",
-  },
-  {
-    number: 3,
-    title: "Get Care, Anytime, Anywhere",
-    desc: "Whether at home, in a clinic, or via video consultation receive trusted medical services exactly how and where you need them.",
-  },
-];
-
+// Updated medical services array including new services
 const medicalServices = [
   {
     icon: Ambulance,
@@ -105,25 +97,126 @@ const medicalServices = [
     badge: "Free Collection",
   },
   {
-    icon: PawPrint,
-    title: "PetWell",
-    desc: "Trusted health services and wellness support for your furry friends.",
+    icon: Heart,
+    title: "Care Match",
+    desc: "Personalized care coordination for you and your family",
     color: "from-pink-500 to-rose-500",
     bgColor: "bg-pink-50",
+    buttonText: "Explore Now",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Users,
+    title: "Coach Match",
+    desc: "Connect with expert health coaches for your needs",
+    color: "from-blue-500 to-cyan-500",
+    bgColor: "bg-blue-50",
+    buttonText: "Find a Coach",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Activity,
+    title: "Health Buddy",
+    desc: "Daily wellness tracking and health support",
+    color: "from-green-500 to-emerald-500",
+    bgColor: "bg-green-50",
+    buttonText: "Get Started",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Shield,
+    title: "Immuni Care",
+    desc: "Vaccination and immunity-boosting services",
+    color: "from-purple-500 to-violet-500",
+    bgColor: "bg-purple-50",
+    buttonText: "Learn More",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Stethoscope,
+    title: "MedEquip",
+    desc: "Medical equipment rentals and supplies",
+    color: "from-indigo-500 to-blue-500",
+    bgColor: "bg-indigo-50",
+    buttonText: "Explore Equipment",
+    badge: "Coming Soon",
+  },
+  {
+    icon: PawPrint,
+    title: "PetWell",
+    desc: "Trusted health services for your furry friends",
+    color: "from-orange-500 to-amber-500",
+    bgColor: "bg-orange-50",
     buttonText: "Explore Pet Care",
     badge: "Vet Approved",
   },
   {
-    icon: Plus,
-    title: "Other Services",
-    desc: "Pet care, medical equipment rentals, and more",
-    color: "from-amber-500 to-orange-500",
-    bgColor: "bg-amber-50",
-    buttonText: "Explore Now",
+    icon: Leaf,
+    title: "AyurCare",
+    desc: "Ayurvedic treatments and wellness solutions",
+    color: "from-teal-500 to-green-500",
+    bgColor: "bg-teal-50",
+    buttonText: "Discover Now",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Brain,
+    title: "Mental Health",
+    desc: "Support for mental wellness and therapy",
+    color: "from-rose-500 to-pink-500",
+    bgColor: "bg-rose-50",
+    buttonText: "Get Support",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Cross,
+    title: "AidFirst",
+    desc: "First aid and emergency response training",
+    color: "from-red-500 to-rose-500",
+    bgColor: "bg-red-50",
+    buttonText: "Learn More",
+    badge: "Coming Soon",
+  },
+  
+  {
+    icon: Droplets,
+    title: "BloodMate",
+    desc: "Blood donation and transfusion services",
+    color: "from-red-600 to-red-500",
+    bgColor: "bg-red-50",
+    buttonText: "Join Now",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Baby,
+    title: "ChildCare++",
+    desc: "Pediatric care and child health services",
+    color: "from-yellow-500 to-orange-500",
+    bgColor: "bg-yellow-50",
+    buttonText: "Explore Care",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Utensils,
+    title: "NutritiGuide",
+    desc: "Nutrition planning and dietary guidance",
+    color: "from-lime-500 to-green-500",
+    bgColor: "bg-lime-50",
+    buttonText: "Plan Your Diet",
+    badge: "Coming Soon",
+  },
+  {
+    icon: Sparkles,
+    title: "DermaCare",
+    desc: "Dermatology and skin care solutions",
+    color: "from-violet-500 to-purple-500",
+    bgColor: "bg-violet-50",
+    buttonText: "Book Now",
     badge: "Coming Soon",
   },
 ];
 
+// DoctorsSection component remains unchanged
 const DoctorsSection = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -183,7 +276,6 @@ const DoctorsSection = () => {
     }
   };
 
-  // Function to handle coach card click
   const handleCoachClick = (coachId) => {
     router.push(`coaches/${coachId}`);
   };
@@ -223,15 +315,12 @@ const DoctorsSection = () => {
                 key={index}
                 className="bg-white rounded-2xl shadow-md p-6 border border-gray-100"
               >
-                {/* Doctor Image Shimmer */}
                 <div className="relative mb-6">
                   <div className="w-24 h-24 mx-auto rounded-full bg-gray-200 animate-pulse" />
                   <div className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2">
                     <div className="w-4 h-4 bg-gray-200 rounded-full animate-pulse" />
                   </div>
                 </div>
-
-                {/* Doctor Info Shimmer */}
                 <div className="text-center mb-4 space-y-2">
                   <div
                     className={`${poppins.className} h-6 w-2/3 bg-gray-200 rounded animate-pulse mx-auto`}
@@ -243,8 +332,6 @@ const DoctorsSection = () => {
                     className={`${poppins.className} h-4 w-1/3 bg-gray-200 rounded animate-pulse mx-auto`}
                   />
                 </div>
-
-                {/* Rating Shimmer */}
                 <div className="flex items-center justify-center mb-4">
                   <div className="flex items-center space-x-1">
                     {[...Array(5)].map((_, i) => (
@@ -258,8 +345,6 @@ const DoctorsSection = () => {
                     />
                   </div>
                 </div>
-
-                {/* Services Shimmer */}
                 <div className="flex flex-wrap gap-2 justify-center mb-6">
                   {[...Array(3)].map((_, i) => (
                     <div
@@ -268,8 +353,6 @@ const DoctorsSection = () => {
                     />
                   ))}
                 </div>
-
-                {/* Button Shimmer */}
                 <div
                   className={`${poppins.className} h-10 w-full bg-gray-200 rounded-lg animate-pulse`}
                 />
@@ -337,9 +420,8 @@ const DoctorsSection = () => {
               viewport={{ once: true }}
               whileHover={{ y: -10, scale: 1.02 }}
               className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 group cursor-pointer"
-              onClick={() => handleCoachClick(doctor._id)} // Add click handler to entire card
+              onClick={() => handleCoachClick(doctor._id)}
             >
-              {/* Doctor Image */}
               <div className="relative mb-6">
                 <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-100 group-hover:border-blue-300 transition-colors duration-300">
                   {doctor.profilePicture ? (
@@ -363,7 +445,6 @@ const DoctorsSection = () => {
                 )}
               </div>
 
-              {/* Doctor Info */}
               <div className="text-center mb-4">
                 <h3
                   className={`${poppins.className} text-lg font-semibold text-gray-900 mb-1`}
@@ -385,7 +466,6 @@ const DoctorsSection = () => {
                 </p>
               </div>
 
-              {/* Rating */}
               <div className="flex items-center justify-center mb-4">
                 <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
@@ -407,7 +487,6 @@ const DoctorsSection = () => {
                 </div>
               </div>
 
-              {/* Services */}
               <div className="flex flex-wrap gap-2 justify-center mb-6">
                 {doctor.consultationModes?.includes("video") && (
                   <span
@@ -427,11 +506,10 @@ const DoctorsSection = () => {
                 )}
               </div>
 
-              {/* Book Appointment Button */}
               <button
-                className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:shadow-md flex items-center justify-center space-x-2`}
+                className={`${poppins.className} w-full bg-[#3fa4aa] hover:bg-[#3fa4aa] text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:shadow-md flex items-center justify-center space-x-2`}
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent card click when button is clicked
+                  e.stopPropagation();
                   handleCoachClick(doctor._id);
                 }}
               >
@@ -454,13 +532,12 @@ const DoctorsSection = () => {
           ))}
         </div>
 
-        {/* View All Doctors Button */}
         <div className="text-center mt-12">
           <Link href="coaches">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`${poppins.className} bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2 mx-auto`}
+              className={`${poppins.className} bg-[#3fa4aa] hover:bg-[#3fa4aa] text-white py-3 px-8 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2 mx-auto`}
             >
               <span>View All Coaches</span>
               <svg
@@ -485,8 +562,70 @@ const DoctorsSection = () => {
 };
 
 export default function Home() {
+  const router = useRouter();
+  const [toasts, setToasts] = useState([]);
+
+  const showToast = (service) => {
+    const id = Date.now();
+    const newToast = {
+      id,
+      title: service.title,
+      color: service.color,
+      icon: service.icon,
+    };
+
+    setToasts((prev) => [...prev, newToast]);
+
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 3000);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
+
   const handleServiceClick = (service) => {
-    console.log(`${service.title} clicked`);
+    if (service.title === "Coach Match") {
+      router.push("coaches");
+    } else {
+      showToast(service);
+    }
+  };
+
+  // Carousel settings
+  const carouselSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -496,10 +635,9 @@ export default function Home() {
         className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-32 sm:mb-20 md:mb-16"
         style={{
           background:
-            "linear-gradient(90deg, rgba(0, 139, 139, 0.71) 0%, rgba(0, 165, 165, 0.18) 27.4%)",
+            "#DEFAFC",
         }}
       >
-        {/* Background Image - Hidden on mobile, visible on larger screens */}
         <div className="hidden sm:block absolute right-0 top-0 w-3/4 md:w-2/3 lg:w-1/2 h-full">
           <img
             src="/images/Banner.jpg"
@@ -507,8 +645,6 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-
-        {/* Mobile Background Image - Full width on mobile with overlay */}
         <div className="sm:hidden absolute inset-0">
           <img
             src="/images/Banner.jpg"
@@ -517,7 +653,6 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
         </div>
-
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
           <div className="flex items-start sm:items-center min-h-[400px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[300px]">
             <div className="w-full lg:w-1/2 pr-0 lg:pr-8 pb-40 sm:pb-8">
@@ -546,56 +681,83 @@ export default function Home() {
             </div>
           </div>
         </div>
+      <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-5xl px-4 sm:px-6 lg:px-8 -bottom-10">
+  <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+      {/* Service */}
+      <div className="sm:col-span-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Service
+        </label>
+        <select className="w-full p-3 border border-gray-300 rounded-md text-sm bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#00a5a5]">
+          <option>Doctor Consultation</option>
+          <option>Lab Tests</option>
+          <option>Medicine Delivery</option>
+          <option>Wellness Services</option>
+        </select>
+      </div>
 
-        {/* Search Card - Positioned differently on mobile */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4 sm:px-6 lg:px-8 -bottom-16 sm:translate-y-1/2 sm:bottom-0">
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl p-4 sm:p-6 border border-gray-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Service
-                </label>
-                <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white">
-                  <option>Doctor Consultation</option>
-                  <option>Lab Tests</option>
-                  <option>Medicine Order</option>
-                  <option>Wellness Services</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your location"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date & Time
-                </label>
-                <input
-                  type="text"
-                  placeholder="DD/MM/YYYY"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
-                />
-              </div>
-              <div>
-                <button className="w-full bg-teal-600 text-white p-3 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm lg:mt-0 mt-2">
-                  Find Services
-                </button>
-              </div>
-            </div>
-          </div>
+      {/* Location */}
+      <div className="sm:col-span-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Location
+        </label>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Enter your location"
+            className="w-full p-3 border border-gray-300 rounded-md text-sm pl-10 bg-white focus:outline-none focus:ring-2 focus:ring-[#00a5a5]"
+          />
+          <MapPinIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
         </div>
       </div>
 
-      {/* Our Medical Services Section */}
+      {/* Button */}
+      <div className="sm:col-span-1 mt-2 sm:mt-6">
+        <button className="w-full bg-[#00a5a5] text-white p-3 rounded-md font-semibold text-sm hover:bg-[#008f8f] transition">
+          Find Services
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+
+      {/* Our Medical Services Section with Carousel */}
       <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 mt-24">
+        {/* Toast Container */}
+        <div className="fixed top-6 right-6 z-50 space-y-3">
+          {toasts.map((toast) => {
+            const IconComponent = toast.icon;
+            return (
+              <div
+                key={toast.id}
+                className="flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 min-w-72 animate-in slide-in-from-right duration-300"
+                style={{
+                  animation: "slideInRight 0.3s ease-out forwards",
+                }}
+              >
+                <div
+                  className={`p-2 rounded-xl bg-gradient-to-br ${toast.color}`}
+                >
+                  <IconComponent className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900">{toast.title}</p>
+                  <p className="text-sm text-gray-600">Coming Soon!</p>
+                </div>
+                <button
+                  onClick={() => removeToast(toast.id)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <Cross className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
         <div className="max-w-7xl mx-auto">
-          {/* Header Section */}
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
               Our Medical <span className="text-[#C42323]"> Services</span>
@@ -606,60 +768,65 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Services Grid - Single Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+          {/* Carousel */}
+          <Slider {...carouselSettings}>
             {medicalServices.map((service, idx) => {
               const IconComponent = service.icon;
               return (
-                <div
-                  key={idx}
-                  className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-2 overflow-hidden min-h-80`}
-                  onClick={() => handleServiceClick(service)}
-                >
+                <div key={idx} className="px-2">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                  />
-
-                  {/* Content */}
-                  <div className="relative p-8 h-full flex flex-col items-center justify-between text-center">
+                    className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-2 overflow-hidden min-h-80`}
+                    onClick={() => handleServiceClick(service)}
+                  >
                     <div
-                      className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${service.color} shadow-lg  group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 flex flex-col justify-center">
-                      <h3 className="font-bold text-gray-900 text-base mb-2 group-hover:text-gray-800 transition-colors line-clamp-2">
-                        {service.title}
-                      </h3>
-
-                      <p className="text-gray-600 text-xs leading-tight mb-4 line-clamp-3">
-                        {service.desc}
-                      </p>
-                    </div>
-
-                    {/* Button */}
-                    <button
-                      className={`group/btn relative overflow-hidden bg-gradient-to-r ${service.color} text-white font-semibold py-2 px-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full`}
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-1">
-                        <span className="text-xs truncate">
-                          {service.buttonText}
+                      className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                    />
+                    <div className="relative p-8 h-full flex flex-col items-center justify-between text-center">
+                      <div
+                        className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${service.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <IconComponent className="w-10 h-10 text-white" />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-center">
+                        <h3 className="font-bold text-gray-900 text-lg mt-6 mb-2 group-hover:text-gray-800 transition-colors line-clamp-2">
+                          {service.title}
+                        </h3>
+                        <p className="text-gray-600 text-base leading-tight mb-10 line-clamp-3">
+                          {service.desc}
+                        </p>
+                      </div>
+                      <button
+                        className={`group/btn relative overflow-hidden bg-gradient-to-r ${service.color} text-white font-semibold py-2 px-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full`}
+                      >
+                        <span className="relative z-10 flex items-center justify-center gap-1">
+                          <span className="text-xs truncate">
+                            {service.buttonText}
+                          </span>
+                          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300 flex-shrink-0" />
                         </span>
-                        <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform duration-300 flex-shrink-0" />
-                      </span>
-                      <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover/btn:translate-x-0 transition-transform duration-500" />
-                    </button>
+                        <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover/btn:translate-x-0 transition-transform duration-500" />
+                      </button>
+                    </div>
+                    <div className="absolute top-0 left-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 -translate-x-10 group-hover:-translate-x-8 group-hover:-translate-y-8 transition-transform duration-500" />
+                    <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 translate-x-8 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500" />
+                 
                   </div>
-
-                  {/* Decorative elements */}
-                  <div className="absolute top-0 left-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 -translate-x-10 group-hover:-translate-x-8 group-hover:-translate-y-8 transition-transform duration-500" />
-                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 translate-x-8 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform duration-500" />
+                  
                 </div>
+                
               );
             })}
-          </div>
+          </Slider>
+          <div className="mt-10 text-center">
+  <Link
+    href="/Services"
+    className="inline-flex items-center gap-2 px-6 py-3 bg-[#2C8C91] text-white text-sm font-semibold rounded-full shadow-md hover:bg-[#a81f1f] transition-all"
+  >
+    View All Services
+    <ArrowRight className="w-4 h-4" />
+  </Link>
+</div>
+
         </div>
 
         <style jsx>{`
@@ -674,6 +841,49 @@ export default function Home() {
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+          }
+          @keyframes slideInRight {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+          .animate-in {
+            animation-fill-mode: both;
+          }
+          .slide-in-from-right {
+            animation-name: slideInRight;
+          }
+          .slick-prev,
+.slick-next {
+  z-index: 10;
+  width: 80px;
+  height: 80px;
+  background: #1e293b; /* dark slate background */
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background: #0f172a; /* darker on hover */
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 20px;
+  color: white;
+}
+
+          .slick-prev {
+            left: -50px;
+          }
+          .slick-next {
+            right: -50px;
           }
         `}</style>
       </div>
@@ -692,7 +902,23 @@ export default function Home() {
             Access quality healthcare in just a few simple steps
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-18 max-w-4xl mx-auto">
-            {steps.map((step, index) => (
+            {[
+              {
+                number: 1,
+                title: "Choose Your Service",
+                desc: "Browse and select from a wide range of healthcare solutions including doctor consultations, emergency assistance, lab tests, medicine delivery, pet care, and more.",
+              },
+              {
+                number: 2,
+                title: "Book Instantly",
+                desc: "Pick your preferred date, time, and location. Enjoy seamless booking with secure online payment or opt for cash on delivery.",
+              },
+              {
+                number: 3,
+                title: "Get Care, Anytime, Anywhere",
+                desc: "Whether at home, in a clinic, or via video consultation receive trusted medical services exactly how and where you need them.",
+              },
+            ].map((step, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 40 }}
@@ -719,6 +945,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Why Choose Devdoot Section */}
       <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -738,7 +966,6 @@ export default function Home() {
                 critical medical services, ensuring care reaches you when and
                 where you need it most.
               </p>
-
               <div className="space-y-4">
                 {[
                   "Personalized care coordination for every individual and family",
@@ -756,13 +983,12 @@ export default function Home() {
                     viewport={{ once: true }}
                     className="flex items-center space-x-3 font-poppins"
                   >
-                    <CheckCircle className="w-6 h-6 text-[#36A0A4] flex-shrink-0" />
+                    
                     <span className="text-gray-700">{feature}</span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
-
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -784,8 +1010,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Use the DoctorsSection component instead of duplicating the code */}
+      {/* Doctors Section */}
       <DoctorsSection />
+
       {/* Get the Devdoot App Section */}
       <section className="relative bg-gradient-to-r from-[#246e72] via-[#2C8C91] to-[#3fa4aa] px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
@@ -808,11 +1035,9 @@ export default function Home() {
                   Download our mobile app for faster bookings, medicine orders,
                   health records and more.
                 </p>
-
-                {/* App Store Buttons */}
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <motion.a
-                    href="#"
+                    href="https://apps.apple.com/in/app/devdoot-your-trusted-ally/id6745329522"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center bg-black hover:bg-gray-800 text-white rounded-lg px-6 py-3 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -837,9 +1062,8 @@ export default function Home() {
                       </div>
                     </div>
                   </motion.a>
-
                   <motion.a
-                    href="#"
+                    href="https://play.google.com/store/apps/details?id=com.app.Devdoot&hl=en_IN"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center bg-black hover:bg-gray-800 text-white rounded-lg px-6 py-3 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -867,8 +1091,6 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
-
-            {/* Image of hands holding mobile */}
             <div className="lg:w-1/2 xl:w-3/5 mt-20 lg:mt-0 lg:pl-10">
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
@@ -880,7 +1102,7 @@ export default function Home() {
                 <img
                   src="images/mobile-download.png"
                   alt="Hands holding mobile with Devdoot app"
-                  className="w-full max-w-md mx-auto lg:max-w-lg xl:max-w-xl object-contain transform  lg:translate-x-30"
+                  className="w-full max-w-md mx-auto lg:max-w-lg xl:max-w-xl object-contain transform lg:translate-x-30"
                 />
               </motion.div>
             </div>
@@ -889,10 +1111,7 @@ export default function Home() {
       </section>
 
       {/* What Our Patients Say Section */}
-
-      {/* What Our Patients Say Section */}
       <section className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Background decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 opacity-20">
           <div className="absolute top-8 right-16 w-16 h-20 bg-purple-400 rounded-lg transform rotate-12"></div>
           <div className="absolute top-16 right-32 w-12 h-12 bg-pink-400 rounded-full"></div>
@@ -900,7 +1119,6 @@ export default function Home() {
           <div className="absolute top-12 right-24 w-6 h-8 bg-blue-400 rounded-lg transform -rotate-12"></div>
           <div className="absolute top-20 right-12 w-4 h-4 bg-yellow-400 transform rotate-45"></div>
         </div>
-
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <motion.h2
@@ -922,7 +1140,6 @@ export default function Home() {
               Trusted by thousands of happy customers
             </motion.p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
@@ -973,7 +1190,6 @@ export default function Home() {
                 }}
                 className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 group cursor-pointer border border-gray-100"
               >
-                {/* Header with avatar and rating */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <div
@@ -1008,8 +1224,6 @@ export default function Home() {
                     {testimonial.service}
                   </span>
                 </div>
-
-                {/* Review text */}
                 <div className="relative">
                   <FontAwesomeIcon
                     icon={faQuoteLeft}
@@ -1021,8 +1235,6 @@ export default function Home() {
                     {testimonial.review}
                   </p>
                 </div>
-
-                {/* Verified badge */}
                 <div className="flex items-center mt-4 pt-4 border-t border-gray-100">
                   <FontAwesomeIcon
                     icon={faCheckCircle}
@@ -1037,8 +1249,6 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-
-          {/* Enhanced Trust Indicators */}
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               {
@@ -1109,29 +1319,25 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Certified By Section */}
       <section
         className="py-6 bg-gray-50"
         style={{ fontFamily: "Poppins, sans-serif" }}
       >
         <div className="max-w-6xl mx-auto px-6">
-          {/* Title */}
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
             Certified By
           </h2>
-
-          {/* Certification Cards Container */}
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
-              {/* ISO Certification */}
               <div className="flex flex-col items-center p-2 hover:scale-105 transition-transform duration-300">
                 <img
                   src="/images/iso.png"
                   alt="ISO Certification"
-                  className="w-34 h-34 "
+                  className="w-34 h-34"
                 />
               </div>
-
-              {/* Ministry Certification */}
               <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
                 <img
                   src="/images/msme.png"
@@ -1139,8 +1345,6 @@ export default function Home() {
                   className="w-48 h-34"
                 />
               </div>
-
-              {/* Approved Certification */}
               <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
                 <img
                   src="/images/govt-red.jpeg"
@@ -1148,8 +1352,6 @@ export default function Home() {
                   className="w-34 h-34"
                 />
               </div>
-
-              {/* Government Approved */}
               <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
                 <img
                   src="/images/GOV-APPROVED-STAMP.png"
@@ -1160,17 +1362,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Font import */}
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </section>
+
+      {/* Call to Action Section */}
       <div className="bg-white">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="bg-blue-50 rounded-lg shadow-xl overflow-hidden lg:grid lg:grid-cols-2 lg:gap-4">
-            {/* Left Content */}
             <div className="pt-10 pb-12 px-6 sm:pt-16 sm:px-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20 flex items-center">
               <div className="lg:self-center">
                 <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
@@ -1184,7 +1385,7 @@ export default function Home() {
                 <div className="mt-8">
                   <a
                     href="#"
-                    className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-md text-base font-medium hover:bg-blue-700 transition"
+                    className="inline-flex items-center bg-[#3fa4aa] hover:bg-[#3fa4aa] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-blue-700 transition"
                   >
                     Get Started Now
                     <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
@@ -1192,8 +1393,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
-            {/* Right Image */}
             <div className="h-full w-full">
               <img
                 className="h-full w-full object-cover object-left-top"

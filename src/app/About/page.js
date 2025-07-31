@@ -384,14 +384,14 @@ export default function AboutUsPage() {
             <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1594824388607-359c7e34e2c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-                  alt="Priya Desai"
+                  src="/images/dr-dhruv.jpg"
+                  alt="Dhruv Madan"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-[#2B2B2A] mb-1">
-                  Priya Desai
+                  Flutter Developer
                 </h3>
                 <p className="text-[#C42323] font-semibold mb-3">Team Head</p>
                 <p className="text-gray-600 text-sm leading-relaxed">

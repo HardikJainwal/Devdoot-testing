@@ -38,7 +38,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-// Add this new function to fetch appointment slots
+// Fixed function to fetch appointment slots
 const fetchAppointmentSlots = async (
   coachId,
   startDate,
@@ -92,6 +92,7 @@ export default function CoachProfilePage() {
   const [selectedTimeCategory, setSelectedTimeCategory] = useState("morning");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
+  const [dateSlots, setDateSlots] = useState({}); // Store slots by date
 
   useEffect(() => {
     if (params.id) {
@@ -160,69 +161,70 @@ export default function CoachProfilePage() {
     }
   };
 
+  // Helper function to get date range for API call
+  const getDateRange = (selectedDate) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Start of today
+
+  // Parse the selected date (format: YYYY-MM-DD)
+  const selected = new Date(selectedDate);
+  selected.setHours(0, 0, 0, 0);
+
+  const startDate = new Date(selected);
+  const endDate = new Date(selected);
+  endDate.setDate(selected.getDate() + 1); // End of the selected day
+
+  return {
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+  };
+};
+
   const loadAvailableSlots = async () => {
     try {
       setSlotsLoading(true);
 
-      // Calculate start and end dates based on selected date
-      const today = new Date();
-      let startDate, endDate;
+      const dateRange = getDateRange(selectedDate);
+      if (!dateRange) return;
 
-      switch (selectedDate) {
-        case "today":
-          startDate = new Date(today);
-          endDate = new Date(today);
-          endDate.setHours(23, 59, 59, 999);
-          break;
-        case "tomorrow":
-          startDate = new Date(today);
-          startDate.setDate(today.getDate() + 1);
-          startDate.setHours(0, 0, 0, 0);
-          endDate = new Date(startDate);
-          endDate.setHours(23, 59, 59, 999);
-          break;
-        case "day-after":
-          startDate = new Date(today);
-          startDate.setDate(today.getDate() + 2);
-          startDate.setHours(0, 0, 0, 0);
-          endDate = new Date(startDate);
-          endDate.setHours(23, 59, 59, 999);
-          break;
-        default:
-          return;
-      }
-
-      console.log("Date range:", {
-        selectedDate,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-      });
+      console.log("Fetching slots for date range:", dateRange);
 
       const response = await fetchAppointmentSlots(
         coach._id,
-        startDate.toISOString(),
-        endDate.toISOString(),
+        dateRange.startDate,
+        dateRange.endDate,
         "Asia/Calcutta"
       );
 
       console.log("API Response:", response);
 
-      if (response.success && response.data) {
-        console.log("Raw slots data:", response.data);
+      if (response.success && response.data && Array.isArray(response.data)) {
+        // Process the slots from API response
+        const processedSlots = response.data.map((slot, index) => {
+          // Parse the local time strings
+          const localStartStr = slot.local[0]; // "2025-07-30 22:30:00"
+          const localEndStr = slot.local[1];   // "2025-07-31 02:30:00"
+          
+          // Extract just the time part for display
+          const startTime = localStartStr.split(' ')[1]; // "22:30:00"
+          const endTime = localEndStr.split(' ')[1];     // "02:30:00"
+          
+          return {
+            id: `slot-${index}`,
+            utcStart: slot.utc[0],
+            utcEnd: slot.utc[1],
+            localStart: localStartStr,
+            localEnd: localEndStr,
+            startTime: startTime,
+            endTime: endTime,
+            displayTime: formatTimeDisplay(startTime, endTime)
+          };
+        });
 
-        // Transform API response to match frontend expectations
-        const transformedSlots = response.data.map((slot, index) => ({
-          id: `slot-${index}`,
-          startTime: slot.utc[0], // Use UTC start time
-          endTime: slot.utc[1], // Use UTC end time
-          localStartTime: slot.local[0], // Keep local time for reference
-          localEndTime: slot.local[1],
-        }));
-
-        console.log("Transformed slots:", transformedSlots);
-        setAvailableSlots(transformedSlots);
+        console.log("Processed slots:", processedSlots);
+        setAvailableSlots(processedSlots);
       } else {
-        console.error("Failed to load slots:", response.message);
+        console.error("Failed to load slots or empty data:", response.message);
         setAvailableSlots([]);
       }
     } catch (error) {
@@ -233,109 +235,41 @@ export default function CoachProfilePage() {
     }
   };
 
-  // Updated categorizeSlots function with better debugging
-  const categorizeSlots = (slots) => {
-    console.log("Categorizing slots:", slots);
-
-    const categorized = {
-      morning: [],
-      afternoon: [],
-      evening: [],
-    };
-
-    slots.forEach((slot) => {
-      // Convert UTC to Indian time for categorization
-      const date = new Date(slot.startTime);
-      console.log("Original UTC time:", slot.startTime);
-      console.log("Converted to Date object:", date);
-
-      // Convert to IST
-      const istTime = new Date(
-        date.toLocaleString("en-US", { timeZone: "Asia/Calcutta" })
-      );
-      const hour = istTime.getHours();
-
-      console.log("IST time:", istTime);
-      console.log("Hour:", hour);
-
-      if (hour >= 6 && hour < 12) {
-        categorized.morning.push(slot);
-        console.log("Added to morning");
-      } else if (hour >= 12 && hour < 17) {
-        categorized.afternoon.push(slot);
-        console.log("Added to afternoon");
-      } else {
-        categorized.evening.push(slot);
-        console.log("Added to evening");
-      }
-    });
-
-    console.log("Categorized slots:", categorized);
-    return categorized;
-  };
-
-  // Alternative categorizeSlots using local time directly
-  const categorizeSlotsByLocalTime = (slots) => {
-    console.log("Categorizing slots by local time:", slots);
-
-    const categorized = {
-      morning: [],
-      afternoon: [],
-      evening: [],
-    };
-
-    slots.forEach((slot) => {
-      // Parse local time string: "2025-07-30 22:30:00"
-      const localTimeStr = slot.localStartTime;
-      console.log("Local time string:", localTimeStr);
-
-      // Extract hour from local time string
-      const timePart = localTimeStr.split(" ")[1]; // "22:30:00"
-      const hour = parseInt(timePart.split(":")[0]); // 22
-
-      console.log("Extracted hour from local time:", hour);
-
-      if (hour >= 6 && hour < 12) {
-        categorized.morning.push(slot);
-        console.log("Added to morning");
-      } else if (hour >= 12 && hour < 17) {
-        categorized.afternoon.push(slot);
-        console.log("Added to afternoon");
-      } else {
-        categorized.evening.push(slot);
-        console.log("Added to evening");
-      }
-    });
-
-    console.log("Categorized slots by local time:", categorized);
-    return categorized;
-  };
-
-  // Updated formatTimeSlot to use local time strings directly
-  const formatTimeSlotFromLocal = (slot) => {
-    // Parse local time strings: "2025-07-30 22:30:00"
-    const parseLocalTime = (localTimeStr) => {
-      const [datePart, timePart] = localTimeStr.split(" ");
-      const [hour, minute] = timePart.split(":");
-      return { hour: parseInt(hour), minute: parseInt(minute) };
-    };
-
-    const startTime = parseLocalTime(slot.localStartTime);
-    const endTime = parseLocalTime(slot.localEndTime);
-
-    const formatTime = (timeObj) => {
-      const hour12 =
-        timeObj.hour > 12
-          ? timeObj.hour - 12
-          : timeObj.hour === 0
-          ? 12
-          : timeObj.hour;
-      const ampm = timeObj.hour >= 12 ? "PM" : "AM";
-      const minute = timeObj.minute.toString().padStart(2, "0");
+  // Function to format time for display
+  const formatTimeDisplay = (startTime, endTime) => {
+    const formatTime = (timeStr) => {
+      const [hour, minute] = timeStr.split(':');
+      const hourInt = parseInt(hour);
+      const hour12 = hourInt > 12 ? hourInt - 12 : hourInt === 0 ? 12 : hourInt;
+      const ampm = hourInt >= 12 ? 'PM' : 'AM';
       return `${hour12}:${minute} ${ampm}`;
     };
 
     return `${formatTime(startTime)} - ${formatTime(endTime)}`;
+  };
+
+  // Updated categorization function
+  const categorizeSlots = (slots) => {
+    const categorized = {
+      morning: [],
+      afternoon: [],
+      evening: [],
+    };
+
+    slots.forEach((slot) => {
+      // Extract hour from startTime (format: "22:30:00")
+      const hour = parseInt(slot.startTime.split(':')[0]);
+
+      if (hour >= 6 && hour < 12) {
+        categorized.morning.push(slot);
+      } else if (hour >= 12 && hour < 17) {
+        categorized.afternoon.push(slot);
+      } else {
+        categorized.evening.push(slot);
+      }
+    });
+
+    return categorized;
   };
 
   useEffect(() => {
@@ -345,7 +279,6 @@ export default function CoachProfilePage() {
       document.body.classList.remove("overflow-hidden");
     }
 
-    // Cleanup in case component unmounts
     return () => {
       document.body.classList.remove("overflow-hidden");
     };
@@ -358,7 +291,6 @@ export default function CoachProfilePage() {
       if (response && response.success) {
         const doctorsData = response.data?.data || [];
 
-        // Filter out the current coach and get only 4 related coaches
         const mappedDoctors = doctorsData
           .filter((doctor) => doctor._id !== params.id)
           .slice(0, 4)
@@ -397,11 +329,19 @@ export default function CoachProfilePage() {
   };
 
   const handleBookConsultation = () => {
-    console.log("Book consultation clicked");
+    if (selectedTimeSlot && selectedDate) {
+      console.log("Booking consultation:", {
+        coach: coach._id,
+        date: selectedDate,
+        timeSlot: selectedTimeSlot
+      });
+      // Add your booking logic here
+      alert(`Booking consultation with ${coach.name} on ${selectedDate} at ${selectedTimeSlot.displayTime}`);
+    }
   };
 
   const handleRelatedCoachClick = (coachId) => {
-    router.push(`coaches/${coachId}`);
+    router.push(`/coaches/${coachId}`);
   };
 
   const handleReviewSubmit = (e) => {
@@ -861,22 +801,37 @@ export default function CoachProfilePage() {
               </div>
 
               <div className="mb-6">
-                <label
-                  className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
-                >
-                  Select Date
-                </label>
-                <select
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className={`${poppins.className} w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-                >
-                  <option value="">Choose a date</option>
-                  <option value="today">Today</option>
-                  <option value="tomorrow">Tomorrow</option>
-                  <option value="day-after">Day After Tomorrow</option>
-                </select>
-              </div>
+  <label
+    className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+  >
+    Select Date
+  </label>
+  <select
+    value={selectedDate}
+    onChange={(e) => {
+      setSelectedDate(e.target.value);
+      setSelectedTimeSlot(""); // Reset selected time slot when date changes
+    }}
+    className={`${poppins.className} w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
+  >
+    <option value="">Choose a date</option>
+    {[...Array(7)].map((_, index) => {
+      const date = new Date();
+      date.setDate(date.getDate() + index);
+      const dateString = date.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+      const displayDate = date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+      });
+      return (
+        <option key={dateString} value={dateString}>
+          {displayDate}
+        </option>
+      );
+    })}
+  </select>
+</div>
 
               {selectedDate && (
                 <div className="mb-4">
@@ -887,22 +842,30 @@ export default function CoachProfilePage() {
                   </label>
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     {[
-                      { key: "morning", label: "Morning" },
-                      { key: "afternoon", label: "Afternoon" },
-                      { key: "evening", label: "Evening" },
+                      { key: "morning", label: "Morning", count: categorizedSlots.morning?.length || 0 },
+                      { key: "afternoon", label: "Afternoon", count: categorizedSlots.afternoon?.length || 0 },
+                      { key: "evening", label: "Evening", count: categorizedSlots.evening?.length || 0 },
                     ].map((category) => (
                       <button
                         key={category.key}
                         onClick={() => setSelectedTimeCategory(category.key)}
+                        disabled={category.count === 0}
                         className={`${
                           poppins.className
-                        } py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 ${
+                        } py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 relative ${
                           selectedTimeCategory === category.key
                             ? "bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white transform scale-105"
+                            : category.count === 0
+                            ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
                             : "bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50"
                         }`}
                       >
                         {category.label}
+                        {category.count > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {category.count}
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -914,7 +877,7 @@ export default function CoachProfilePage() {
                   <label
                     className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
                   >
-                    Available Slots
+                    Available Slots ({selectedTimeCategory})
                   </label>
 
                   {slotsLoading ? (
@@ -927,12 +890,12 @@ export default function CoachProfilePage() {
                       </span>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto">
+                    <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-hidden overflow-x-hidden">
                       {categorizedSlots[selectedTimeCategory]?.length > 0 ? (
                         categorizedSlots[selectedTimeCategory].map(
                           (slot, index) => (
                             <button
-                              key={`${slot.startTime}-${index}`}
+                              key={`${slot.id}-${index}`}
                               onClick={() => setSelectedTimeSlot(slot)}
                               className={`${
                                 poppins.className
@@ -942,7 +905,7 @@ export default function CoachProfilePage() {
                                   : "bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50"
                               }`}
                             >
-                              {formatTimeSlot(slot.startTime, slot.endTime)}
+                              {slot.displayTime}
                             </button>
                           )
                         )

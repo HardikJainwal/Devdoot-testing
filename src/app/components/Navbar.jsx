@@ -72,9 +72,11 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
 
         
         <div className="hidden md:flex items-center space-x-6 text-sm font-['Poppins']">
+          <Link href="/BeOurPartner">
           <span className="text-[#C42323] text-lg font-semibold">
             Be Our Partner!
           </span>
+          </Link>
           <button
             onClick={handleSignupClick}
             className="text-gray-700 text-lg hover:underline"

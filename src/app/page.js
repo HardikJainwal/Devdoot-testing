@@ -106,6 +106,15 @@ const medicalServices = [
     badge: "Coming Soon",
   },
   {
+    icon: Cross,
+    title: "AidFirst",
+    desc: "First aid and emergency response training",
+    color: "from-red-500 to-rose-500",
+    bgColor: "bg-red-50",
+    buttonText: "Learn More",
+    badge: "Coming Soon",
+  },
+  {
     icon: Users,
     title: "Coach Match",
     desc: "Connect with expert health coaches for your needs",
@@ -168,15 +177,7 @@ const medicalServices = [
     buttonText: "Get Support",
     badge: "Coming Soon",
   },
-  {
-    icon: Cross,
-    title: "AidFirst",
-    desc: "First aid and emergency response training",
-    color: "from-red-500 to-rose-500",
-    bgColor: "bg-red-50",
-    buttonText: "Learn More",
-    badge: "Coming Soon",
-  },
+  
   
   {
     icon: Droplets,
@@ -632,7 +633,7 @@ export default function Home() {
     <div className="w-full">
       {/* Banner Section */}
       <div
-        className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-32 sm:mb-20 md:mb-16"
+        className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-12 sm:mb-10 md:mb-0"
         style={{
           background:
             "#DEFAFC",
@@ -724,7 +725,7 @@ export default function Home() {
       </div>
 
       {/* Our Medical Services Section with Carousel */}
-      <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 mt-24">
+      <div className="py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 ">
         {/* Toast Container */}
         <div className="fixed top-6 right-6 z-50 space-y-3">
           {toasts.map((toast) => {
@@ -759,7 +760,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl  mt-24 font-extrabold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
               Our Medical <span className="text-[#C42323]"> Services</span>
             </h2>
             <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
@@ -775,15 +776,24 @@ export default function Home() {
               return (
                 <div key={idx} className="px-2">
                   <div
-                    className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-2 overflow-hidden min-h-80`}
+                    className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-lg hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] overflow-hidden min-h-80`}
+                    style={{
+                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    }}
                     onClick={() => handleServiceClick(service)}
                   >
                     <div
                       className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                     />
+                    {/* Enhanced card depth with inner shadow */}
+                    <div className="absolute inset-0 rounded-2xl shadow-inner opacity-20"></div>
+                    
                     <div className="relative p-8 h-full flex flex-col items-center justify-between text-center">
                       <div
                         className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${service.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                        style={{
+                          boxShadow: '0 8px 16px -4px rgba(0, 0, 0, 0.2)',
+                        }}
                       >
                         <IconComponent className="w-10 h-10 text-white" />
                       </div>
@@ -797,6 +807,9 @@ export default function Home() {
                       </div>
                       <button
                         className={`group/btn relative overflow-hidden bg-gradient-to-r ${service.color} text-white font-semibold py-2 px-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full`}
+                        style={{
+                          boxShadow: '0 6px 12px -2px rgba(0, 0, 0, 0.15)',
+                        }}
                       >
                         <span className="relative z-10 flex items-center justify-center gap-1">
                           <span className="text-xs truncate">
@@ -858,32 +871,68 @@ export default function Home() {
           .slide-in-from-right {
             animation-name: slideInRight;
           }
+          
+          /* Enhanced Navigation Arrows */
           .slick-prev,
-.slick-next {
-  z-index: 10;
-  width: 80px;
-  height: 80px;
-  background: #1e293b; /* dark slate background */
-  border-radius: 50%;
-  transition: background 0.3s;
-}
+          .slick-next {
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+          }
 
-.slick-prev:hover,
-.slick-next:hover {
-  background: #0f172a; /* darker on hover */
-}
+          .slick-prev:hover,
+          .slick-next:hover {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 15px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+          }
 
-.slick-prev:before,
-.slick-next:before {
-  font-size: 20px;
-  color: white;
-}
+          .slick-prev:before,
+          .slick-next:before {
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          }
 
           .slick-prev {
-            left: -50px;
+            left: -35px;
           }
+          
           .slick-next {
-            right: -50px;
+            right: -35px;
+          }
+
+          /* Add focus states for accessibility */
+          .slick-prev:focus,
+          .slick-next:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+          }
+
+          /* Responsive adjustments for arrows */
+          @media (max-width: 768px) {
+            .slick-prev {
+              left: -25px;
+            }
+            .slick-next {
+              right: -25px;
+            }
+            .slick-prev,
+            .slick-next {
+              width: 40px;
+              height: 40px;
+            }
+            .slick-prev:before,
+            .slick-next:before {
+              font-size: 14px;
+            }
           }
         `}</style>
       </div>
@@ -1385,7 +1434,7 @@ export default function Home() {
                 <div className="mt-8">
                   <a
                     href="#"
-                    className="inline-flex items-center bg-[#3fa4aa] hover:bg-[#3fa4aa] text-white px-8 py-3 rounded-md text-base font-medium hover:bg-blue-700 transition"
+                    className="inline-flex items-center bg-[#2C8C91] hover:bg-[#3fa4aa] text-white px-8 py-3 rounded-md text-base font-medium  transition"
                   >
                     Get Started Now
                     <FontAwesomeIcon icon={faArrowRight} className="ml-2" />

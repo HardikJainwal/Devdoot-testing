@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faVideo, 
-  faHouse, 
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faVideo,
+  faHouse,
   faMapMarkerAlt,
-  faCalendarAlt, 
-  faStar, 
+  faCalendarAlt,
+  faStar,
   faArrowLeft,
   faHeart,
   faLanguage,
@@ -27,30 +27,38 @@ import {
   faPaperPlane,
   faThumbsUp,
   faThumbsDown,
-  faTimes
-} from '@fortawesome/free-solid-svg-icons';
-import { Poppins } from 'next/font/google';
-import { fetchCoachById, fetchCoaches } from '@/lib/api/coaches';
-import Shimmer from '@/app/components/Shimmer';
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import { Poppins } from "next/font/google";
+import { fetchCoachById, fetchCoaches } from "@/lib/api/coaches";
+import Shimmer from "@/app/components/Shimmer";
 
 const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
 });
 
 // Add this new function to fetch appointment slots
-const fetchAppointmentSlots = async (coachId, startDate, endDate, timeZone = 'Asia/Calcutta') => {
+const fetchAppointmentSlots = async (
+  coachId,
+  startDate,
+  endDate,
+  timeZone = "Asia/Calcutta"
+) => {
   try {
-    const API_BASE_URL = 'https://devdoot-backend.onrender.com/v1/api';
-    const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MGYwZjM4ZjdjY2UwOTgyN2IxODE0NSIsInVzZXJUeXBlIjoicGF0aWVudCIsImVtYWlsIjoibWFkYWFuZGhydXY1NEBnbWFpbC5jb20ifSwiaXNWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzUzNjg0MDc2LCJleHAiOjE3NTM5NDMyNzZ9.qs_rYVCH4ZIVJL3GVsn9ZABG7wOcTIKJ1Fvd56_EaJc';
+    const API_BASE_URL = "https://devdoot-backend.onrender.com/v1/api";
+    const DUMMY_TOKEN =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MGYwZjM4ZjdjY2UwOTgyN2IxODE0NSIsInVzZXJUeXBlIjoicGF0aWVudCIsImVtYWlsIjoibWFkYWFuZGhydXY1NEBnbWFpbC5jb20ifSwiaXNWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzUzNjg0MDc2LCJleHAiOjE3NTM5NDMyNzZ9.qs_rYVCH4ZIVJL3GVsn9ZABG7wOcTIKJ1Fvd56_EaJc";
 
-    const url = `${API_BASE_URL}/booking/appointment-slot?coachId=${coachId}&startDate=${startDate}&endDate=${endDate}&timeZone=${encodeURIComponent(timeZone)}`;
-    
+    const url = `${API_BASE_URL}/booking/appointment-slot?coachId=${coachId}&startDate=${startDate}&endDate=${endDate}&timeZone=${encodeURIComponent(
+      timeZone
+    )}`;
+
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': DUMMY_TOKEN,
+        "Content-Type": "application/json",
+        "x-access-token": DUMMY_TOKEN,
       },
     });
 
@@ -60,13 +68,12 @@ const fetchAppointmentSlots = async (coachId, startDate, endDate, timeZone = 'As
 
     const apiData = await response.json();
     return apiData;
-    
   } catch (error) {
-    console.error('Error fetching appointment slots:', error);
+    console.error("Error fetching appointment slots:", error);
     return {
       success: false,
       message: error.message,
-      data: []
+      data: [],
     };
   }
 };
@@ -78,11 +85,11 @@ export default function CoachProfilePage() {
   const [relatedCoaches, setRelatedCoaches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
-  const [selectedTimeCategory, setSelectedTimeCategory] = useState('morning');
+  const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+  const [selectedTimeCategory, setSelectedTimeCategory] = useState("morning");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
 
@@ -104,37 +111,48 @@ export default function CoachProfilePage() {
     try {
       setLoading(true);
       const response = await fetchCoachById(coachId);
-      
+
       if (!response || !response.success) {
-        setError(response?.message || 'Failed to load coach profile');
+        setError(response?.message || "Failed to load coach profile");
         return;
       }
 
       const coachData = response.data;
-      
+
       // Transform the API response to match component structure
       const mappedCoach = {
         _id: coachData._id,
-        name: coachData.coachName || 'Dr. Name',
-        specialization: coachData.specialization || 'General Physician',
+        name: coachData.coachName || "Dr. Name",
+        specialization: coachData.specialization || "General Physician",
         profilePicture: coachData.profilePhoto,
         experience: coachData.experienceYear || 5,
         rating: coachData.rating || 4.8,
         sessionTime: coachData.sessionTime || 45,
         pricePerMinute: coachData.pricePerMinute || 20,
-        languages: coachData.languages || ['English'],
-        currency: coachData.currency || 'INR',
-        fees: Math.round((coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)),
+        languages: coachData.languages || ["English"],
+        currency: coachData.currency || "INR",
+        fees: Math.round(
+          (coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)
+        ),
         isOnline: true,
-        consultationModes: ['video', 'home'],
-        location: coachData.location || 'Available Online',
-        about: coachData.about || `Dr. ${coachData.coachName} is a highly experienced ${coachData.specialization || 'healthcare professional'} with over ${coachData.experienceYear || 5} years of experience. With over ${coachData.experienceYear || 5} years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${coachData.specialization?.toLowerCase() || 'healthcare'} and have helped numerous patients achieve better health outcomes.`,
+        consultationModes: ["video", "home"],
+        location: coachData.location || "Available Online",
+        about:
+          coachData.about ||
+          `Dr. ${coachData.coachName} is a highly experienced ${
+            coachData.specialization || "healthcare professional"
+          } with over ${
+            coachData.experienceYear || 5
+          } years of experience. With over ${
+            coachData.experienceYear || 5
+          } years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${
+            coachData.specialization?.toLowerCase() || "healthcare"
+          } and have helped numerous patients achieve better health outcomes.`,
         totalPatients: Math.floor(Math.random() * 500) + 100,
-        reviewCount: Math.floor(Math.random() * 50) + 10
+        reviewCount: Math.floor(Math.random() * 50) + 10,
       };
-      
+
       setCoach(mappedCoach);
-      
     } catch (err) {
       setError(`Error loading coach profile: ${err.message}`);
     } finally {
@@ -143,244 +161,254 @@ export default function CoachProfilePage() {
   };
 
   const loadAvailableSlots = async () => {
-  try {
-    setSlotsLoading(true);
-    
-    // Calculate start and end dates based on selected date
-    const today = new Date();
-    let startDate, endDate;
-    
-    switch (selectedDate) {
-      case 'today':
-        startDate = new Date(today);
-        endDate = new Date(today);
-        endDate.setHours(23, 59, 59, 999);
-        break;
-      case 'tomorrow':
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() + 1);
-        startDate.setHours(0, 0, 0, 0);
-        endDate = new Date(startDate);
-        endDate.setHours(23, 59, 59, 999);
-        break;
-      case 'day-after':
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() + 2);
-        startDate.setHours(0, 0, 0, 0);
-        endDate = new Date(startDate);
-        endDate.setHours(23, 59, 59, 999);
-        break;
-      default:
-        return;
-    }
+    try {
+      setSlotsLoading(true);
 
-    console.log('Date range:', { 
-      selectedDate, 
-      startDate: startDate.toISOString(), 
-      endDate: endDate.toISOString() 
+      // Calculate start and end dates based on selected date
+      const today = new Date();
+      let startDate, endDate;
+
+      switch (selectedDate) {
+        case "today":
+          startDate = new Date(today);
+          endDate = new Date(today);
+          endDate.setHours(23, 59, 59, 999);
+          break;
+        case "tomorrow":
+          startDate = new Date(today);
+          startDate.setDate(today.getDate() + 1);
+          startDate.setHours(0, 0, 0, 0);
+          endDate = new Date(startDate);
+          endDate.setHours(23, 59, 59, 999);
+          break;
+        case "day-after":
+          startDate = new Date(today);
+          startDate.setDate(today.getDate() + 2);
+          startDate.setHours(0, 0, 0, 0);
+          endDate = new Date(startDate);
+          endDate.setHours(23, 59, 59, 999);
+          break;
+        default:
+          return;
+      }
+
+      console.log("Date range:", {
+        selectedDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      });
+
+      const response = await fetchAppointmentSlots(
+        coach._id,
+        startDate.toISOString(),
+        endDate.toISOString(),
+        "Asia/Calcutta"
+      );
+
+      console.log("API Response:", response);
+
+      if (response.success && response.data) {
+        console.log("Raw slots data:", response.data);
+
+        // Transform API response to match frontend expectations
+        const transformedSlots = response.data.map((slot, index) => ({
+          id: `slot-${index}`,
+          startTime: slot.utc[0], // Use UTC start time
+          endTime: slot.utc[1], // Use UTC end time
+          localStartTime: slot.local[0], // Keep local time for reference
+          localEndTime: slot.local[1],
+        }));
+
+        console.log("Transformed slots:", transformedSlots);
+        setAvailableSlots(transformedSlots);
+      } else {
+        console.error("Failed to load slots:", response.message);
+        setAvailableSlots([]);
+      }
+    } catch (error) {
+      console.error("Error loading available slots:", error);
+      setAvailableSlots([]);
+    } finally {
+      setSlotsLoading(false);
+    }
+  };
+
+  // Updated categorizeSlots function with better debugging
+  const categorizeSlots = (slots) => {
+    console.log("Categorizing slots:", slots);
+
+    const categorized = {
+      morning: [],
+      afternoon: [],
+      evening: [],
+    };
+
+    slots.forEach((slot) => {
+      // Convert UTC to Indian time for categorization
+      const date = new Date(slot.startTime);
+      console.log("Original UTC time:", slot.startTime);
+      console.log("Converted to Date object:", date);
+
+      // Convert to IST
+      const istTime = new Date(
+        date.toLocaleString("en-US", { timeZone: "Asia/Calcutta" })
+      );
+      const hour = istTime.getHours();
+
+      console.log("IST time:", istTime);
+      console.log("Hour:", hour);
+
+      if (hour >= 6 && hour < 12) {
+        categorized.morning.push(slot);
+        console.log("Added to morning");
+      } else if (hour >= 12 && hour < 17) {
+        categorized.afternoon.push(slot);
+        console.log("Added to afternoon");
+      } else {
+        categorized.evening.push(slot);
+        console.log("Added to evening");
+      }
     });
 
-    const response = await fetchAppointmentSlots(
-      coach._id,
-      startDate.toISOString(),
-      endDate.toISOString(),
-      'Asia/Calcutta'
-    );
-
-    console.log('API Response:', response);
-
-    if (response.success && response.data) {
-      console.log('Raw slots data:', response.data);
-      
-      // Transform API response to match frontend expectations
-      const transformedSlots = response.data.map((slot, index) => ({
-        id: `slot-${index}`,
-        startTime: slot.utc[0], // Use UTC start time
-        endTime: slot.utc[1],   // Use UTC end time
-        localStartTime: slot.local[0], // Keep local time for reference
-        localEndTime: slot.local[1]
-      }));
-      
-      console.log('Transformed slots:', transformedSlots);
-      setAvailableSlots(transformedSlots);
-    } else {
-      console.error('Failed to load slots:', response.message);
-      setAvailableSlots([]);
-    }
-    
-  } catch (error) {
-    console.error('Error loading available slots:', error);
-    setAvailableSlots([]);
-  } finally {
-    setSlotsLoading(false);
-  }
-};
-
-// Updated categorizeSlots function with better debugging
-const categorizeSlots = (slots) => {
-  console.log('Categorizing slots:', slots);
-  
-  const categorized = {
-    morning: [],
-    afternoon: [],
-    evening: []
+    console.log("Categorized slots:", categorized);
+    return categorized;
   };
 
-  slots.forEach(slot => {
-    // Convert UTC to Indian time for categorization
-    const date = new Date(slot.startTime);
-    console.log('Original UTC time:', slot.startTime);
-    console.log('Converted to Date object:', date);
-    
-    // Convert to IST
-    const istTime = new Date(date.toLocaleString("en-US", {timeZone: "Asia/Calcutta"}));
-    const hour = istTime.getHours();
-    
-    console.log('IST time:', istTime);
-    console.log('Hour:', hour);
-    
-    if (hour >= 6 && hour < 12) {
-      categorized.morning.push(slot);
-      console.log('Added to morning');
-    } else if (hour >= 12 && hour < 17) {
-      categorized.afternoon.push(slot);
-      console.log('Added to afternoon');
-    } else {
-      categorized.evening.push(slot);
-      console.log('Added to evening');
-    }
-  });
+  // Alternative categorizeSlots using local time directly
+  const categorizeSlotsByLocalTime = (slots) => {
+    console.log("Categorizing slots by local time:", slots);
 
-  console.log('Categorized slots:', categorized);
-  return categorized;
-};
+    const categorized = {
+      morning: [],
+      afternoon: [],
+      evening: [],
+    };
 
-// Alternative categorizeSlots using local time directly
-const categorizeSlotsByLocalTime = (slots) => {
-  console.log('Categorizing slots by local time:', slots);
-  
-  const categorized = {
-    morning: [],
-    afternoon: [],
-    evening: []
+    slots.forEach((slot) => {
+      // Parse local time string: "2025-07-30 22:30:00"
+      const localTimeStr = slot.localStartTime;
+      console.log("Local time string:", localTimeStr);
+
+      // Extract hour from local time string
+      const timePart = localTimeStr.split(" ")[1]; // "22:30:00"
+      const hour = parseInt(timePart.split(":")[0]); // 22
+
+      console.log("Extracted hour from local time:", hour);
+
+      if (hour >= 6 && hour < 12) {
+        categorized.morning.push(slot);
+        console.log("Added to morning");
+      } else if (hour >= 12 && hour < 17) {
+        categorized.afternoon.push(slot);
+        console.log("Added to afternoon");
+      } else {
+        categorized.evening.push(slot);
+        console.log("Added to evening");
+      }
+    });
+
+    console.log("Categorized slots by local time:", categorized);
+    return categorized;
   };
 
-  slots.forEach(slot => {
-    // Parse local time string: "2025-07-30 22:30:00"
-    const localTimeStr = slot.localStartTime;
-    console.log('Local time string:', localTimeStr);
-    
-    // Extract hour from local time string
-    const timePart = localTimeStr.split(' ')[1]; // "22:30:00"
-    const hour = parseInt(timePart.split(':')[0]); // 22
-    
-    console.log('Extracted hour from local time:', hour);
-    
-    if (hour >= 6 && hour < 12) {
-      categorized.morning.push(slot);
-      console.log('Added to morning');
-    } else if (hour >= 12 && hour < 17) {
-      categorized.afternoon.push(slot);
-      console.log('Added to afternoon');
-    } else {
-      categorized.evening.push(slot);
-      console.log('Added to evening');
-    }
-  });
+  // Updated formatTimeSlot to use local time strings directly
+  const formatTimeSlotFromLocal = (slot) => {
+    // Parse local time strings: "2025-07-30 22:30:00"
+    const parseLocalTime = (localTimeStr) => {
+      const [datePart, timePart] = localTimeStr.split(" ");
+      const [hour, minute] = timePart.split(":");
+      return { hour: parseInt(hour), minute: parseInt(minute) };
+    };
 
-  console.log('Categorized slots by local time:', categorized);
-  return categorized;
-};
+    const startTime = parseLocalTime(slot.localStartTime);
+    const endTime = parseLocalTime(slot.localEndTime);
 
-// Updated formatTimeSlot to use local time strings directly
-const formatTimeSlotFromLocal = (slot) => {
-  // Parse local time strings: "2025-07-30 22:30:00"
-  const parseLocalTime = (localTimeStr) => {
-    const [datePart, timePart] = localTimeStr.split(' ');
-    const [hour, minute] = timePart.split(':');
-    return { hour: parseInt(hour), minute: parseInt(minute) };
+    const formatTime = (timeObj) => {
+      const hour12 =
+        timeObj.hour > 12
+          ? timeObj.hour - 12
+          : timeObj.hour === 0
+          ? 12
+          : timeObj.hour;
+      const ampm = timeObj.hour >= 12 ? "PM" : "AM";
+      const minute = timeObj.minute.toString().padStart(2, "0");
+      return `${hour12}:${minute} ${ampm}`;
+    };
+
+    return `${formatTime(startTime)} - ${formatTime(endTime)}`;
   };
-  
-  const startTime = parseLocalTime(slot.localStartTime);
-  const endTime = parseLocalTime(slot.localEndTime);
-  
-  const formatTime = (timeObj) => {
-    const hour12 = timeObj.hour > 12 ? timeObj.hour - 12 : (timeObj.hour === 0 ? 12 : timeObj.hour);
-    const ampm = timeObj.hour >= 12 ? 'PM' : 'AM';
-    const minute = timeObj.minute.toString().padStart(2, '0');
-    return `${hour12}:${minute} ${ampm}`;
-  };
-  
-  return `${formatTime(startTime)} - ${formatTime(endTime)}`;
-};
-
-
 
   useEffect(() => {
     if (showReviewModal) {
-      document.body.classList.add('overflow-hidden');
+      document.body.classList.add("overflow-hidden");
     } else {
-      document.body.classList.remove('overflow-hidden');
+      document.body.classList.remove("overflow-hidden");
     }
 
     // Cleanup in case component unmounts
     return () => {
-      document.body.classList.remove('overflow-hidden');
+      document.body.classList.remove("overflow-hidden");
     };
   }, [showReviewModal]);
 
   const loadRelatedCoaches = async () => {
     try {
       const response = await fetchCoaches(1, 8);
-      
+
       if (response && response.success) {
         const doctorsData = response.data?.data || [];
-        
+
         // Filter out the current coach and get only 4 related coaches
         const mappedDoctors = doctorsData
-          .filter(doctor => doctor._id !== params.id)
+          .filter((doctor) => doctor._id !== params.id)
           .slice(0, 4)
           .map((doctor, index) => ({
             _id: doctor._id || `doctor-${index}`,
             name: doctor.coachName || `Doctor ${index + 1}`,
-            specialization: doctor.specialization || 'General Physician',
+            specialization: doctor.specialization || "General Physician",
             profilePicture: doctor.profilePhoto,
             experience: doctor.experienceYear || 5,
             rating: doctor.rating || Math.random() * 2 + 4,
             sessionTime: doctor.sessionTime || 45,
             pricePerMinute: doctor.pricePerMinute || 20,
-            fees: Math.round((doctor.pricePerMinute || 20) * (doctor.sessionTime || 45)),
+            fees: Math.round(
+              (doctor.pricePerMinute || 20) * (doctor.sessionTime || 45)
+            ),
           }));
-        
+
         setRelatedCoaches(mappedDoctors);
       }
     } catch (err) {
-      console.error('Error loading related coaches:', err);
+      console.error("Error loading related coaches:", err);
     }
   };
 
   const getInitials = (name) => {
-    if (!name) return 'DR';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (!name) return "DR";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   const formatRating = (rating) => {
-    return rating ? parseFloat(rating).toFixed(1) : '4.8';
+    return rating ? parseFloat(rating).toFixed(1) : "4.8";
   };
 
   const handleBookConsultation = () => {
-    console.log('Book consultation clicked');
+    console.log("Book consultation clicked");
   };
 
   const handleRelatedCoachClick = (coachId) => {
-    router.push(`/doctors/${coachId}`);
+    router.push(`coaches/${coachId}`);
   };
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
-    console.log('Review submitted:', newReview);
+    console.log("Review submitted:", newReview);
     setShowReviewModal(false);
-    setNewReview({ rating: 5, comment: '' });
+    setNewReview({ rating: 5, comment: "" });
   };
 
   if (loading) {
@@ -394,7 +422,9 @@ const formatTimeSlotFromLocal = (slot) => {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <FontAwesomeIcon icon={faTimes} className="text-red-500 text-2xl" />
           </div>
-          <p className={`${poppins.className} text-lg text-red-600 mb-4`}>{error || 'Coach not found'}</p>
+          <p className={`${poppins.className} text-lg text-red-600 mb-4`}>
+            {error || "Coach not found"}
+          </p>
           <button
             onClick={() => router.back()}
             className={`${poppins.className} bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105`}
@@ -435,7 +465,7 @@ const formatTimeSlotFromLocal = (slot) => {
               className="bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full transform translate-x-16 -translate-y-16 opacity-50"></div>
-              
+
               <div className="flex flex-col sm:flex-row gap-6 relative z-10">
                 <div className="flex-shrink-0">
                   <div className="relative">
@@ -460,18 +490,27 @@ const formatTimeSlotFromLocal = (slot) => {
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h1 className={`${poppins.className} text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2`}>
+                      <h1
+                        className={`${poppins.className} text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2`}
+                      >
                         {coach.name}
                       </h1>
-                      <p className={`${poppins.className} text-xl text-gray-600 mb-2`}>
+                      <p
+                        className={`${poppins.className} text-xl text-gray-600 mb-2`}
+                      >
                         {coach.specialization}
                       </p>
-                      <p className={`${poppins.className} text-sm text-blue-600 font-semibold mb-3 bg-blue-50 px-3 py-1 rounded-full inline-block`}>
-                        <FontAwesomeIcon icon={faGraduationCap} className="mr-1" />
+                      <p
+                        className={`${poppins.className} text-sm text-blue-600 font-semibold mb-3 bg-blue-50 px-3 py-1 rounded-full inline-block`}
+                      >
+                        <FontAwesomeIcon
+                          icon={faGraduationCap}
+                          className="mr-1"
+                        />
                         {coach.experience} years experience
                       </p>
                     </div>
-                    
+
                     <div className="flex space-x-2">
                       <button className="p-3 text-gray-400 hover:text-red-500 transition-all duration-300 transform hover:scale-110 bg-gray-50 rounded-full">
                         <FontAwesomeIcon icon={faHeart} className="w-5 h-5" />
@@ -485,57 +524,102 @@ const formatTimeSlotFromLocal = (slot) => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-100">
                       <div className="flex items-center justify-center mb-2">
-                        <FontAwesomeIcon icon={faStar} className="text-yellow-400 mr-1" />
-                        <span className={`${poppins.className} text-xl font-bold text-gray-900`}>
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          className="text-yellow-400 mr-1"
+                        />
+                        <span
+                          className={`${poppins.className} text-xl font-bold text-gray-900`}
+                        >
                           {formatRating(coach.rating)}
                         </span>
                       </div>
-                      <p className={`${poppins.className} text-xs text-gray-600`}>
+                      <p
+                        className={`${poppins.className} text-xs text-gray-600`}
+                      >
                         {coach.reviewCount} reviews
                       </p>
                     </div>
-                    
+
                     <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
                       <div className="flex items-center justify-center mb-2">
-                        <FontAwesomeIcon icon={faUsers} className="text-blue-500 mr-1" />
-                        <span className={`${poppins.className} text-xl font-bold text-gray-900`}>
+                        <FontAwesomeIcon
+                          icon={faUsers}
+                          className="text-blue-500 mr-1"
+                        />
+                        <span
+                          className={`${poppins.className} text-xl font-bold text-gray-900`}
+                        >
                           {coach.totalPatients}+
                         </span>
                       </div>
-                      <p className={`${poppins.className} text-xs text-gray-600`}>Patients</p>
+                      <p
+                        className={`${poppins.className} text-xs text-gray-600`}
+                      >
+                        Patients
+                      </p>
                     </div>
-                    
+
                     <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
                       <div className="flex items-center justify-center mb-2">
-                        <FontAwesomeIcon icon={faClock} className="text-green-500 mr-1" />
-                        <span className={`${poppins.className} text-xl font-bold text-gray-900`}>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          className="text-green-500 mr-1"
+                        />
+                        <span
+                          className={`${poppins.className} text-xl font-bold text-gray-900`}
+                        >
                           {coach.sessionTime}
                         </span>
                       </div>
-                      <p className={`${poppins.className} text-xs text-gray-600`}>mins/session</p>
+                      <p
+                        className={`${poppins.className} text-xs text-gray-600`}
+                      >
+                        mins/session
+                      </p>
                     </div>
-                    
+
                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100">
                       <div className="flex items-center justify-center mb-2">
-                        <FontAwesomeIcon icon={faRupeeSign} className="text-purple-500 mr-1" />
-                        <span className={`${poppins.className} text-xl font-bold text-gray-900`}>
+                        <FontAwesomeIcon
+                          icon={faRupeeSign}
+                          className="text-purple-500 mr-1"
+                        />
+                        <span
+                          className={`${poppins.className} text-xl font-bold text-gray-900`}
+                        >
                           {coach.fees}
                         </span>
                       </div>
-                      <p className={`${poppins.className} text-xs text-gray-600`}>per session</p>
+                      <p
+                        className={`${poppins.className} text-xs text-gray-600`}
+                      >
+                        per session
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    {coach.languages?.map(lang => (
-                      <span key={lang} className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border border-gray-300`}>
-                        <FontAwesomeIcon icon={faLanguage} className="mr-2 w-3 h-3" />
+                    {coach.languages?.map((lang) => (
+                      <span
+                        key={lang}
+                        className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border border-gray-300`}
+                      >
+                        <FontAwesomeIcon
+                          icon={faLanguage}
+                          className="mr-2 w-3 h-3"
+                        />
                         {lang}
                       </span>
                     ))}
-                    
-                    <span className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-300`}>
-                      <FontAwesomeIcon icon={faVideo} className="mr-2 w-3 h-3" />
+
+                    <span
+                      className={`px-4 py-2 rounded-full text-sm font-medium ${poppins.className} bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-300`}
+                    >
+                      <FontAwesomeIcon
+                        icon={faVideo}
+                        className="mr-2 w-3 h-3"
+                      />
                       Video Consultation
                     </span>
                   </div>
@@ -549,11 +633,18 @@ const formatTimeSlotFromLocal = (slot) => {
               transition={{ delay: 0.1 }}
               className="bg-white rounded-2xl shadow-xl p-8"
             >
-              <h2 className={`${poppins.className} text-2xl font-bold text-gray-900 mb-6 flex items-center`}>
-                <FontAwesomeIcon icon={faStethoscope} className="mr-3 text-blue-500" />
+              <h2
+                className={`${poppins.className} text-2xl font-bold text-gray-900 mb-6 flex items-center`}
+              >
+                <FontAwesomeIcon
+                  icon={faStethoscope}
+                  className="mr-3 text-blue-500"
+                />
                 About {coach.name}
               </h2>
-              <p className={`${poppins.className} text-gray-600 leading-relaxed text-lg`}>
+              <p
+                className={`${poppins.className} text-gray-600 leading-relaxed text-lg`}
+              >
                 {coach.about}
               </p>
             </motion.div>
@@ -565,8 +656,13 @@ const formatTimeSlotFromLocal = (slot) => {
               className="bg-white rounded-2xl shadow-xl p-8"
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className={`${poppins.className} text-2xl font-bold text-gray-900 flex items-center`}>
-                  <FontAwesomeIcon icon={faStar} className="mr-3 text-yellow-400" />
+                <h2
+                  className={`${poppins.className} text-2xl font-bold text-gray-900 flex items-center`}
+                >
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    className="mr-3 text-yellow-400"
+                  />
                   What Patients Say
                 </h2>
                 <button
@@ -577,10 +673,12 @@ const formatTimeSlotFromLocal = (slot) => {
                   Add Review
                 </button>
               </div>
-              
+
               <div className="mb-8">
                 <div className="flex items-center mb-6">
-                  <span className={`${poppins.className} text-5xl font-bold text-gray-900 mr-4`}>
+                  <span
+                    className={`${poppins.className} text-5xl font-bold text-gray-900 mr-4`}
+                  >
                     {formatRating(coach.rating)}
                   </span>
                   <div>
@@ -590,9 +688,10 @@ const formatTimeSlotFromLocal = (slot) => {
                           key={i}
                           icon={faStar}
                           className={`w-6 h-6 ${
-                            i < Math.floor(parseFloat(formatRating(coach.rating)))
-                              ? 'text-yellow-400'
-                              : 'text-gray-300'
+                            i <
+                            Math.floor(parseFloat(formatRating(coach.rating)))
+                              ? "text-yellow-400"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
@@ -604,20 +703,47 @@ const formatTimeSlotFromLocal = (slot) => {
                 </div>
 
                 <div className="space-y-3">
-                  {[5, 4, 3, 2, 1].map(rating => (
+                  {[5, 4, 3, 2, 1].map((rating) => (
                     <div key={rating} className="flex items-center">
-                      <span className={`${poppins.className} text-sm text-gray-600 mr-3 w-4`}>
+                      <span
+                        className={`${poppins.className} text-sm text-gray-600 mr-3 w-4`}
+                      >
                         {rating}
                       </span>
-                      <FontAwesomeIcon icon={faStar} className="text-yellow-400 w-4 h-4 mr-3" />
+                      <FontAwesomeIcon
+                        icon={faStar}
+                        className="text-yellow-400 w-4 h-4 mr-3"
+                      />
                       <div className="flex-1 bg-gray-200 rounded-full h-3 mr-3">
-                        <div 
-                          className="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full transition-all duration-1000" 
-                          style={{ width: `${rating === 5 ? 70 : rating === 4 ? 20 : rating === 3 ? 7 : rating === 2 ? 2 : 1}%` }}
+                        <div
+                          className="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full transition-all duration-1000"
+                          style={{
+                            width: `${
+                              rating === 5
+                                ? 70
+                                : rating === 4
+                                ? 20
+                                : rating === 3
+                                ? 7
+                                : rating === 2
+                                ? 2
+                                : 1
+                            }%`,
+                          }}
                         ></div>
                       </div>
-                      <span className={`${poppins.className} text-sm text-gray-600 w-12`}>
-                        {rating === 5 ? '70%' : rating === 4 ? '20%' : rating === 3 ? '7%' : rating === 2 ? '2%' : '1%'}
+                      <span
+                        className={`${poppins.className} text-sm text-gray-600 w-12`}
+                      >
+                        {rating === 5
+                          ? "70%"
+                          : rating === 4
+                          ? "20%"
+                          : rating === 3
+                          ? "7%"
+                          : rating === 2
+                          ? "2%"
+                          : "1%"}
                       </span>
                     </div>
                   ))}
@@ -626,18 +752,40 @@ const formatTimeSlotFromLocal = (slot) => {
 
               <div className="space-y-6 border-t pt-6">
                 {[
-                  { name: 'Priya Sharma', initials: 'PS', rating: 5, date: '2 days ago', comment: `Dr. ${coach.name.split(' ')[coach.name.split(' ').length - 1]} is an excellent doctor. She listened to my concerns carefully and provided clear treatment plans. I highly recommend her!` },
-                  { name: 'Rahul Kumar', initials: 'RK', rating: 5, date: '1 week ago', comment: 'Very professional and knowledgeable. The consultation was thorough and helpful. Will definitely consult again.' }
+                  {
+                    name: "Priya Sharma",
+                    initials: "PS",
+                    rating: 5,
+                    date: "2 days ago",
+                    comment: `Dr. ${
+                      coach.name.split(" ")[coach.name.split(" ").length - 1]
+                    } is an excellent doctor. She listened to my concerns carefully and provided clear treatment plans. I highly recommend her!`,
+                  },
+                  {
+                    name: "Rahul Kumar",
+                    initials: "RK",
+                    rating: 5,
+                    date: "1 week ago",
+                    comment:
+                      "Very professional and knowledgeable. The consultation was thorough and helpful. Will definitely consult again.",
+                  },
                 ].map((review, index) => (
-                  <div key={index} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl">
+                  <div
+                    key={index}
+                    className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl"
+                  >
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                      <span className={`${poppins.className} text-sm font-semibold text-white`}>
+                      <span
+                        className={`${poppins.className} text-sm font-semibold text-white`}
+                      >
                         {review.initials}
                       </span>
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
-                        <h4 className={`${poppins.className} font-semibold text-gray-900 mr-3`}>
+                        <h4
+                          className={`${poppins.className} font-semibold text-gray-900 mr-3`}
+                        >
                           {review.name}
                         </h4>
                         <div className="flex items-center mr-3">
@@ -645,11 +793,17 @@ const formatTimeSlotFromLocal = (slot) => {
                             <FontAwesomeIcon
                               key={i}
                               icon={faStar}
-                              className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                              className={`w-4 h-4 ${
+                                i < review.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
                             />
                           ))}
                         </div>
-                        <span className={`${poppins.className} text-sm text-gray-500`}>
+                        <span
+                          className={`${poppins.className} text-sm text-gray-500`}
+                        >
                           {review.date}
                         </span>
                       </div>
@@ -670,21 +824,32 @@ const formatTimeSlotFromLocal = (slot) => {
               transition={{ delay: 0.2 }}
               className="bg-white rounded-2xl shadow-xl p-6 sticky top-8"
             >
-              <h3 className={`${poppins.className} text-xl font-bold text-gray-900 mb-6 flex items-center`}>
-                <FontAwesomeIcon icon={faCalendarAlt} className="mr-3 text-blue-500" />
+              <h3
+                className={`${poppins.className} text-xl font-bold text-gray-900 mb-6 flex items-center`}
+              >
+                <FontAwesomeIcon
+                  icon={faCalendarAlt}
+                  className="mr-3 text-blue-500"
+                />
                 Book a Consultation
               </h3>
 
               <div className="mb-6">
-                <h4 className={`${poppins.className} font-semibold text-gray-900 mb-3`}>
+                <h4
+                  className={`${poppins.className} font-semibold text-gray-900 mb-3`}
+                >
                   Video Consultation
                 </h4>
                 <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
                   <div className="flex items-center justify-between mb-3">
-                    <span className={`${poppins.className} text-3xl font-bold text-[#2C8C91] bg-clip-text`}>
+                    <span
+                      className={`${poppins.className} text-3xl font-bold text-[#2C8C91] bg-clip-text`}
+                    >
                       ₹{coach.fees}
                     </span>
-                    <span className={`${poppins.className} text-sm text-gray-600 bg-white px-3 py-1 rounded-full`}>
+                    <span
+                      className={`${poppins.className} text-sm text-gray-600 bg-white px-3 py-1 rounded-full`}
+                    >
                       <FontAwesomeIcon icon={faClock} className="mr-1" />
                       {coach.sessionTime} mins
                     </span>
@@ -696,7 +861,9 @@ const formatTimeSlotFromLocal = (slot) => {
               </div>
 
               <div className="mb-6">
-                <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                <label
+                  className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                >
                   Select Date
                 </label>
                 <select
@@ -713,22 +880,26 @@ const formatTimeSlotFromLocal = (slot) => {
 
               {selectedDate && (
                 <div className="mb-4">
-                  <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                  <label
+                    className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                  >
                     Preferred Time
                   </label>
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     {[
-                      { key: 'morning', label: 'Morning' },
-                      { key: 'afternoon', label: 'Afternoon' },
-                      { key: 'evening', label: 'Evening' }
+                      { key: "morning", label: "Morning" },
+                      { key: "afternoon", label: "Afternoon" },
+                      { key: "evening", label: "Evening" },
                     ].map((category) => (
                       <button
                         key={category.key}
                         onClick={() => setSelectedTimeCategory(category.key)}
-                        className={`${poppins.className} py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 ${
+                        className={`${
+                          poppins.className
+                        } py-3 px-2 text-xs font-medium rounded-lg border transition-all duration-300 ${
                           selectedTimeCategory === category.key
-                            ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white transform scale-105'
-                            : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+                            ? "bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white transform scale-105"
+                            : "bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50"
                         }`}
                       >
                         {category.label}
@@ -740,34 +911,46 @@ const formatTimeSlotFromLocal = (slot) => {
 
               {selectedDate && (
                 <div className="mb-6">
-                  <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                  <label
+                    className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                  >
                     Available Slots
                   </label>
-                  
+
                   {slotsLoading ? (
                     <div className="flex items-center justify-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2C8C91]"></div>
-                      <span className={`${poppins.className} ml-3 text-gray-600`}>Loading slots...</span>
+                      <span
+                        className={`${poppins.className} ml-3 text-gray-600`}
+                      >
+                        Loading slots...
+                      </span>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto">
                       {categorizedSlots[selectedTimeCategory]?.length > 0 ? (
-                        categorizedSlots[selectedTimeCategory].map((slot, index) => (
-                          <button
-                            key={`${slot.startTime}-${index}`}
-                            onClick={() => setSelectedTimeSlot(slot)}
-                            className={`${poppins.className} py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 ${
-                              selectedTimeSlot?.id === slot.id
-                                ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white border-blue-500 transform scale-105'
-                                : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
-                            }`}
-                          >
-                            {formatTimeSlot(slot.startTime, slot.endTime)}
-                          </button>
-                        ))
+                        categorizedSlots[selectedTimeCategory].map(
+                          (slot, index) => (
+                            <button
+                              key={`${slot.startTime}-${index}`}
+                              onClick={() => setSelectedTimeSlot(slot)}
+                              className={`${
+                                poppins.className
+                              } py-3 px-4 text-sm font-medium rounded-lg border transition-all duration-300 ${
+                                selectedTimeSlot?.id === slot.id
+                                  ? "bg-gradient-to-r from-[#2C8C91] to-[#345268] text-white border-blue-500 transform scale-105"
+                                  : "bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                              }`}
+                            >
+                              {formatTimeSlot(slot.startTime, slot.endTime)}
+                            </button>
+                          )
+                        )
                       ) : (
                         <div className="text-center py-6">
-                          <p className={`${poppins.className} text-gray-500 text-sm`}>
+                          <p
+                            className={`${poppins.className} text-gray-500 text-sm`}
+                          >
                             No slots available for {selectedTimeCategory}
                           </p>
                         </div>
@@ -780,19 +963,25 @@ const formatTimeSlotFromLocal = (slot) => {
               <button
                 onClick={handleBookConsultation}
                 disabled={!selectedDate || !selectedTimeSlot}
-                className={`${poppins.className} w-full py-4 px-4 rounded-xl font-semibold transition-all duration-300 transform flex items-center justify-center space-x-2 mb-4 shadow-lg ${
+                className={`${
+                  poppins.className
+                } w-full py-4 px-4 rounded-xl font-semibold transition-all duration-300 transform flex items-center justify-center space-x-2 mb-4 shadow-lg ${
                   selectedDate && selectedTimeSlot
-                    ? 'bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white hover:scale-105'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    ? "bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white hover:scale-105"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 <FontAwesomeIcon icon={faCalendarAlt} className="w-5 h-5" />
                 <span>
-                  {selectedDate && selectedTimeSlot ? 'Confirm Appointment' : 'Select Date & Time'}
+                  {selectedDate && selectedTimeSlot
+                    ? "Confirm Appointment"
+                    : "Select Date & Time"}
                 </span>
               </button>
 
-              <p className={`${poppins.className} text-xs text-gray-500 text-center`}>
+              <p
+                className={`${poppins.className} text-xs text-gray-500 text-center`}
+              >
                 By booking, you agree to our terms and conditions
               </p>
             </motion.div>
@@ -806,10 +995,12 @@ const formatTimeSlotFromLocal = (slot) => {
             transition={{ delay: 0.4 }}
             className="mt-12"
           >
-            <h2 className={`${poppins.className} text-3xl font-bold text-gray-900 mb-8 text-center`}>
+            <h2
+              className={`${poppins.className} text-3xl font-bold text-gray-900 mb-8 text-center`}
+            >
               You May Also Like
             </h2>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedCoaches.map((relatedCoach, index) => (
                 <motion.div
@@ -821,7 +1012,7 @@ const formatTimeSlotFromLocal = (slot) => {
                   onClick={() => handleRelatedCoachClick(relatedCoach._id)}
                 >
                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full transform translate-x-8 -translate-y-8 opacity-50"></div>
-                  
+
                   <div className="text-center relative z-10">
                     <div className="w-24 h-24 mx-auto rounded-2xl overflow-hidden  border-gradient-to-r from-[#2C8C91] to-[#345268] mb-4 shadow-lg">
                       {relatedCoach.profilePicture ? (
@@ -838,27 +1029,40 @@ const formatTimeSlotFromLocal = (slot) => {
                         </div>
                       )}
                     </div>
-                    
-                    <h3 className={`${poppins.className} font-bold text-gray-900 mb-2 text-lg`}>
+
+                    <h3
+                      className={`${poppins.className} font-bold text-gray-900 mb-2 text-lg`}
+                    >
                       {relatedCoach.name}
                     </h3>
-                    
-                    <p className={`${poppins.className} text-sm text-gray-600 mb-3`}>
+
+                    <p
+                      className={`${poppins.className} text-sm text-gray-600 mb-3`}
+                    >
                       {relatedCoach.specialization}
                     </p>
-                    
+
                     <div className="flex items-center justify-center mb-3">
-                      <FontAwesomeIcon icon={faStar} className="text-yellow-400 w-4 h-4 mr-1" />
-                      <span className={`${poppins.className} text-sm text-gray-600 font-medium`}>
+                      <FontAwesomeIcon
+                        icon={faStar}
+                        className="text-yellow-400 w-4 h-4 mr-1"
+                      />
+                      <span
+                        className={`${poppins.className} text-sm text-gray-600 font-medium`}
+                      >
                         {formatRating(relatedCoach.rating)}
                       </span>
                     </div>
-                    
-                    <p className={`${poppins.className} text-xl font-bold bg-gradient-to-r from-[#2C8C91] to-[#345268] bg-clip-text text-transparent mb-4`}>
+
+                    <p
+                      className={`${poppins.className} text-xl font-bold bg-gradient-to-r from-[#2C8C91] to-[#345268] bg-clip-text text-transparent mb-4`}
+                    >
                       ₹{relatedCoach.fees}
                     </p>
-                    
-                    <button className={`${poppins.className} w-full bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white py-2 px-4 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105`}>
+
+                    <button
+                      className={`${poppins.className} w-full bg-gradient-to-r from-[#2C8C91] to-[#345268] hover:from-[#246e72] hover:to-[#2f3f55] text-white py-2 px-4 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105`}
+                    >
                       View Profile
                     </button>
                   </div>
@@ -877,7 +1081,9 @@ const formatTimeSlotFromLocal = (slot) => {
             className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className={`${poppins.className} text-xl font-bold text-gray-900`}>
+              <h3
+                className={`${poppins.className} text-xl font-bold text-gray-900`}
+              >
                 Add Your Review
               </h3>
               <button
@@ -890,7 +1096,9 @@ const formatTimeSlotFromLocal = (slot) => {
 
             <form onSubmit={handleReviewSubmit}>
               <div className="mb-6">
-                <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                <label
+                  className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                >
                   Your Rating
                 </label>
                 <div className="flex items-center justify-center space-x-2">
@@ -904,7 +1112,9 @@ const formatTimeSlotFromLocal = (slot) => {
                       <FontAwesomeIcon
                         icon={faStar}
                         className={`w-8 h-8 ${
-                          rating <= newReview.rating ? 'text-yellow-400' : 'text-gray-300'
+                          rating <= newReview.rating
+                            ? "text-yellow-400"
+                            : "text-gray-300"
                         }`}
                       />
                     </button>
@@ -913,12 +1123,16 @@ const formatTimeSlotFromLocal = (slot) => {
               </div>
 
               <div className="mb-6">
-                <label className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}>
+                <label
+                  className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                >
                   Your Review
                 </label>
                 <textarea
                   value={newReview.comment}
-                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  onChange={(e) =>
+                    setNewReview({ ...newReview, comment: e.target.value })
+                  }
                   placeholder="Share your experience with this doctor..."
                   className={`${poppins.className} w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none`}
                   rows="4"

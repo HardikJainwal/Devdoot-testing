@@ -1,13 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVideo, faHouse, faStar, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { Poppins } from 'next/font/google';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { fetchCoaches } from '@/lib/api/coaches';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faVideo,
+  faHouse,
+  faStar,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
+import { Poppins } from "next/font/google";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { fetchCoaches } from "@/lib/api/coaches";
 
 import {
   faAmbulance,
@@ -33,8 +38,9 @@ import {
   PawPrint,
   Clock,
   MapPin,
-  Heart, 
-    Star, CheckCircle ,
+  Heart,
+  Star,
+  CheckCircle,
 } from "lucide-react";
 
 const poppins = Poppins({
@@ -132,47 +138,46 @@ const DoctorsSection = () => {
     try {
       setLoading(true);
       const response = await fetchCoaches(1, 12);
-      
+
       if (!response || !response.success) {
-        throw new Error(response?.message || 'Failed to fetch featured doctors');
+        throw new Error(
+          response?.message || "Failed to fetch featured doctors"
+        );
       }
 
       let doctorsData;
-      
+
       if (response.data) {
         if (Array.isArray(response.data)) {
           doctorsData = response.data;
-        }
-        else if (response.data.data && Array.isArray(response.data.data)) {
+        } else if (response.data.data && Array.isArray(response.data.data)) {
           doctorsData = response.data.data;
-        }
-        else {
+        } else {
           doctorsData = [];
         }
       } else {
         doctorsData = [];
       }
 
-      const mappedDoctors = doctorsData.map(doctor => ({
+      const mappedDoctors = doctorsData.map((doctor) => ({
         _id: doctor._id,
-        name: doctor.coachName, 
-        profilePicture: doctor.profilePhoto, 
+        name: doctor.coachName,
+        profilePicture: doctor.profilePhoto,
         specialization: doctor.specialization,
-        experience: doctor.experienceYear, 
+        experience: doctor.experienceYear,
         rating: doctor.rating,
-        fees: Math.round(doctor.pricePerMinute * doctor.sessionTime), 
-        consultationModes: ['video', 'home'], 
-        isOnline: true 
+        fees: Math.round(doctor.pricePerMinute * doctor.sessionTime),
+        consultationModes: ["video", "home"],
+        isOnline: true,
       }));
 
       const featuredDoctors = mappedDoctors.slice(0, 4);
-      
+
       setDoctors(featuredDoctors);
       setError(null);
-      
     } catch (error) {
       setError(error.message);
-      setDoctors([]); 
+      setDoctors([]);
     } finally {
       setLoading(false);
     }
@@ -180,16 +185,20 @@ const DoctorsSection = () => {
 
   // Function to handle coach card click
   const handleCoachClick = (coachId) => {
-    router.push(`/doctors/${coachId}`);
+    router.push(`coaches/${coachId}`);
   };
 
   const getInitials = (name) => {
-    if (!name) return 'DR';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    if (!name) return "DR";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   const formatRating = (rating) => {
-    return rating ? parseFloat(rating).toFixed(1) : '4.5';
+    return rating ? parseFloat(rating).toFixed(1) : "4.5";
   };
 
   if (loading) {
@@ -197,10 +206,14 @@ const DoctorsSection = () => {
       <section className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}>
+            <h2
+              className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+            >
               Our Trusted Coaches
             </h2>
-            <p className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
+            <p
+              className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}
+            >
               Qualified and experienced healthcare professionals
             </p>
           </div>
@@ -220,18 +233,29 @@ const DoctorsSection = () => {
 
                 {/* Doctor Info Shimmer */}
                 <div className="text-center mb-4 space-y-2">
-                  <div className={`${poppins.className} h-6 w-2/3 bg-gray-200 rounded animate-pulse mx-auto`} />
-                  <div className={`${poppins.className} h-5 w-1/2 bg-gray-200 rounded animate-pulse mx-auto`} />
-                  <div className={`${poppins.className} h-4 w-1/3 bg-gray-200 rounded animate-pulse mx-auto`} />
+                  <div
+                    className={`${poppins.className} h-6 w-2/3 bg-gray-200 rounded animate-pulse mx-auto`}
+                  />
+                  <div
+                    className={`${poppins.className} h-5 w-1/2 bg-gray-200 rounded animate-pulse mx-auto`}
+                  />
+                  <div
+                    className={`${poppins.className} h-4 w-1/3 bg-gray-200 rounded animate-pulse mx-auto`}
+                  />
                 </div>
 
                 {/* Rating Shimmer */}
                 <div className="flex items-center justify-center mb-4">
                   <div className="flex items-center space-x-1">
                     {[...Array(5)].map((_, i) => (
-                      <div key={i} className="w-4 h-4 bg-gray-200 rounded animate-pulse" />
+                      <div
+                        key={i}
+                        className="w-4 h-4 bg-gray-200 rounded animate-pulse"
+                      />
                     ))}
-                    <div className={`${poppins.className} h-4 w-8 bg-gray-200 rounded animate-pulse ml-2`} />
+                    <div
+                      className={`${poppins.className} h-4 w-8 bg-gray-200 rounded animate-pulse ml-2`}
+                    />
                   </div>
                 </div>
 
@@ -246,7 +270,9 @@ const DoctorsSection = () => {
                 </div>
 
                 {/* Button Shimmer */}
-                <div className={`${poppins.className} h-10 w-full bg-gray-200 rounded-lg animate-pulse`} />
+                <div
+                  className={`${poppins.className} h-10 w-full bg-gray-200 rounded-lg animate-pulse`}
+                />
               </div>
             ))}
           </div>
@@ -260,10 +286,14 @@ const DoctorsSection = () => {
       <section className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}>
+            <h2
+              className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+            >
               Our Trusted Doctors
             </h2>
-            <p className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
+            <p
+              className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}
+            >
               Qualified and experienced healthcare professionals
             </p>
           </div>
@@ -285,10 +315,14 @@ const DoctorsSection = () => {
     <section className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}>
+          <h2
+            className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+          >
             Our Trusted Coaches
           </h2>
-          <p className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}>
+          <p
+            className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}
+          >
             Qualified and experienced healthcare professionals
           </p>
         </div>
@@ -331,14 +365,23 @@ const DoctorsSection = () => {
 
               {/* Doctor Info */}
               <div className="text-center mb-4">
-                <h3 className={`${poppins.className} text-lg font-semibold text-gray-900 mb-1`}>
-                  {doctor.name || 'Dr. Name'}
+                <h3
+                  className={`${poppins.className} text-lg font-semibold text-gray-900 mb-1`}
+                >
+                  {doctor.name || "Dr. Name"}
                 </h3>
-                <p className={`${poppins.className} text-sm text-gray-600 mb-3`}>
-                  {doctor.specialization || 'General Physician'}
+                <p
+                  className={`${poppins.className} text-sm text-gray-600 mb-3`}
+                >
+                  {doctor.specialization || "General Physician"}
                 </p>
-                <p className={`${poppins.className} text-xs text-blue-600 font-medium`}>
-                  {doctor.experience ? `${doctor.experience} years` : '10+ years'} experience
+                <p
+                  className={`${poppins.className} text-xs text-blue-600 font-medium`}
+                >
+                  {doctor.experience
+                    ? `${doctor.experience} years`
+                    : "10+ years"}{" "}
+                  experience
                 </p>
               </div>
 
@@ -351,12 +394,14 @@ const DoctorsSection = () => {
                       icon={faStar}
                       className={`w-4 h-4 ${
                         i < Math.floor(parseFloat(formatRating(doctor.rating)))
-                          ? 'text-yellow-400'
-                          : 'text-gray-300'
+                          ? "text-yellow-400"
+                          : "text-gray-300"
                       }`}
                     />
                   ))}
-                  <span className={`${poppins.className} text-sm text-gray-600 ml-2`}>
+                  <span
+                    className={`${poppins.className} text-sm text-gray-600 ml-2`}
+                  >
                     {formatRating(doctor.rating)}
                   </span>
                 </div>
@@ -364,30 +409,44 @@ const DoctorsSection = () => {
 
               {/* Services */}
               <div className="flex flex-wrap gap-2 justify-center mb-6">
-                {doctor.consultationModes?.includes('video') && (
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-green-100 text-green-700`}>
+                {doctor.consultationModes?.includes("video") && (
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-green-100 text-green-700`}
+                  >
                     <FontAwesomeIcon icon={faVideo} className="mr-1 w-3 h-3" />
                     Video
                   </span>
                 )}
-                
+
                 {doctor.fees && (
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-purple-100 text-purple-700`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${poppins.className} bg-purple-100 text-purple-700`}
+                  >
                     ₹{doctor.fees}
                   </span>
                 )}
               </div>
 
               {/* Book Appointment Button */}
-              <button 
+              <button
                 className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:shadow-md flex items-center justify-center space-x-2`}
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent card click when button is clicked
                   handleCoachClick(doctor._id);
                 }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 <span>Book Appointment</span>
               </button>
@@ -397,15 +456,25 @@ const DoctorsSection = () => {
 
         {/* View All Doctors Button */}
         <div className="text-center mt-12">
-          <Link href="/doctors">
+          <Link href="coaches">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`${poppins.className} bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg flex items-center space-x-2 mx-auto`}
             >
               <span>View All Coaches</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </motion.button>
           </Link>
@@ -424,102 +493,104 @@ export default function Home() {
     <div className="w-full">
       {/* Banner Section */}
       <div
-  className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-32 sm:mb-20 md:mb-16"
-  style={{
-    background:
-      "linear-gradient(90deg, rgba(0, 139, 139, 0.71) 0%, rgba(0, 165, 165, 0.18) 27.4%)",
-  }}
->
-  {/* Background Image - Hidden on mobile, visible on larger screens */}
-  <div className="hidden sm:block absolute right-0 top-0 w-3/4 md:w-2/3 lg:w-1/2 h-full">
-    <img
-      src="/images/Banner.jpg"
-      alt="Healthcare Banner"
-      className="w-full h-full object-cover"
-    />
-  </div>
-
-  {/* Mobile Background Image - Full width on mobile with overlay */}
-  <div className="sm:hidden absolute inset-0">
-    <img
-      src="/images/Banner.jpg"
-      alt="Healthcare Banner"
-      className="w-full h-full object-cover"
-    />
-    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
-  </div>
-
-  <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
-    <div className="flex items-start sm:items-center min-h-[400px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[300px]">
-      <div className="w-full lg:w-1/2 pr-0 lg:pr-8 pb-40 sm:pb-8">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mt-2 mb-4">
-          <span className="text-white sm:text-gray-900">Healthcare</span>
-          <br />
-          <span className="text-red-400 sm:text-red-600">on your terms</span>
-        </h1>
-        <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed max-w-md">
-          <span className="text-gray-200 sm:text-gray-700">
-            Book doctors, order medicines, schedule lab tests, and
-            <br className="hidden sm:block" />
-            access wellness services - all in one place.
-          </span>
-        </p>
-        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-          <button className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors w-full sm:w-auto text-sm sm:text-base">
-            Book a service
-          </button>
-          <button className="bg-white/90 sm:bg-white text-red-600 px-6 py-3 font-medium rounded-lg hover:bg-white sm:hover:text-red-700 transition-colors w-full sm:w-auto border border-white/20 sm:border-gray-200 text-sm sm:text-base">
-            Learn more
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* Search Card - Positioned differently on mobile */}
-  <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4 sm:px-6 lg:px-8 -bottom-16 sm:translate-y-1/2 sm:bottom-0">
-    <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl p-4 sm:p-6 border border-gray-100">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Service
-          </label>
-          <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white">
-            <option>Doctor Consultation</option>
-            <option>Lab Tests</option>
-            <option>Medicine Order</option>
-            <option>Wellness Services</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Location
-          </label>
-          <input
-            type="text"
-            placeholder="Enter your location"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+        className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-32 sm:mb-20 md:mb-16"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(0, 139, 139, 0.71) 0%, rgba(0, 165, 165, 0.18) 27.4%)",
+        }}
+      >
+        {/* Background Image - Hidden on mobile, visible on larger screens */}
+        <div className="hidden sm:block absolute right-0 top-0 w-3/4 md:w-2/3 lg:w-1/2 h-full">
+          <img
+            src="/images/Banner.jpg"
+            alt="Healthcare Banner"
+            className="w-full h-full object-cover"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Date & Time
-          </label>
-          <input
-            type="text"
-            placeholder="DD/MM/YYYY"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+
+        {/* Mobile Background Image - Full width on mobile with overlay */}
+        <div className="sm:hidden absolute inset-0">
+          <img
+            src="/images/Banner.jpg"
+            alt="Healthcare Banner"
+            className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
         </div>
-        <div>
-          <button className="w-full bg-teal-600 text-white p-3 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm lg:mt-0 mt-2">
-            Find Services
-          </button>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+          <div className="flex items-start sm:items-center min-h-[400px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[300px]">
+            <div className="w-full lg:w-1/2 pr-0 lg:pr-8 pb-40 sm:pb-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mt-2 mb-4">
+                <span className="text-white sm:text-gray-900">Healthcare</span>
+                <br />
+                <span className="text-red-400 sm:text-red-600">
+                  on your terms
+                </span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed max-w-md">
+                <span className="text-gray-200 sm:text-gray-700">
+                  Book doctors, order medicines, schedule lab tests, and
+                  <br className="hidden sm:block" />
+                  access wellness services - all in one place.
+                </span>
+              </p>
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                <button className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors w-full sm:w-auto text-sm sm:text-base">
+                  Book a service
+                </button>
+                <button className="bg-white/90 sm:bg-white text-red-600 px-6 py-3 font-medium rounded-lg hover:bg-white sm:hover:text-red-700 transition-colors w-full sm:w-auto border border-white/20 sm:border-gray-200 text-sm sm:text-base">
+                  Learn more
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Search Card - Positioned differently on mobile */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4 sm:px-6 lg:px-8 -bottom-16 sm:translate-y-1/2 sm:bottom-0">
+          <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl p-4 sm:p-6 border border-gray-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service
+                </label>
+                <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white">
+                  <option>Doctor Consultation</option>
+                  <option>Lab Tests</option>
+                  <option>Medicine Order</option>
+                  <option>Wellness Services</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your location"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Date & Time
+                </label>
+                <input
+                  type="text"
+                  placeholder="DD/MM/YYYY"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white"
+                />
+              </div>
+              <div>
+                <button className="w-full bg-teal-600 text-white p-3 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm lg:mt-0 mt-2">
+                  Find Services
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
       {/* Our Medical Services Section */}
       <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 mt-24">
@@ -545,14 +616,12 @@ export default function Home() {
                   className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-2 overflow-hidden min-h-80`}
                   onClick={() => handleServiceClick(service)}
                 >
-                 
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                   />
 
                   {/* Content */}
                   <div className="relative p-8 h-full flex flex-col items-center justify-between text-center">
-                    
                     <div
                       className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${service.color} shadow-lg  group-hover:scale-110 transition-transform duration-300`}
                     >
@@ -615,7 +684,7 @@ export default function Home() {
           <h2
             className={`${poppins.className} text-3xl sm:text-4xl font-bold text-white mb-4`}
           >
-            How <span className ="text-[#C42323]">Devdoot</span> Works
+            How <span className="text-[#C42323]">Devdoot</span> Works
           </h2>
           <p
             className={`${poppins.className} text-sm sm:text-base text-gray-600 mb-10`}
@@ -631,7 +700,6 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ once: true }}
                 className="bg-[#e0f3f4]/70 backdrop-blur-sm p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-[#2C8C91]/20"
-
               >
                 <div className="bg-blue-100 text-blue-600 w-10 h-10 flex items-center justify-center rounded-full font-semibold mb-3 mx-auto">
                   {step.number}
@@ -652,68 +720,69 @@ export default function Home() {
         </div>
       </div>
       <section className="section-padding bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="mt-12 font-poppins text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
-          Why Choose <span className="text-gradient text-[#C42323]">Devdoot?</span>
-        </h2>
-        <p className="font-poppins text-xl text-gray-600 mb-8">
-         We’re not just a service platform — we are your dependable health and 
-         wellness companion. At Devdoot, we simplify access to critical medical services, ensuring care reaches you when and where you need it most.
-        </p>
-
-        <div className="space-y-4">
-          {[
-            'Personalized care coordination for every individual and family',
-            'Robust network of verified doctors, paramedics, labs, and health vendors',
-            'Comprehensive solutions from emergency response to daily wellness needs',
-            'Transparent pricing with no hidden charges',
-            '24/7 real-time assistance via our app and helpline',
-            'Support beyond emergencies including medical documentation, follow-ups, and virtual health coaching'
-          ].map((feature, index) => (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              key={feature}
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="flex items-center space-x-3 font-poppins"
             >
-              <CheckCircle className="w-6 h-6 text-[#36A0A4] flex-shrink-0" />
-              <span className="text-gray-700">{feature}</span>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+              <h2 className="mt-12 font-poppins text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
+                Why Choose{" "}
+                <span className="text-gradient text-[#C42323]">Devdoot?</span>
+              </h2>
+              <p className="font-poppins text-xl text-gray-600 mb-8">
+                We’re not just a service platform — we are your dependable
+                health and wellness companion. At Devdoot, we simplify access to
+                critical medical services, ensuring care reaches you when and
+                where you need it most.
+              </p>
 
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative"
-      >
-        <div className="glass-effect rounded-3xl p-8 shadow-2xl">
-          <div className="relative w-full rounded-2xl overflow-hidden">
-            <img  
-              className="w-full h-80 md:h-96 object-cover"
-              alt="Beautiful wedding ceremony setup by VK wedding planner & events" 
-              src="/images/dummy.png" 
-            />
+              <div className="space-y-4">
+                {[
+                  "Personalized care coordination for every individual and family",
+                  "Robust network of verified doctors, paramedics, labs, and health vendors",
+                  "Comprehensive solutions from emergency response to daily wellness needs",
+                  "Transparent pricing with no hidden charges",
+                  "24/7 real-time assistance via our app and helpline",
+                  "Support beyond emergencies including medical documentation, follow-ups, and virtual health coaching",
+                ].map((feature, index) => (
+                  <motion.div
+                    key={feature}
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-center space-x-3 font-poppins"
+                  >
+                    <CheckCircle className="w-6 h-6 text-[#36A0A4] flex-shrink-0" />
+                    <span className="text-gray-700">{feature}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="glass-effect rounded-3xl p-8 shadow-2xl">
+                <div className="relative w-full rounded-2xl overflow-hidden">
+                  <img
+                    className="w-full h-80 md:h-96 object-cover"
+                    alt="Beautiful wedding ceremony setup by VK wedding planner & events"
+                    src="/images/dummy.png"
+                  />
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
-
-        
-      </motion.div>
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* Use the DoctorsSection component instead of duplicating the code */}
       <DoctorsSection />

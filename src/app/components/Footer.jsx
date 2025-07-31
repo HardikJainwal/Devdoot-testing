@@ -30,7 +30,6 @@ export default function Footer() {
       links: [
         { name: 'About Us', href: '/about' },
         { name: 'Careers', href: '/careers' },
-        { name: 'Press', href: '/press' },
         { name: 'Blog', href: '/blog' },
         { name: 'Contact Us', href: '/contact' }
       ]
@@ -76,7 +75,7 @@ export default function Footer() {
           {/* Logo and Text Section */}
           <div className="space-y-4">
             <img src="/images/Logo.png" alt="Devdoot Logo" className="h-16 w-auto" />
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-300 text-sm">
              At Devdoot, we’re transforming emergency medical care in India. Our mission is to deliver swift, dependable, and accessible assistance to those in critical need. Every step we take ensures rapid response and compassionate support, saving lives when it matters most.
             </p>
           </div>

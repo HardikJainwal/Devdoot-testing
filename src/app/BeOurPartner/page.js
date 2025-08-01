@@ -1,17 +1,10 @@
 'use client';
 import Image from 'next/image';
-import { 
-  Users, 
-  Shield, 
-  Headphones, 
-  TrendingUp,
-  Network,
-  Award,
-  Phone,
-  Building2
-} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Users, Headphones, Building2, Award, Network, Phone, Shield, TrendingUp, Stethoscope, Heart, Baby } from 'lucide-react';
 
 export default function BeOurPartner() {
+  const router = useRouter();
   const partnerBenefits = [
     {
       icon: Network,
@@ -39,6 +32,10 @@ export default function BeOurPartner() {
     }
   ];
 
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -48,30 +45,30 @@ export default function BeOurPartner() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-y-12"></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
               <div>
-                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
                   Partner with Devdoot – Grow Together,{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
                     Deliver More
                   </span>
                 </h1>
-                <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
+                <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                   Join our network and unlock growth opportunities through trusted healthcare, petcare & 
                   virtual event solutions. Lets create value together.
                 </p>
               </div>
               
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <button className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                   <Building2 className="w-5 h-5" />
                   Become a Partner
                 </button>
-                <button className="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white/50 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:bg-white/10 backdrop-blur-sm">
+                <button className="inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-white/50 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 hover:bg-white/10 backdrop-blur-sm">
                   <Phone className="w-5 h-5" />
                   Contact Us
                 </button>
@@ -79,24 +76,22 @@ export default function BeOurPartner() {
             </div>
 
             {/* Right Image */}
-            <div className="relative">
-              <div className="relative w-96 h-96 mx-auto">
-                {/* Your logo */}
-                <div className="w-full h-full  rounded-full shadow-2xl flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="relative w-98 h-98 mx-auto mb-4 mt-28 ml-20">
+            <div className="relative flex justify-center lg:justify-end">
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+                <div className="w-full h-full rounded-full shadow-2xl flex items-center justify-center">
+                  <div className="text-center p-4 sm:p-8">
+                    <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 mx-auto">
                       <Image
                         src="/images/Logo-round.png"
                         alt="Devdoot Logo"
                         width={300}
                         height={300}
-                        className="rounded-full object-contain"
+                        className="rounded-full object-contain w-full h-full"
                         priority
                       />
                     </div>
                   </div>
                 </div>
-               
               </div>
             </div>
           </div>
@@ -104,32 +99,32 @@ export default function BeOurPartner() {
       </section>
 
       {/* Why Partner Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Partner with Devdoot?
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C8C91] mb-4">
+              Why Partner with<span className='text-[#C42323]'> Devdoot?</span>
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {partnerBenefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
               return (
                 <div
                   key={index}
-                  className="group bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                  className="group bg-gradient-to-br from-gray-50 to-white p-6 lg:p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
                 >
-                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${benefit.color} shadow-lg group-hover:scale-110 transition-transform duration-300 mb-6`}>
-                    <IconComponent className="w-8 h-8 text-white" />
+                  <div className={`inline-flex p-3 lg:p-4 rounded-2xl bg-gradient-to-br ${benefit.color} shadow-lg group-hover:scale-110 transition-transform duration-300 mb-4 lg:mb-6`}>
+                    <IconComponent className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors">
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2 lg:mb-3 group-hover:text-gray-800 transition-colors">
                     {benefit.title}
                   </h3>
                   
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
                     {benefit.description}
                   </p>
                 </div>
@@ -139,99 +134,179 @@ export default function BeOurPartner() {
         </div>
       </section>
 
-      {/* Additional Benefits Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Partnership Opportunities Section */}
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                Ready to Transform Your Business?
-              </h3>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Join thousands of successful partners who have expanded their reach and increased their revenue through our comprehensive platform.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">24/7 Partner Support</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Advanced Analytics Dashboard</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Marketing & Training Resources</span>
-                </div>
+          <div className="text-center mb-10 lg:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C8C91] mb-4">
+              Partnership <span className='text-[#C42323]'>Opportunities</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
+              Explore various partnership programs across our service portfolio
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {/* Ambulance Services Card */}
+            <div className="group bg-gradient-to-b from-white to-red-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/ambulance-Services-1.webp"
+                  alt="Ambulance Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-red-500 to-orange-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Ambulance Services</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/AmbulanceCollaboration')}
+                  className="bg-white text-red-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-                <div className="text-center mb-6">
-                  <Award className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-                  <h4 className="text-2xl font-bold text-gray-900">Partner Success</h4>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-6 text-center">
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-cyan-600">500+</div>
-                    <div className="text-gray-600 text-sm">Active Partners</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-blue-600">95%</div>
-                    <div className="text-gray-600 text-sm">Satisfaction Rate</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-green-600">2.5x</div>
-                    <div className="text-gray-600 text-sm">Revenue Growth</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-purple-600">24/7</div>
-                    <div className="text-gray-600 text-sm">Support Available</div>
-                  </div>
-                </div>
+            {/* Virtual Health Coaches Card */}
+            <div className="group bg-gradient-to-b from-white to-blue-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/Virtual-Health.webp"
+                  alt="Virtual Health Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Virtual Health Coaches</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/VirtualHealthCoaches')}
+                  className="bg-white text-blue-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Caregiver & Home Nurse Services Card */}
+            <div className="group bg-gradient-to-b from-white to-teal-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/care.webp"
+                  alt="Caregiver Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Caregiver & Home Nurse Services</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/CareGiver&HomeNurse')}
+                  className="bg-white text-teal-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Pet Care Services Card */}
+            <div className="group bg-gradient-to-b from-white to-purple-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/Pet-Care-Services.webp"
+                  alt="Pet Care Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-purple-500 to-pink-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Pet Care Services</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/PetCareServices')}
+                  className="bg-white text-purple-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Medical Equipment Rentals Card */}
+            <div className="group bg-gradient-to-b from-white to-emerald-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/medical-equipment.jpg"
+                  alt="Medical Equipment Rentals"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-emerald-500 to-green-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Medical Equipment Rentals</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/MedicalEquipmentRentals')}
+                  className="bg-white text-emerald-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* ChildCare Services Card */}
+            <div className="group bg-gradient-to-b from-white to-yellow-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/ChildCare-Services.webp"
+                  alt="ChildCare Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-yellow-500 to-amber-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">ChildCare Services</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/childcare-services')}
+                  className="bg-white text-yellow-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Medical Labs Services Card */}
+            <div className="group bg-gradient-to-b from-white to-slate-500 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full">
+              <div className="relative h-40 sm:h-48 bg-gradient-to-br from-slate-100 to-gray-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/images/labs.webp"
+                  alt="Medical Labs Services"
+                  width={200}
+                  height={200}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4 sm:p-6 bg-gradient-to-br from-slate-500 to-gray-500 text-white flex-grow flex flex-col justify-between">
+                <h3 className="text-lg sm:text-xl font-bold mb-3">Medical Labs Services</h3>
+                <button 
+                  onClick={() => handleNavigation('/BeOurPartner/medical-labs-services')}
+                  className="bg-white text-slate-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
+                >
+                  Learn More
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
-      
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-cyan-600 to-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl lg:text-4xl font-bold mb-6">
-            Start Your Partnership Journey Today
-          </h3>
-          <p className="text-xl text-cyan-100 mb-8 max-w-2xl mx-auto">
-            Take the first step towards expanding your business with Devdoot trusted platform.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-cyan-600 font-bold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Apply Now
-            </button>
-            <button className="border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-full hover:border-white/50 hover:bg-white/10 transition-all duration-300">
-              Learn More
-            </button>
-          </div>
-        </div>
-      </section>
-      
+      {/* Additional Benefits Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100"></section>
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
@@ -240,7 +315,6 @@ export default function BeOurPartner() {
           font-family: 'Poppins', sans-serif;
         }
       `}</style>
-      
     </div>
   );
 }

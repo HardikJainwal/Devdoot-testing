@@ -126,25 +126,32 @@ const ChatFidget = () => {
       {isOpen && (
         <div className="mb-4 w-96 h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col animate-in slide-in-from-bottom-2 duration-300">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#719fa2] to-[#2C8C91] text-white p-3 rounded-t-lg flex items-center justify-between relative">
-            <div className="flex items-center space-x-3">
+          <div className="bg-white text-white p-3 rounded-t-lg flex items-center justify-between relative overflow-hidden">
+            <div className="flex items-center space-x-3 z-10">
               <img src='/images/Logo.png' alt="Medical Assistant" className="w-28 h-10 rounded-full" />
               <div className="flex flex-col">
-                <span className="font-medium text-lg ml-4">Medical Assistant</span>
+                <span className="font-semibold text-lg ml-4 text-white">Medical Assistant</span>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-full"
+              className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-full z-10"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+            <div
+              className="absolute inset-0 bg-[#2C8C91]"
+              style={{
+                left: '120px',
+                clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)'
+              }}
+            ></div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-3">
+          <div className="flex-1 bg-gray-100 overflow-y-auto p-3 space-y-3">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -154,7 +161,7 @@ const ChatFidget = () => {
                   className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
                     message.type === 'user'
                       ? 'bg-[#2C8C91] text-white rounded-br-none'
-                      : 'bg-gray-100 text-gray-800 rounded-bl-none'
+                      : 'bg-gray-300 text-gray-800 rounded-bl-none'
                   }`}
                 >
                   {message.text && <p className="whitespace-pre-wrap">{message.text}</p>}
@@ -247,7 +254,7 @@ const ChatFidget = () => {
       )}
 
       {/* Fidget Button - Centered */}
-      <div className="flex justify-center">
+      <div className="flex justify-end">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 ${

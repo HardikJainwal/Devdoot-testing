@@ -63,7 +63,7 @@ export default function ContactUs() {
     {
       icon: <MapPinIcon className="w-6 h-6" />,
       title: "Head Office",
-      info: "Shastri University Tower, Institutional Area, Pocket - 8, Mayur Vihar Phase - I, New Delhi, India - 110 091",
+      info: "Pocket B, Shobhit University Tower, Mayur Vihar Phase II, Institutional Area, Mayur Vihar, New Delhi, Delhi, 110091",
       description: "Visit our main office",
       color: "purple"
     },
@@ -283,8 +283,7 @@ export default function ContactUs() {
           <div className="bg-white rounded-3xl shadow-2xl p-4 border border-gray-100 overflow-hidden">
             <div className="relative">
               {/* Google Maps Embed */}
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.518619818451!2d77.29436!3d28.612894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce57b2b5a7d73%3A0x1b4f35ef6a6b3a4c!2sMayur%20Vihar%20Phase%20I%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1638360894815!5m2!1sen!2sin"
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d855.5610291615184!2d77.30367247892205!3d28.619875078580122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4ba2fffffff%3A0xfbfaaee5e5a94112!2sShobhit%20University!5e0!3m2!1sen!2sin!4v1754044822443!5m2!1sen!2sin"
                 width="100%"
                 height="500"
                 style={{ border: 0 }}
@@ -295,17 +294,7 @@ export default function ContactUs() {
               ></iframe>
               
               {/* Map Overlay Info */}
-              <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-gray-200 max-w-sm">
-                <div className="flex items-center mb-2">
-                  <MapPinIcon className="w-5 h-5 text-blue-600 mr-2" />
-                  <h4 className="font-semibold text-gray-900">Head Office</h4>
-                </div>
-                <p className="text-sm text-gray-700">
-                  Shastri University Tower<br />
-                  Mayur Vihar Phase - I<br />
-                  New Delhi, India - 110 091
-                </p>
-              </div>
+              
             </div>
           </div>
         </div>

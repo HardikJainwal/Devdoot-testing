@@ -301,9 +301,9 @@ const DoctorsSection = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2
-              className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+              className={`${poppins.className} text-3xl sm:text-5xl font-bold text-gray-900 mb-4`}
             >
-              Our Trusted Coaches
+              Our Trusted <span className="text-[#C42323]">Coaches</span>
             </h2>
             <p
               className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}
@@ -401,18 +401,18 @@ const DoctorsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2
-            className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+            className={`${poppins.className} text-3xl sm:text-5xl font-bold text-gray-900 mb-4`}
           >
-            Our Trusted Coaches
+            Our Trusted <span className="text-[#C42323] ">Coaches</span>
           </h2>
           <p
-            className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto`}
+            className={`${poppins.className} text-lg text-gray-600 max-w-2xl mx-auto mb-4`}
           >
             Qualified and experienced healthcare professionals
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-4">
           {doctors.slice(0, 4).map((doctor, index) => (
             <motion.div
               key={doctor._id || index}
@@ -955,7 +955,7 @@ export default function Home() {
       <div className="bg-gradient-to-r from-[#246e72] via-[#2C8C91] to-[#3fa4aa] py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h2
-            className={`${poppins.className} text-3xl sm:text-4xl font-bold text-white mb-4`}
+            className={`${poppins.className} text-3xl sm:text-5xl font-bold text-white mb-4`}
           >
             How <span className="text-[#C42323]">Devdoot</span> Works
           </h2>
@@ -1021,7 +1021,7 @@ export default function Home() {
             >
               <h2 className="mt-12 font-poppins text-4xl md:text-5xl font-extrabold text-gray-800 mb-6">
                 Why Choose
-                <span className="text-gradient text-[#C42323]">Devdoot?</span>
+                <span className="text-gradient text-[#C42323]"> Devdoot?</span>
               </h2>
               <p className="font-poppins text-xl text-gray-600 mb-8">
                 We’re not just a service platform we are your dependable health

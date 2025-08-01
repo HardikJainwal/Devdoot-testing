@@ -247,7 +247,7 @@ const ChatFidget = () => {
       )}
 
       {/* Fidget Button - Centered */}
-      <div className="flex justify-center">
+      <div className="flex justify-end">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 ${

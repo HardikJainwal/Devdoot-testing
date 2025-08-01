@@ -139,98 +139,145 @@ export default function BeOurPartner() {
         </div>
       </section>
 
-      {/* Additional Benefits Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                Ready to Transform Your Business?
-              </h3>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Join thousands of successful partners who have expanded their reach and increased their revenue through our comprehensive platform.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">24/7 Partner Support</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Advanced Analytics Dashboard</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Marketing & Training Resources</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-                <div className="text-center mb-6">
-                  <Award className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-                  <h4 className="text-2xl font-bold text-gray-900">Partner Success</h4>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-6 text-center">
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-cyan-600">500+</div>
-                    <div className="text-gray-600 text-sm">Active Partners</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-blue-600">95%</div>
-                    <div className="text-gray-600 text-sm">Satisfaction Rate</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-green-600">2.5x</div>
-                    <div className="text-gray-600 text-sm">Revenue Growth</div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-3xl font-bold text-purple-600">24/7</div>
-                    <div className="text-gray-600 text-sm">Support Available</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       
+      <section className="py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Partnership Opportunities
+            </h2>
+            <p className="text-xl text-gray-600 mb-8">
+              Explore various partnership programs across our service portfolio
+            </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
+          </div>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-cyan-600 to-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl lg:text-4xl font-bold mb-6">
-            Start Your Partnership Journey Today
-          </h3>
-          <p className="text-xl text-cyan-100 mb-8 max-w-2xl mx-auto">
-            Take the first step towards expanding your business with Devdoot trusted platform.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-cyan-600 font-bold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Apply Now
-            </button>
-            <button className="border-2 border-white/30 text-white font-semibold px-8 py-4 rounded-full hover:border-white/50 hover:bg-white/10 transition-all duration-300">
-              Learn More
-            </button>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Care Match Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full flex items-center justify-center">
+                  <Users className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-teal-500 to-cyan-500 text-white">
+                <h3 className="text-xl font-bold mb-3">Care Match</h3>
+                <button className="bg-white text-teal-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Virtual Health Coach Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                  <Headphones className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
+                <h3 className="text-xl font-bold mb-3">Virtual Health Coach</h3>
+                <button className="bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Medical Equipment Rental Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-500 rounded-full flex items-center justify-center">
+                  <Building2 className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-emerald-500 to-green-500 text-white">
+                <h3 className="text-xl font-bold mb-3">Medical Equipment Rental</h3>
+                <button className="bg-white text-emerald-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* PetWell Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                  <Award className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-purple-500 to-pink-500 text-white">
+                <h3 className="text-xl font-bold mb-3">PetWell</h3>
+                <button className="bg-white text-purple-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Specialist Finder Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                  <Network className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-orange-500 to-red-500 text-white">
+                <h3 className="text-xl font-bold mb-3">Specialist Finder</h3>
+                <button className="bg-white text-orange-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* ImmuniCare Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-full flex items-center justify-center">
+                  <Shield className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-yellow-500 to-amber-500 text-white">
+                <h3 className="text-xl font-bold mb-3">ImmuniCare</h3>
+                <button className="bg-white text-yellow-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* MedTravel Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-slate-100 to-gray-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-slate-500 to-gray-500 rounded-full flex items-center justify-center">
+                  <TrendingUp className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-slate-500 to-gray-500 text-white">
+                <h3 className="text-xl font-bold mb-3">MedTravel</h3>
+                <button className="bg-white text-slate-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Child Health Sponsorship Card */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100">
+              <div className="relative h-48 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center">
+                  <Users className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-rose-500 to-pink-500 text-white">
+                <h3 className="text-xl font-bold mb-3">Child Health Sponsorship</h3>
+                <button className="bg-white text-rose-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors">
+                  Learn More
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Additional Benefits Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100"></section>
       
 
       <style jsx global>{`

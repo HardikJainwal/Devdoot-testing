@@ -85,7 +85,7 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
           </button>
           <button
             onClick={handleLoginClick}
-            className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded hover:bg-teal-200 transition"
+            className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded-3xl hover:bg-teal-200 transition"
           >
             Log in
           </button>

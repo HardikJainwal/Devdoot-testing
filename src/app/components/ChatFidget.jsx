@@ -127,28 +127,32 @@ const ChatFidget = () => {
         <div className="mb-4 w-96 h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col animate-in slide-in-from-bottom-2 duration-300">
           {/* Header */}
           <div className="bg-white text-white p-3 rounded-t-lg flex items-center justify-between relative overflow-hidden">
-            <div className="flex items-center space-x-3 z-10">
-              <img src='/images/Logo.png' alt="Medical Assistant" className="w-28 h-10 rounded-full" />
-              <div className="flex flex-col">
-                <span className="font-semibold text-lg ml-4 text-white">Medical Assistant</span>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-full z-10"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <div
-              className="absolute inset-0 bg-[#2C8C91]"
-              style={{
-                left: '120px',
-                clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)'
-              }}
-            ></div>
-          </div>
+  <div className="flex items-center space-x-3 z-10">
+    <img
+      src="/images/Logo.png"
+      alt="Medical Assistant"
+      className="w-24 h-8 rounded-full" // Reduced width from w-28 to w-24
+    />
+    <div className="flex flex-col">
+      <span className="font-semibold text-lg ml-4 text-white">Medical Assistant</span>
+    </div>
+  </div>
+  <button
+    onClick={() => setIsOpen(false)}
+    className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-full z-10"
+  >
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  <div
+    className="absolute inset-0 bg-[#2C8C91]"
+    style={{
+      left: '100px', // Increased from 140px to give more space for the logo
+      clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0% 100%)', // Adjusted clipPath to start slightly further right
+    }}
+  ></div>
+</div>
 
           {/* Messages */}
           <div className="flex-1 bg-gray-100 overflow-y-auto p-3 space-y-3">
@@ -209,14 +213,14 @@ const ChatFidget = () => {
           <div className="p-3 border-t border-gray-200">
             <div className="flex space-x-2">
               <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(e)}
-                placeholder="Ask a medical question..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled={isLoading}
-              />
+  type="text"
+  value={inputMessage}
+  onChange={(e) => setInputMessage(e.target.value)}
+  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(e)}
+  placeholder="Ask a medical question..."
+  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  disabled={isLoading}
+/>
               <label
                 className={`px-4 py-2 bg-[#2C8C91] text-white rounded-full hover:bg-[#37B1B8] transition-colors ${
                   isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'

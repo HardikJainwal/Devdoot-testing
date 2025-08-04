@@ -1,746 +1,516 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  FileText,
-  Upload,
-  CheckCircle,
-  Calendar,
-  Users,
-  Shield,
-  Baby,
-  Clock
-} from 'lucide-react'
+import { useState } from 'react';
 
-export default function ChildCareForm() {
+export default function ChildCareRegistration() {
   const [formData, setFormData] = useState({
-    // Personal Information
     firstName: '',
     lastName: '',
-    dateOfBirth: '',
-    socialSecurityNumber: '',
-    
-    // Contact Information
     email: '',
-    phoneNumber: '',
-    alternatePhone: '',
-    
-    // Address
-    streetAddress: '',
+    phone: '',
+    address: '',
     city: '',
     state: '',
     zipCode: '',
-    
-    // Emergency Contact
-    emergencyContactName: '',
-    emergencyContactPhone: '',
-    emergencyContactRelation: '',
-    
-    // Provider Information
-    providerType: '',
-    yearsOfExperience: '',
-    maxChildren: '',
-    ageGroups: [],
-    
-    // Availability
-    availability: [],
-    hoursOfOperation: '',
-    
-    // Qualifications
+    dateOfBirth: '',
+    socialSecurity: '',
+    emergencyContact: '',
+    emergencyPhone: '',
+    yearsExperience: '',
+    previousEmployer: '',
+    position: '',
+    from: '',
+    to: '',
+    reasonForLeaving: '',
     education: '',
     certifications: '',
-    specialTraining: '',
-    
-    // Background Information
-    backgroundCheck: false,
-    fingerprinting: false,
+    criminalBackground: '',
+    childAbuseHistory: '',
+    drugTest: '',
     references: '',
-    
-    // Additional Information
-    additionalInfo: '',
-    
-    // Documents
-    documents: [],
-    
-    // Agreement
-    agreeToTerms: false,
-    agreeToBackgroundCheck: false
-  })
-
-  const providerTypes = [
-    'Family Day Care Provider',
-    'Nanny/Babysitter',
-    'Au Pair',
-    'Daycare Center Staff',
-    'Preschool Teacher',
-    'After School Care Provider'
-  ]
-
-  const ageGroupOptions = [
-    'Infants (0-12 months)',
-    'Toddlers (1-3 years)',
-    'Preschoolers (3-5 years)',
-    'School Age (5-12 years)',
-    'Teenagers (13+ years)'
-  ]
-
-  const availabilityOptions = [
-    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
-  ]
+    availability: '',
+    hourlyRate: '',
+    specialSkills: '',
+    additionalInfo: ''
+  });
 
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target
-    
-    if (type === 'checkbox') {
-      if (name === 'ageGroups' || name === 'availability') {
-        setFormData(prev => ({
-          ...prev,
-          [name]: prev[name].includes(value)
-            ? prev[name].filter(item => item !== value)
-            : [...prev[name], value]
-        }))
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          [name]: e.target.checked
-        }))
-      }
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }))
-    }
-  }
-
-  const handleFileUpload = (e) => {
-    const files = e.target.files
-    if (!files) return
-
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      documents: [...prev.documents, ...Array.from(files)]
-    }))
-  }
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-    alert('Child care provider registration submitted successfully!')
-  }
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+    // Handle form submission here
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
-      <div className="max-w-4xl mx-auto px-4">
-        
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Child Care Provider Registration
-          </h1>
-          <p className="text-gray-600 text-sm">
-            Please fill out all required information to complete your registration
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 h-32 flex items-center justify-center">
+        <h1 className="text-white text-3xl font-bold">Child Care Provider Registration</h1>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          
-          {/* Personal Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Personal Information
-            </h2>
+      {/* Form Container */}
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  First Name *
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Last Name *
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date of Birth *
-                </label>
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Social Security Number *
-                </label>
-                <input
-                  type="text"
-                  name="socialSecurityNumber"
-                  value={formData.socialSecurityNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="XXX-XX-XXXX"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Contact Information
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Alternate Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="alternatePhone"
-                  value={formData.alternatePhone}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Address */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Address
-            </h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Street Address *
-                </label>
-                <input
-                  type="text"
-                  name="streetAddress"
-                  value={formData.streetAddress}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Personal Information */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Personal Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    City *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
                   <input
                     type="text"
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
                 </div>
-                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    State *
-                  </label>
-                  <input
-                    type="text"
+                  <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
+                  <select
                     name="state"
                     value={formData.state}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
-                  />
+                  >
+                    <option value="">Select State</option>
+                    <option value="AL">Alabama</option>
+                    <option value="CA">California</option>
+                    <option value="FL">Florida</option>
+                    <option value="NY">New York</option>
+                    <option value="TX">Texas</option>
+                    {/* Add more states as needed */}
+                  </select>
                 </div>
-                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ZIP Code *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code *</label>
                   <input
                     type="text"
                     name="zipCode"
                     value={formData.zipCode}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Social Security Number</label>
+                  <input
+                    type="text"
+                    name="socialSecurity"
+                    value={formData.socialSecurity}
+                    onChange={handleInputChange}
+                    placeholder="XXX-XX-XXXX"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Emergency Contact */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Emergency Contact</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Name *</label>
+                  <input
+                    type="text"
+                    name="emergencyContact"
+                    value={formData.emergencyContact}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Phone *</label>
+                  <input
+                    type="tel"
+                    name="emergencyPhone"
+                    value={formData.emergencyPhone}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Emergency Contact */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Emergency Contact
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Contact Name *
-                </label>
-                <input
-                  type="text"
-                  name="emergencyContactName"
-                  value={formData.emergencyContactName}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  name="emergencyContactPhone"
-                  value={formData.emergencyContactPhone}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
+            {/* Work Experience */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Relationship *
-              </label>
-              <input
-                type="text"
-                name="emergencyContactRelation"
-                value={formData.emergencyContactRelation}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., Parent, Spouse, Sibling"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Provider Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Provider Information
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Provider Type *
-                </label>
-                <select
-                  name="providerType"
-                  value={formData.providerType}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  required
-                >
-                  <option value="">Select provider type</option>
-                  {providerTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Years of Experience *
-                </label>
-                <input
-                  type="number"
-                  name="yearsOfExperience"
-                  value={formData.yearsOfExperience}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  min="0"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Maximum Number of Children *
-              </label>
-              <input
-                type="number"
-                name="maxChildren"
-                value={formData.maxChildren}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                min="1"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Age Groups You Can Care For *
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {ageGroupOptions.map(age => (
-                  <label key={age} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="ageGroups"
-                      value={age}
-                      checked={formData.ageGroups.includes(age)}
-                      onChange={handleInputChange}
-                      className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="text-sm text-gray-700">{age}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Availability */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Availability
-            </h2>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Days Available *
-              </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {availabilityOptions.map(day => (
-                  <label key={day} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="availability"
-                      value={day}
-                      checked={formData.availability.includes(day)}
-                      onChange={handleInputChange}
-                      className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="text-sm text-gray-700">{day}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Hours of Operation *
-              </label>
-              <input
-                type="text"
-                name="hoursOfOperation"
-                value={formData.hoursOfOperation}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g., 7:00 AM - 6:00 PM"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Qualifications */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Qualifications and Experience
-            </h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Education Background
-                </label>
-                <textarea
-                  name="education"
-                  value={formData.education}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Describe your educational background..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Certifications (CPR, First Aid, etc.)
-                </label>
-                <textarea
-                  name="certifications"
-                  value={formData.certifications}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="List your certifications..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Special Training or Skills
-                </label>
-                <textarea
-                  name="specialTraining"
-                  value={formData.specialTraining}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Describe any special training or skills..."
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Background Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Background Information
-            </h2>
-            
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  name="backgroundCheck"
-                  checked={formData.backgroundCheck}
-                  onChange={handleInputChange}
-                  className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Work Experience</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Background Check Completed
-                  </label>
-                  <p className="text-xs text-gray-500">I have completed a background check within the last 2 years</p>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Years of Experience with Children</label>
+                  <input
+                    type="number"
+                    name="yearsExperience"
+                    value={formData.yearsExperience}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Most Recent Employer</label>
+                  <input
+                    type="text"
+                    name="previousEmployer"
+                    value={formData.previousEmployer}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Position/Title</label>
+                  <input
+                    type="text"
+                    name="position"
+                    value={formData.position}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Employment Period</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      name="from"
+                      value={formData.from}
+                      onChange={handleInputChange}
+                      placeholder="From"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                      type="date"
+                      name="to"
+                      value={formData.to}
+                      onChange={handleInputChange}
+                      placeholder="To"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Leaving</label>
+                  <textarea
+                    name="reasonForLeaving"
+                    value={formData.reasonForLeaving}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
               </div>
+            </div>
 
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  name="fingerprinting"
-                  checked={formData.fingerprinting}
-                  onChange={handleInputChange}
-                  className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
+            {/* Education & Qualifications */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Education & Qualifications</h2>
+              <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Fingerprinting Completed
-                  </label>
-                  <p className="text-xs text-gray-500">I have completed fingerprinting for background verification</p>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Highest Level of Education</label>
+                  <select
+                    name="education"
+                    value={formData.education}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Education Level</option>
+                    <option value="high-school">High School Diploma</option>
+                    <option value="associate">Associate Degree</option>
+                    <option value="bachelor">Bachelors Degree</option>
+                    <option value="master">Masters Degree</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Certifications (CPR, First Aid, Child Development, etc.)</label>
+                  <textarea
+                    name="certifications"
+                    value={formData.certifications}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="List all relevant certifications..."
+                  />
                 </div>
               </div>
+            </div>
 
+            {/* Background Check Information */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Background Check Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Have you ever been convicted of a crime? *</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="criminalBackground"
+                        value="yes"
+                        checked={formData.criminalBackground === 'yes'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      Yes
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="criminalBackground"
+                        value="no"
+                        checked={formData.criminalBackground === 'no'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      No
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Have you ever been involved in child abuse or neglect? *</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="childAbuseHistory"
+                        value="yes"
+                        checked={formData.childAbuseHistory === 'yes'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      Yes
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="childAbuseHistory"
+                        value="no"
+                        checked={formData.childAbuseHistory === 'no'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      No
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Are you willing to submit to a drug test? *</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="drugTest"
+                        value="yes"
+                        checked={formData.drugTest === 'yes'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      Yes
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="drugTest"
+                        value="no"
+                        checked={formData.drugTest === 'no'}
+                        onChange={handleInputChange}
+                        className="mr-2"
+                        required
+                      />
+                      No
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* References */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">References</h2>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  References
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Professional References (Name, Phone, Relationship)</label>
                 <textarea
                   name="references"
                   value={formData.references}
                   onChange={handleInputChange}
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Please provide at least 3 references with names, phone numbers, and relationship..."
+                  rows="4"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Please provide at least 3 professional references..."
                 />
               </div>
             </div>
-          </div>
 
-          {/* Additional Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Additional Information
-            </h2>
-            
+            {/* Availability & Compensation */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Additional Information
-              </label>
-              <textarea
-                name="additionalInfo"
-                value={formData.additionalInfo}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Any additional information you would like to share..."
-              />
-            </div>
-          </div>
-
-          {/* Document Upload */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Required Documents
-            </h2>
-            
-            <div className="space-y-4">
-              <div className="text-sm text-gray-600">
-                <p className="mb-2">Please upload the following required documents:</p>
-                <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>Government-issued photo ID</li>
-                  <li>Background check results</li>
-                  <li>CPR/First Aid certifications</li>
-                  <li>Educational certificates/diplomas</li>
-                  <li>Professional references</li>
-                </ul>
-              </div>
-              
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
-                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                <label className="cursor-pointer">
-                  <span className="text-sm text-blue-600 hover:text-blue-500">Click to upload documents</span>
-                  <input
-                    type="file"
-                    multiple
-                    className="hidden"
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    onChange={handleFileUpload}
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Availability & Compensation</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+                  <textarea
+                    name="availability"
+                    value={formData.availability}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Days/hours available..."
                   />
-                </label>
-                <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, JPG, PNG (Max 5MB each)</p>
-              </div>
-              
-              {formData.documents.length > 0 && (
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-gray-700">Uploaded Documents:</h4>
-                  {formData.documents.map((doc, index) => (
-                    <div key={index} className="flex items-center space-x-2 text-green-600 text-sm">
-                      <CheckCircle className="h-4 w-4" />
-                      <span>{doc.name}</span>
-                    </div>
-                  ))}
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Terms and Conditions */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-              Agreement and Consent
-            </h2>
-            
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  name="agreeToTerms"
-                  checked={formData.agreeToTerms}
-                  onChange={handleInputChange}
-                  className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  required
-                />
                 <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    I agree to the Terms and Conditions *
-                  </label>
-                  <p className="text-xs text-gray-500 mt-1">
-                    I have read and agree to the platforms terms of service, privacy policy, and provider guidelines.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  name="agreeToBackgroundCheck"
-                  checked={formData.agreeToBackgroundCheck}
-                  onChange={handleInputChange}
-                  className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  required
-                />
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
-                    Background Check Consent *
-                  </label>
-                  <p className="text-xs text-gray-500 mt-1">
-                    I consent to background checks and verification of the information provided in this application.
-                  </p>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Expected Hourly Rate</label>
+                  <input
+                    type="number"
+                    name="hourlyRate"
+                    value={formData.hourlyRate}
+                    onChange={handleInputChange}
+                    step="0.50"
+                    min="0"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="$0.00"
+                  />
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-center pb-6">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-8 py-3 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              Submit Application
-            </button>
-          </div>
-        </form>
+            {/* Additional Information */}
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Additional Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Special Skills or Languages</label>
+                  <textarea
+                    name="specialSkills"
+                    value={formData.specialSkills}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Any special skills, languages, or qualifications..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Additional Comments</label>
+                  <textarea
+                    name="additionalInfo"
+                    value={formData.additionalInfo}
+                    onChange={handleInputChange}
+                    rows="4"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Any additional information you'd like to share..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Agreement */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="flex items-start">
+                <input
+                  type="checkbox"
+                  required
+                  className="mt-1 mr-3"
+                />
+                <span className="text-sm text-gray-700">
+                  I certify that all information provided is true and complete. I understand that any false information may result in rejection of my application or termination if hired. I authorize the investigation of all statements contained in this application and release all parties from liability.
+                </span>
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <div className="text-center pt-6">
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300"
+              >
+                Submit Application
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  )
+  );
 }

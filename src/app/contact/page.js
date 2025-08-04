@@ -281,22 +281,32 @@ export default function ContactUs() {
           </div>
           
           <div className="bg-white rounded-3xl shadow-2xl p-4 border border-gray-100 overflow-hidden">
-            <div className="relative">
-              {/* Google Maps Embed */}
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d855.5610291615184!2d77.30367247892205!3d28.619875078580122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4ba2fffffff%3A0xfbfaaee5e5a94112!2sShobhit%20University!5e0!3m2!1sen!2sin!4v1754044822443!5m2!1sen!2sin"
-                width="100%"
-                height="500"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-2xl"
-              ></iframe>
-              
-              {/* Map Overlay Info */}
-              
-            </div>
-          </div>
+  <div className="relative flex flex-row gap-4">
+    {/* First Google Map (Shobhit University) */}
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d855.5610291615184!2d77.30367247892205!3d28.619875078580122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4ba2fffffff%3A0xfbfaaee5e5a94112!2sShobhit%20University!5e0!3m2!1sen!2sin!4v1754044822443!5m2!1sen!2sin"
+      width="50%"
+      height="500"
+      style={{ border: 0 }}
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      className="rounded-2xl"
+    ></iframe>
+
+    {/* Second Google Map (One New York Plaza) */}
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.721764020272!2d-74.01473812415773!3d40.70212507139509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2574494a9fa53%3A0xf8c3e5d5ea49e71a!2sOne%20New%20York%20Plaza!5e0!3m2!1sen!2sin!4v1754047247082!5m2!1sen!2sin"
+      width="50%"
+      height="500"
+      style={{ border: 0 }}
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      className="rounded-2xl"
+    ></iframe>
+  </div>
+</div>
         </div>
       </div>
     </div>

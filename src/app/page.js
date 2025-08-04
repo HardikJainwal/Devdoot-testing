@@ -225,6 +225,9 @@ const DoctorsSection = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  // IDs of paid coaches that should be prioritized
+  const PAID_COACH_IDS = ['67efda37e6e95655b525b82f',,'67ee6ffce6e95655b525a75d', '681c58a244d01de413649c15'];
+
   useEffect(() => {
     loadFeaturedDoctors();
   }, []);
@@ -264,9 +267,18 @@ const DoctorsSection = () => {
         fees: Math.round(doctor.pricePerMinute * doctor.sessionTime),
         consultationModes: ["video", "home"],
         isOnline: true,
+        isPaid: PAID_COACH_IDS.includes(doctor._id), // Add paid flag
       }));
 
-      const featuredDoctors = mappedDoctors.slice(0, 4);
+      // Separate paid and unpaid coaches
+      const paidCoaches = mappedDoctors.filter(doctor => doctor.isPaid);
+      const unpaidCoaches = mappedDoctors.filter(doctor => !doctor.isPaid);
+
+      // Prioritize paid coaches first, then fill with unpaid coaches
+      const featuredDoctors = [
+        ...paidCoaches, // All paid coaches first
+        ...unpaidCoaches.slice(0, 4 - paidCoaches.length) // Fill remaining slots with unpaid coaches
+      ].slice(0, 4); // Ensure we only show 4 total
 
       setDoctors(featuredDoctors);
       setError(null);

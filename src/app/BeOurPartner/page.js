@@ -272,7 +272,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-yellow-500 to-amber-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">ChildCare Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/childcare-services')}
+                  onClick={() => handleNavigation('/BeOurPartner/ChildCare')}
                   className="bg-white text-yellow-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -294,7 +294,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-slate-500 to-gray-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Medical Labs Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/medical-labs-services')}
+                  onClick={() => handleNavigation('/BeOurPartner/MedicalLab')}
                   className="bg-white text-slate-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More

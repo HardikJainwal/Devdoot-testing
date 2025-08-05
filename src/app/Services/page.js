@@ -192,11 +192,14 @@ export default function Services() {
                 key={idx}
                 className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 overflow-hidden`}
                 onClick={() => {
-                  if (service.title === "Coach Match") {
-                    router.push("coaches");
-                  } else {
-                    showToast(service);
-                  }
+                 if (service.title === "Coach Match") {
+  router.push("/coaches");
+} else if (service.title === "AyurCare") {
+  router.push("/AyurCare");
+} else {
+  showToast(service);
+}
+
                 }}
               >
                 {/* Gradient overlay on hover */}

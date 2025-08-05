@@ -679,7 +679,7 @@ export default function Home() {
               <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed max-w-md">
                 <span className="text-gray-200 sm:text-gray-700">
                   Book doctors, order medicines, schedule lab tests, and
-                  <br className="hidden sm:block" />
+                  
                   access wellness services - all in one place.
                 </span>
               </p>

@@ -86,7 +86,7 @@ export default function AllDoctorsPage() {
       const mappedDoctors = doctorsData.map((doctor, index) => ({
         _id: doctor._id || `doctor-${index}`,
         name: doctor.coachName || `Doctor ${index + 1}`,
-        specialization: doctor.specialization || "General Physician",
+        specialization: doctor.specialization ,
         profilePicture: doctor.profilePhoto,
         experience: doctor.experienceYear || 5,
         rating: doctor.rating || Math.random() * 2 + 3.5,

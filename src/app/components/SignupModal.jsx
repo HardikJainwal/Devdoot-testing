@@ -280,7 +280,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Right Side - Marketing */}
-          <div className="flex-1 bg-teal-600 dark:bg-teal-700 text-white p-4 sm:p-6 md:p-8 flex flex-col relative">
+          <div className="flex-1 bg-[#2C8C91] text-white p-4 sm:p-6 md:p-8 flex flex-col relative">
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-white hover:text-gray-200 dark:hover:text-gray-300 text-xl sm:text-2xl transition-colors"

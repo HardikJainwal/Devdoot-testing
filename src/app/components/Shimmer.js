@@ -10,7 +10,7 @@ export default function Shimmer({ variant = 'profile' }) {
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Header Shimmer */}
-        <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-12 px-4 sm:px-6 lg:px-8">
+        <section className="bg-gradient-to-r from-[#2C8C91] to-[#345268] py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center">
               <div className={`${poppins.className} h-10 w-1/3 bg-gray-200 rounded animate-pulse mx-auto mb-4`} />

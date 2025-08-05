@@ -68,3 +68,36 @@ export const fetchCoachById = async (coachId) => {
     };
   }
 };
+
+export const fetchCoachesBySpecialization = async (specialization, page = 1, limit = 12) => {
+  try {
+    console.log(`Fetching coaches by specialization: specialization=${specialization}, page=${page}, limit=${limit}`);
+    
+    const response = await fetch(`${API_BASE_URL}/coach/search?specialization=${specialization}&page=${page}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': DUMMY_TOKEN,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const apiData = await response.json();
+    
+    return apiData;
+    
+  } catch (error) {
+    console.error('Error fetching coaches by specialization:', error);
+    return {
+      success: false,
+      message: error.message,
+      data: {
+        data: [],
+        total_results: 0
+      }
+    };
+  }
+}

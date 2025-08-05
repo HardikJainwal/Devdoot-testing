@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CertificationCarousel from "@/app/components/CertificationCarousel";
 
 import {
   faVideo,
@@ -182,7 +183,7 @@ const medicalServices = [
 
   {
     icon: Droplets,
-    title: "BloodMate",
+    title: "Social Wall",
     desc: "Blood donation and transfusion services",
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-50",
@@ -266,7 +267,6 @@ const DoctorsSection = () => {
         rating: doctor.rating,
         fees: Math.round(doctor.pricePerMinute * doctor.sessionTime),
         consultationModes: ["video", "home"],
-        isOnline: true,
         isPaid: PAID_COACH_IDS.includes(doctor._id), // Add paid flag
       }));
 
@@ -439,24 +439,19 @@ const DoctorsSection = () => {
               <div className="relative mb-6">
                 <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-100 group-hover:border-blue-300 transition-colors duration-300">
                   {doctor.profilePicture ? (
-                    <img
-                      src={doctor.profilePicture}
-                      alt={doctor.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                      <span className="text-white text-2xl font-bold">
-                        {getInitials(doctor.name)}
-                      </span>
-                    </div>
-                  )}
+  <img
+    src={doctor.profilePicture}
+    alt={doctor.name}
+    className="w-full h-full object-cover"
+  />
+) : (
+  <img
+    src="/images/devdoot-round.png"
+    alt={doctor.name || "Doctor"}
+    className="w-full h-full object-cover"
+  />
+)}
                 </div>
-                {doctor.isOnline && (
-                  <div className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                  </div>
-                )}
               </div>
 
               <div className="text-center mb-4">
@@ -598,14 +593,17 @@ export default function Home() {
   const removeToast = (id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
+const handleServiceClick = (service) => {
+  if (service.title === "Coach Match") {
+    router.push("coaches");
+  } else if (service.title === "AyurCare") {
+    router.push("AyurCare");
+  } else {
+    showToast(service);
+  }
+};
 
-  const handleServiceClick = (service) => {
-    if (service.title === "Coach Match") {
-      router.push("coaches");
-    } else {
-      showToast(service);
-    }
-  };
+
 
   // Carousel settings
   const carouselSettings = {
@@ -813,6 +811,23 @@ export default function Home() {
                     <div
                       className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                     />
+                    {/* Modern glowing live indicator */}
+{(service.title === "Coach Match" || service.title === "AyurCare") && (
+  <div className="absolute top-4 right-4 z-20">
+    <div className="relative live-badge bg-[#C42323] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-2xl">
+      <div className="flex items-center gap-1.5">
+        <div className="relative">
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+          <div className="absolute inset-0 w-2 h-2 bg-white rounded-full animate-ping"></div>
+        </div>
+        <span>LIVE</span>
+      </div>
+      
+      {/* Glow effect */}
+      <div className="absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-60 animate-pulse -z-10"></div>
+    </div>
+  </div>
+)}
                     {/* Enhanced card depth with inner shadow */}
                     <div className="absolute inset-0 rounded-2xl shadow-inner opacity-20"></div>
 
@@ -1269,9 +1284,9 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className={`${poppins.className} text-3xl sm:text-4xl font-bold text-gray-900 mb-4`}
+              className={`${poppins.className} text-5xl sm:text-4xl font-bold text-[#C42323] mb-4`}
             >
-              What Our Patients Say
+              What Our <span className="text-[#2C8C91]">Patients Say</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -1395,53 +1410,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Certified By Section */}
-      <section
-        className="py-6 bg-gray-50"
-        style={{ fontFamily: "Poppins, sans-serif" }}
-      >
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Certified By
-          </h2>
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
-              <div className="flex flex-col items-center p-2 hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/images/iso.png"
-                  alt="ISO Certification"
-                  className="w-34 h-34"
-                />
-              </div>
-              <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/images/msme.png"
-                  alt="Ministry Certification"
-                  className="w-48 h-34"
-                />
-              </div>
-              <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/images/govt-red.jpeg"
-                  alt="Approved Certification"
-                  className="w-34 h-34"
-                />
-              </div>
-              <div className="flex flex-col items-center p-4 hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/images/GOV-APPROVED-STAMP.png"
-                  alt="Government Approved"
-                  className="w-34 h-34"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </section>
+     <section
+  className="py-8 mt-4  "
+  style={{ fontFamily: "Poppins, sans-serif" }}
+>
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-5xl font-bold text-center text-[#C42323] mb-12">
+      Certified <span className="text-black">By</span>
+    </h2>
+    <div>
+      <CertificationCarousel/>
+    </div>
+  </div>
+</section>
+  
 
       {/* Call to Action Section */}
       <div className="bg-white">

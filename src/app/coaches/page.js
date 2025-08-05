@@ -472,27 +472,18 @@ export default function AllDoctorsPage() {
                                 alt={doctor.name}
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
-                                  e.target.src = "/images/logo.png";
+                                  e.target.src = "/images/devdoot-round.png";
                                 }} // Fallback to logo.png if image fails to load
                               />
                             ) : (
                               <img
-                                src="/images/logo.png" // Default to logo.png if no profilePicture
+                                src="/images/devdoot-round.png" // Default to logo.png if no profilePicture
                                 alt="Default Logo"
                                 className="w-14 h-14 object-contain"
                               />
                             )}
                           </div>
-                          {doctor.isOnline && (
-                            <div className="absolute -bottom-1 -right-1">
-                              <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                                <FontAwesomeIcon
-                                  icon={faCheckCircle}
-                                  className="text-white text-xs"
-                                />
-                              </div>
-                            </div>
-                          )}
+                         
                         </div>
 
                         <div className="flex-1">
@@ -618,16 +609,19 @@ export default function AllDoctorsPage() {
                           </div>
                         </div>
 
-                        <button
-                          className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <FontAwesomeIcon
-                            icon={faCalendarAlt}
-                            className="w-4 h-4"
-                          />
-                          <span>Book Session</span>
-                        </button>
+                       <button
+  className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
+  onClick={(e) => {
+    e.stopPropagation();
+    handleCoachClick(doctor._id);
+  }}
+>
+  <FontAwesomeIcon
+    icon={faCalendarAlt}
+    className="w-4 h-4"
+  />
+  <span>Book Session</span>
+</button>
                       </div>
                     </div>
                   </motion.div>

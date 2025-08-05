@@ -18,6 +18,7 @@ import {
   Utensils,
   Sparkles,
   UserCheck,
+  TrendingUp,
 } from "lucide-react";
 
 const services = [
@@ -82,7 +83,7 @@ const services = [
     bgColor: "bg-slate-50",
   },
   {
-    title: "BloodMate",
+    title: "Social Wall",
     icon: Droplets,
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-50",
@@ -192,16 +193,22 @@ export default function Services() {
                 key={idx}
                 className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 overflow-hidden`}
                 onClick={() => {
-                 if (service.title === "Coach Match") {
-  router.push("/coaches");
-} else if (service.title === "AyurCare") {
-  router.push("/AyurCare");
-} else {
-  showToast(service);
-}
-
+                  if (service.title === "Coach Match") {
+                    router.push("/coaches");
+                  } else if (service.title === "AyurCare") {
+                    router.push("/AyurCare");
+                  } else {
+                    showToast(service);
+                  }
                 }}
               >
+                 {(service.title === "AyurCare" || service.title === "Coach Match") && (
+    <div className="absolute top-3 right-3 z-10">
+      <div className="bg-[#C42323] text-white p-1.5 rounded-full shadow-lg animate-pulse">
+        <TrendingUp className="w-4 h-4" />
+      </div>
+    </div>
+  )}
                 {/* Gradient overlay on hover */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
@@ -223,8 +230,19 @@ export default function Services() {
 
                   {/* Coming soon badge */}
                   <div className="inline-flex items-center gap-1 bg-white/70 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                    Coming Soon
+                    {/* Status badge */}
+                    {service.title === "AyurCare" ||
+                    service.title === "Coach Match" ? (
+                      <div className="inline-flex items-center gap-1 bg-[#C42323] text-white px-3 py-1 rounded-full text-xs font-medium shadow-md animate-pulse">
+                        <TrendingUp className="w-3 h-3" />
+                        Live Now
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-1 bg-white/70 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                        <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+                        Coming Soon
+                      </div>
+                    )}
                   </div>
                 </div>
 

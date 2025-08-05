@@ -139,7 +139,7 @@ export const medicalServices = [
   },
   {
     icon: Droplets,
-    title: "BloodMate",
+    title: "Social Wall",
     desc: "Blood donation and transfusion services",
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-50",

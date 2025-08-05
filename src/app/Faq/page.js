@@ -1,239 +1,381 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Head from 'next/head';
+import { useState, useEffect } from "react";
+import {
+  ShieldCheckIcon,
+  UserGroupIcon,
+  HeartIcon,
+  VideoCameraIcon,
+  CalendarIcon,
+  AcademicCapIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
+  ClockIcon,
+  LockClosedIcon,
+  TruckIcon,
+} from "@heroicons/react/24/outline";
 
-const FAQPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [openItems, setOpenItems] = useState({});
+const faqSections = [
+  {
+    id: "general",
+    title: "General Questions",
+    items: [
+      {
+        question: "What is Devdoot?",
+        answer:
+          "Devdoot is a comprehensive healthcare platform in India, offering emergency ambulance services, virtual health coaching, care camps for villages, health packages, and more. We're here to make quality care accessible to all.",
+      },
+      {
+        question: "How can I access Devdoot's services?",
+        answer:
+          "You can book services through our website forms, call our 24/7 helpline, or download the Devdoot app (if available) for real-time tracking and support.",
+      },
+      {
+        question: "Where does Devdoot operate?",
+        answer:
+          "We serve urban centers, rural villages, and remote areas across India, with a special focus on underserved communities.",
+      },
+    ],
+  },
+  {
+    id: "ambulance",
+    title: "Ambulance Services",
+    items: [
+      {
+        question: "How do I book an ambulance?",
+        answer:
+          "Use the Ambulance Services form online or call our helpline for immediate dispatch. Real-time tracking keeps you updated on arrival.",
+      },
+      {
+        question: "What types of ambulances are available?",
+        answer:
+          "We offer emergency response units, non-emergency transport, rural outreach vehicles, and special care units (e.g., neonatal and critical care).",
+      },
+      {
+        question: "Are ambulance services affordable?",
+        answer:
+          "Yes, we provide low-cost options to ensure emergency care is accessible to everyone, especially in rural areas.",
+      },
+    ],
+  },
+  {
+    id: "care-camps",
+    title: "Care Camps",
+    items: [
+      {
+        question: "What are Care Camps?",
+        answer:
+          "Care Camps bring free health checkups, mobile clinics, and education to Indian villages, addressing rural healthcare gaps.",
+      },
+      {
+        question: "How can I request a Care Camp for my village?",
+        answer:
+          "Fill out the Care Camps request form with your village details, and we'll coordinate with you to schedule it.",
+      },
+    ],
+  },
+  {
+    id: "health-packages",
+    title: "Health Packages",
+    items: [
+      {
+        question: "What health packages does Devdoot offer?",
+        answer:
+          "We provide corporate health packages for businesses and home health packages for families, including checkups, diagnostics, and coaching.",
+      },
+      {
+        question: "How do I book a health package?",
+        answer:
+          "Select your package on the Health Packages page and submit the booking form. We'll confirm your appointment promptly.",
+      },
+    ],
+  },
+  {
+    id: "girl-safety",
+    title: "Girl Safety & Hygiene Program",
+    items: [
+      {
+        question: "What is the Girl Safety & Hygiene Program?",
+        answer:
+          "This program offers safety workshops, martial arts training, and hygiene education to empower girls across India.",
+      },
+      {
+        question: "Who can join the program?",
+        answer:
+          "Girls of all ages, schools, and community groups can participate. Register via the Girl Safety & Hygiene form.",
+      },
+    ],
+  },
+  {
+    id: "virtual-coaching",
+    title: "Virtual Health Coaching",
+    items: [
+      {
+        question: "What do virtual health coaches do?",
+        answer:
+          "Our certified coaches provide guidance on fitness, nutrition, mental health, and lifestyle, accessible online or via App.",
+      },
+      {
+        question: "How do I connect with a coach?",
+        answer:
+          "Visit the Coaches page, choose your expert, and book a session directly.",
+      },
+    ],
+  },
+  {
+    id: "additional-info",
+    title: "Additional Information",
+    items: [
+      {
+        question: "Are Devdoot's services available 24/7?",
+        answer:
+          "Yes, our emergency services, including ambulances, operate round-the-clock for your peace of mind.",
+      },
+      {
+        question: "How does Devdoot support rural areas?",
+        answer:
+          "Through care camps, rural ambulances, and affordable health packages, we ensure healthcare reaches every village.",
+      },
+      {
+        question: "Is my data secure with Devdoot?",
+        answer:
+          "We prioritize your privacy with secure systems and clear data policies, compliant with healthcare standards.",
+      },
+      {
+        question: "How can I volunteer with Devdoot?",
+        answer:
+          "Join the Devdoot Good Volunteer Network (DGVN) by contacting us or registering through the Care Camps form.",
+      },
+    ],
+  },
+];
 
-  const toggleItem = (id) => {
-    setOpenItems(prev => ({
+const sectionIcons = {
+  general: ShieldCheckIcon,
+  ambulance: TruckIcon,
+  "care-camps": UserGroupIcon,
+  "health-packages": HeartIcon,
+  "girl-safety": AcademicCapIcon,
+  "virtual-coaching": VideoCameraIcon,
+  "additional-info": ChatBubbleOvalLeftEllipsisIcon,
+};
+
+export default function FAQ() {
+  const [activeSection, setActiveSection] = useState(faqSections[0].id);
+  const [openQuestions, setOpenQuestions] = useState({});
+
+  const toggleQuestion = (sectionId, questionIndex) => {
+    const key = `${sectionId}-${questionIndex}`;
+    setOpenQuestions((prev) => ({
       ...prev,
-      [id]: !prev[id]
+      [key]: !prev[key],
     }));
   };
 
-  const faqData = [
-    {
-      id: 'getting-started',
-      title: 'Getting Started',
-      icon: 'fas fa-rocket',
-      color: 'from-red-500 to-red-600',
-      items: [
-        {
-          id: 'what-is-taskmaster',
-          question: 'What is TaskMaster?',
-          answer: 'TaskMaster is a productivity app designed to help individuals and teams manage tasks, projects, and workflows efficiently. It offers a range of features to streamline your work and boost productivity.'
-        },
-        {
-          id: 'create-account',
-          question: 'How do I create an account?',
-          answer: 'To create an account, visit our sign-up page, enter your email address and create a secure password. Follow the verification steps sent to your email to activate your account.'
-        },
-        {
-          id: 'key-features',
-          question: 'What are the key features of TaskMaster?',
-          answer: 'TaskMaster offers task management, project collaboration, team assignment, progress tracking, deadline management, file sharing, and comprehensive reporting tools.'
-        }
-      ]
-    },
-    {
-      id: 'account-management',
-      title: 'Account Management',
-      icon: 'fas fa-user-cog',
-      color: 'from-teal-500 to-teal-600',
-      items: [
-        {
-          id: 'reset-password',
-          question: 'How do I reset my password?',
-          answer: 'To reset your password, go to the login page and click on "Forgot Password" link. Follow the instructions sent to your email to create a new password.'
-        },
-        {
-          id: 'change-email',
-          question: 'Can I change my email address?',
-          answer: 'Yes, you can change your email address in your account settings. Go to Profile Settings and update your email address. You\'ll need to verify the new email.'
-        },
-        {
-          id: 'delete-account',
-          question: 'How do I delete my account?',
-          answer: 'To delete your account, go to Account Settings and select "Delete Account". Please note that this action is irreversible and will remove all your data.'
-        }
-      ]
-    },
-    {
-      id: 'features-functionality',
-      title: 'Features & Functionality',
-      icon: 'fas fa-cogs',
-      color: 'from-slate-500 to-slate-600',
-      items: [
-        {
-          id: 'create-task',
-          question: 'How do I create a new task?',
-          answer: 'To create a new task, click the "+" button in the top right corner of the dashboard. Fill in the task details, including title, description, due date, and assignee, then click "Create Task".'
-        },
-        {
-          id: 'assign-tasks',
-          question: 'Can I assign tasks to team members?',
-          answer: 'Yes, you can assign tasks to team members by selecting their name from the assignee dropdown when creating or editing a task. They will receive notifications about the assignment.'
-        },
-        {
-          id: 'track-progress',
-          question: 'How do I track progress on my projects?',
-          answer: 'You can track progress through the project dashboard, which shows completion percentages, milestone tracking, and detailed progress reports for all your projects.'
-        }
-      ]
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  ];
+  };
 
-  const filteredFAQ = faqData.map(section => ({
-    ...section,
-    items: section.items.filter(item =>
-      item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.answer.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  })).filter(section => section.items.length > 0);
+  // Update active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = faqSections.map(section => section.id);
+      const scrollPosition = window.scrollY + 200;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <>
-      <Head>
-        <title>FAQ - TaskMaster | Frequently Asked Questions</title>
-        <meta name="description" content="Find answers to common questions about TaskMaster - your productivity app for managing tasks, projects, and workflows efficiently." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        <link 
-          rel="stylesheet" 
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
-          crossOrigin="anonymous" 
-          referrerPolicy="no-referrer" 
-        />
-      </Head>
-
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white">
-          <div className="max-w-7xl mx-auto px-6 py-16">
-            <div className="text-center">
-              <div className="flex justify-center mb-6">
-                <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
-                  <i className="fas fa-question-circle text-4xl"></i>
+    <div className="min-h-screen bg-gray-50" style={{ fontFamily: "Poppins, sans-serif" }}>
+      {/* Hero Section */}
+      <div className="bg-[#2C8C91] text-white">
+        <div className="container mx-auto px-6 py-20">
+          <div className="flex flex-col lg:flex-row items-center justify-between">
+            <div className="lg:w-1/2 mb-10 lg:mb-0">
+              <div className="flex items-center mb-6">
+                <div className="bg-white/10 p-4 rounded-2xl mr-4 backdrop-blur-sm">
+                  <ChatBubbleOvalLeftEllipsisIcon className="w-12 h-12" />
+                </div>
+                <div>
+                  <h1 className="text-5xl lg:text-6xl font-bold mb-2">Frequently Asked Questions</h1>
+                  <p className="text-xl text-white">Get answers to common questions</p>
                 </div>
               </div>
-              <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                Frequently Asked Questions
-              </h1>
-              <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                Find answers to common questions about TaskMaster
+              <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                Find comprehensive answers about Devdoots healthcare services, from emergency ambulances 
+                to virtual coaching and care camps for rural communities.
               </p>
-              
-              {/* Search Bar */}
-              <div className="relative max-w-2xl mx-auto">
-                <i className="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                <input
-                  type="text"
-                  placeholder="Search for answers..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all duration-300"
-                />
-              </div>
             </div>
-          </div>
-        </div>
-
-        {/* FAQ Content */}
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid gap-8">
-            {filteredFAQ.map((section) => (
-              <div key={section.id} className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/50">
-                {/* Section Header */}
-                <div className={`bg-gradient-to-r ${section.color} p-8`}>
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
-                      <i className={`${section.icon} text-2xl text-white`}></i>
-                    </div>
-                    <h2 className="text-3xl font-bold text-white">{section.title}</h2>
-                  </div>
-                </div>
-
-                {/* FAQ Items */}
-                <div className="divide-y divide-slate-200">
-                  {section.items.map((item) => (
-                    <div key={item.id} className="group">
+            <div className="lg:w-1/2 lg:pl-12">
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+                <h3 className="text-2xl font-semibold mb-6">Quick Navigation</h3>
+                <div className="space-y-3">
+                  {faqSections.slice(0, 5).map((section) => {
+                    const Icon = sectionIcons[section.id];
+                    return (
                       <button
-                        onClick={() => toggleItem(item.id)}
-                        className="w-full px-8 py-6 text-left hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:bg-slate-50"
+                        key={section.id}
+                        onClick={() => scrollToSection(section.id)}
+                        className="flex items-center w-full text-left p-3 rounded-lg hover:bg-white/10 transition-all duration-300"
                       >
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-semibold text-slate-800 group-hover:text-slate-900 pr-8">
-                            {item.question}
-                          </h3>
-                          <div className="flex-shrink-0">
-                            <i className={`fas ${openItems[item.id] ? 'fa-chevron-up' : 'fa-chevron-down'} text-slate-500 group-hover:text-slate-700 transition-colors`}></i>
-                          </div>
+                        <div className="text-white mr-3">
+                          <Icon className="w-5 h-5" />
                         </div>
+                        <span className="text-sm font-medium">{section.title}</span>
                       </button>
-                      
-                      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                        openItems[item.id] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                      }`}>
-                        <div className="px-8 pb-6">
-                          <div className="bg-gradient-to-r from-slate-50 to-white p-6 rounded-2xl border-l-4 border-slate-300">
-                            <p className="text-slate-700 leading-relaxed text-lg">
-                              {item.answer}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* No Results */}
-          {filteredFAQ.length === 0 && searchTerm && (
-            <div className="text-center py-16">
-              <div className="bg-white rounded-3xl shadow-xl p-12 max-w-2xl mx-auto">
-                <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i className="fas fa-search text-4xl text-slate-400"></i>
-                </div>
-                <h3 className="text-2xl font-bold text-slate-800 mb-4">No results found</h3>
-                <p className="text-slate-600 text-lg">
-                  Try searching with different keywords or browse through our categories above.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Contact Section */}
-          <div className="mt-16 bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl p-12 text-center text-white">
-            <div className="flex justify-center mb-6">
-              <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
-                <i className="fas fa-headset text-3xl"></i>
-              </div>
-            </div>
-            <h3 className="text-3xl font-bold mb-4">Still have questions?</h3>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              Cannot find what you are looking for? Our support team is here to help you get the most out of TaskMaster.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex items-center justify-center gap-3">
-                <i className="fas fa-envelope"></i>
-                Contact Support
-              </button>
-              <button className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-2xl font-semibold border border-white/20 transition-all duration-300 backdrop-blur-sm flex items-center justify-center gap-3">
-                <i className="fas fa-book"></i>
-                Browse Documentation
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </>
-  );
-};
 
-export default FAQPage;
+      <div className="container mx-auto px-6 py-12">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Navigation */}
+          <div className="lg:w-1/4">
+            <div className="sticky top-8">
+              <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Table of Contents</h3>
+                <nav className="space-y-2">
+                  {faqSections.map((section, index) => {
+                    const Icon = sectionIcons[section.id];
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => scrollToSection(section.id)}
+                        className={`flex items-center w-full text-left p-3 rounded-lg transition-all duration-300 ${
+                          activeSection === section.id
+                            ? 'bg-red-50 text-red-700 border-l-4 border-red-500'
+                            : 'hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        <div className={`mr-3 ${activeSection === section.id ? 'text-red-500' : 'text-gray-400'}`}>
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium">{index + 1}. {section.title}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:w-3/4">
+            <div className="space-y-8">
+              {faqSections.map((section, index) => {
+                const Icon = sectionIcons[section.id];
+                return (
+                  <div
+                    key={section.id}
+                    id={section.id}
+                    className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-start mb-6">
+                      <div className="bg-[#C42323] p-4 rounded-xl mr-6 text-white">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                          {index + 1}. {section.title}
+                        </h2>
+                        <div className="w-16 h-1 bg-[#C42323] rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="pl-20">
+                      <div className="space-y-4">
+                        {section.items.map((item, idx) => {
+                          const key = `${section.id}-${idx}`;
+                          const isOpen = !!openQuestions[key];
+                          return (
+                            <div
+                              key={key}
+                              className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300"
+                            >
+                              <button
+                                onClick={() => toggleQuestion(section.id, idx)}
+                                className="w-full flex justify-between items-center px-6 py-4 text-left hover:bg-gray-50 transition-colors"
+                                aria-expanded={isOpen}
+                              >
+                                <span className="text-lg font-medium text-teal-700 pr-4">
+                                  {item.question}
+                                </span>
+                                <span
+                                  className={`transform transition-transform duration-300 text-2xl font-light text-teal-600 flex-shrink-0 ${
+                                    isOpen ? "rotate-45" : "rotate-0"
+                                  }`}
+                                >
+                                  +
+                                </span>
+                              </button>
+                              <div
+                                className={`transition-all duration-300 ease-in-out ${
+                                  isOpen 
+                                    ? "max-h-96 opacity-100 pb-6" 
+                                    : "max-h-0 opacity-0 pb-0"
+                                } overflow-hidden`}
+                                aria-hidden={!isOpen}
+                              >
+                                <div className="px-6">
+                                  <p className="text-gray-700 leading-relaxed">
+                                    {item.answer}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Contact Card */}
+            <div className="mt-12 bg-[#2C8C91] rounded-2xl shadow-2xl p-8 text-white">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="md:w-2/3 mb-6 md:mb-0">
+                  <h3 className="text-3xl font-bold mb-4">Still Have Questions?</h3>
+                  <p className="text-white text-lg leading-relaxed">
+                    Our support team is available 24/7 to help you with any questions about our healthcare services. 
+                    Contact us for immediate assistance with emergency services or general inquiries.
+                  </p>
+                </div>
+                <div className="md:w-1/3 text-center">
+                  <a 
+                    href="tel:+911234567890"
+                    className="inline-flex items-center bg-white text-red-600 px-8 py-4 rounded-xl font-semibold hover:bg-red-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5 mr-2" />
+                    Contact Support
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

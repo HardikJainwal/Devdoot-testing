@@ -542,7 +542,7 @@ export default function AboutUsPage() {
               </div>
 
               {/* Community Programs */}
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {/* Mobile Health Units */}
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm border-l-4 border-[#2C8C91]">
                   <div className="w-10 h-10 bg-[#2C8C91] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
@@ -576,20 +576,7 @@ export default function AboutUsPage() {
                 </div>
 
                 {/* Pro Bono Surgeries */}
-                <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm border-l-4 border-[#345268]">
-                  <div className="w-10 h-10 bg-[#345268] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                    <ShieldCheckIcon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#2B2B2A] mb-2">
-                      Pro Bono Surgeries
-                    </h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      Life-changing procedures for children and adults who
-                      cannot afford treatment.
-                    </p>
-                  </div>
-                </div>
+               
               </div>
             </div>
 

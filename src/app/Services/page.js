@@ -83,7 +83,7 @@ const services = [
     bgColor: "bg-slate-50",
   },
   {
-    title: "BloodMate",
+    title: "Social Wall",
     icon: Droplets,
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-50",

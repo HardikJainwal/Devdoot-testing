@@ -30,7 +30,7 @@ export default function Footer() {
       links: [
         { name: 'About Us', href: '/about' },
         { name: 'Careers', href: '/careers' },
-        { name: 'Blog', href: '/blog' },
+        { name: 'Blog', href: '/blogs' },
         { name: 'Contact Us', href: '/contact' }
       ]
     },

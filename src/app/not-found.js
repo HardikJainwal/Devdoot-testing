@@ -6,12 +6,12 @@ export default function NotFound() {
   return (
     <div className="relative flex justify-center items-center min-h-screen">
       {/* Text over the GIF */}
-      <div className="absolute top-10 z-10 text-center px-4">
-        <h1 className="text-black text-3xl font-bold mb-4 drop-shadow-lg">
+      <div className="absolute top-10 z-10 text-center px-4 mb-10">
+        <h1 className="text-black text-3xl font-bold mb-4 ">
           The frontend requested this page. <br />
           The backend said, “bro I didn’t even build that API”
         </h1>
-        <p className="text-black text-lg drop-shadow-md">
+        <p className="text-black text-lg ">
           Maybe it ran away, maybe it never existed, maybe it just ghosted you like your ex.<br />
           <Link
             href="/"
@@ -24,12 +24,12 @@ export default function NotFound() {
 
       {/* Background GIF */}
       <Image
-        src="/images/Animated 404 Page not found/bg.gif"
+        src="/images/notfound.jpg"
         alt="Funny 404"
-        width={1000}
-        height={1000}
+        width={500}
+        height={500}
         priority
-        className="mx-auto"
+        className="mx-auto mt-8"
       />
     </div>
   );

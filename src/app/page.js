@@ -183,7 +183,7 @@ const medicalServices = [
 
   {
     icon: Droplets,
-    title: "BloodMate",
+    title: "Social Wall",
     desc: "Blood donation and transfusion services",
     color: "from-red-600 to-red-500",
     bgColor: "bg-red-50",
@@ -267,7 +267,6 @@ const DoctorsSection = () => {
         rating: doctor.rating,
         fees: Math.round(doctor.pricePerMinute * doctor.sessionTime),
         consultationModes: ["video", "home"],
-        isOnline: true,
         isPaid: PAID_COACH_IDS.includes(doctor._id), // Add paid flag
       }));
 
@@ -440,24 +439,19 @@ const DoctorsSection = () => {
               <div className="relative mb-6">
                 <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-100 group-hover:border-blue-300 transition-colors duration-300">
                   {doctor.profilePicture ? (
-                    <img
-                      src={doctor.profilePicture}
-                      alt={doctor.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                      <span className="text-white text-2xl font-bold">
-                        {getInitials(doctor.name)}
-                      </span>
-                    </div>
-                  )}
+  <img
+    src={doctor.profilePicture}
+    alt={doctor.name}
+    className="w-full h-full object-cover"
+  />
+) : (
+  <img
+    src="/images/devdoot-round.png"
+    alt={doctor.name || "Doctor"}
+    className="w-full h-full object-cover"
+  />
+)}
                 </div>
-                {doctor.isOnline && (
-                  <div className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2">
-                    <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                  </div>
-                )}
               </div>
 
               <div className="text-center mb-4">

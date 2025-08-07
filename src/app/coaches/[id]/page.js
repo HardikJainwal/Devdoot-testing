@@ -122,36 +122,38 @@ export default function CoachProfilePage() {
 
       // Transform the API response to match component structure
       const mappedCoach = {
-        _id: coachData._id,
-        name: coachData.coachName || "Dr. Name",
-        specialization: coachData.specialization || "General Physician",
-        profilePicture: coachData.profilePhoto,
-        experience: coachData.experienceYear || 5,
-        rating: coachData.rating || 4.8,
-        sessionTime: coachData.sessionTime || 45,
-        pricePerMinute: coachData.pricePerMinute || 20,
-        languages: coachData.languages || ["English"],
-        currency: coachData.currency || "INR",
-        fees: Math.round(
-          (coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)
-        ),
-        isOnline: true,
-        consultationModes: ["video", "home"],
-        location: coachData.location || "Available Online",
-        about:
-          coachData.about ||
-          `Dr. ${coachData.coachName} is a highly experienced ${
-            coachData.specialization || "healthcare professional"
-          } with over ${
-            coachData.experienceYear || 5
-          } years of experience. With over ${
-            coachData.experienceYear || 5
-          } years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${
-            coachData.specialization?.toLowerCase() || "healthcare"
-          } and have helped numerous patients achieve better health outcomes.`,
-        totalPatients: Math.floor(Math.random() * 500) + 100,
-        reviewCount: Math.floor(Math.random() * 50) + 10,
-      };
+  _id: coachData._id,
+  name: coachData.coachName || "Dr. Name",
+  specialization: coachData.specialization || "General Physician",
+  profilePicture: coachData.profilePhoto,
+  experience: coachData.experienceYear || 5,
+  rating: coachData.rating || 4.8,
+  sessionTime: coachData.sessionTime || 45,
+  pricePerMinute: coachData.pricePerMinute || 20,
+  languages: coachData.languages || ["English"],
+  currency: coachData.currency || "INR",
+  fees: Math.round(
+    (coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)
+  ),
+  
+  consultationModes: ["video", "home"],
+  location: coachData.location || "Available Online",
+  
+  // Updated this line to use the bio field from API
+  about: coachData.bio || `Dr. ${coachData.coachName} is a highly experienced ${
+    coachData.specialization || "healthcare professional"
+  } with over ${
+    coachData.experienceYear || 5
+  } years of experience. With over ${
+    coachData.experienceYear || 5
+  } years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${
+    coachData.specialization?.toLowerCase() || "healthcare"
+  } and have helped numerous patients achieve better health outcomes.`,
+  
+  totalPatients: Math.floor(Math.random() * 500) + 100,
+  reviewCount: Math.floor(Math.random() * 50) + 10,
+};
+
 
       setCoach(mappedCoach);
     } catch (err) {
@@ -264,7 +266,7 @@ export default function CoachProfilePage() {
         categorized.morning.push(slot);
       } else if (hour >= 12 && hour < 17) {
         categorized.afternoon.push(slot);
-      } else {
+      } else {  
         categorized.evening.push(slot);
       }
     });

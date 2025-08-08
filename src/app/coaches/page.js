@@ -37,7 +37,6 @@ export default function AllDoctorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
-  // Filter states
   const [filters, setFilters] = useState({
     specialization: "",
     language: "",
@@ -86,7 +85,7 @@ export default function AllDoctorsPage() {
       const mappedDoctors = doctorsData.map((doctor, index) => ({
         _id: doctor._id || `doctor-${index}`,
         name: doctor.coachName || `Doctor ${index + 1}`,
-        specialization: doctor.specialization ,
+        specialization: doctor.specialization,
         profilePicture: doctor.profilePhoto,
         experience: doctor.experienceYear || 5,
         rating: doctor.rating || Math.random() * 2 + 3.5,
@@ -483,7 +482,6 @@ export default function AllDoctorsPage() {
                               />
                             )}
                           </div>
-                         
                         </div>
 
                         <div className="flex-1">
@@ -609,19 +607,19 @@ export default function AllDoctorsPage() {
                           </div>
                         </div>
 
-                       <button
-  className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
-  onClick={(e) => {
-    e.stopPropagation();
-    handleCoachClick(doctor._id);
-  }}
->
-  <FontAwesomeIcon
-    icon={faCalendarAlt}
-    className="w-4 h-4"
-  />
-  <span>Book Session</span>
-</button>
+                        <button
+                          className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCoachClick(doctor._id);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCalendarAlt}
+                            className="w-4 h-4"
+                          />
+                          <span>Book Session</span>
+                        </button>
                       </div>
                     </div>
                   </motion.div>

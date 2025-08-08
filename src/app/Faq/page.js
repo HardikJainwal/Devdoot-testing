@@ -22,12 +22,12 @@ const faqSections = [
       {
         question: "What is Devdoot?",
         answer:
-          "Devdoot is a comprehensive healthcare platform in India, offering emergency ambulance services, virtual health coaching, care camps for villages, health packages, and more. We're here to make quality care accessible to all.",
+          "Devdoot is India’s all-in-one healthcare platform, built to make quality care accessible for everyone, anytime, anywhere. From emergency ambulance services to virtual health coaching, care camps for villages, health packages, and more, we are bringing healthcare closer to people’s lives with compassion and innovation.",
       },
       {
         question: "How can I access Devdoot's services?",
         answer:
-          "You can book services through our website forms, call our 24/7 helpline, or download the Devdoot app (if available) for real-time tracking and support.",
+          "You can book services through our website forms, call our 24/7 helpline, or download the Devdoot app for real-time tracking and support.",
       },
       {
         question: "Where does Devdoot operate?",

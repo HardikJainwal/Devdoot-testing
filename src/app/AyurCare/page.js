@@ -621,22 +621,22 @@ const handleCoachClick = (coachId) => {
                 icon: Leaf,
                 bg: "bg-teal-100",
                 color: "text-[#2C8C91]",
-                title: "Holistic Wellness Approach",
-                desc: "We treat the root cause, not just the symptoms, by creating harmony between your mind, body, and spirit.",
+                title: "A Holistic Path to Wellness",
+                desc: "We treat the root cause, not just the symptoms, by creating harmony between your mind, body, and spirit. Journey with us is rooted in harmony, mindfulness and long term well being",
               },
               {
                 icon: Stethoscope,
                 bg: "bg-red-100",
                 color: "text-[#C42323]",
                 title: "Certified Ayurvedic Doctors",
-                desc: "Our team of experienced and certified Vaidyas provides authentic and trustworthy guidance.",
+                desc: "Our team of experienced and certified Vaidyas provides authentic and trustworthy guidance. With them, you're in the right hands.",
               },
               {
                 icon: Users,
                 bg: "bg-blue-100",
                 color: "text-blue-600",
-                title: "Personalized Healing Plans",
-                desc: "Receive custom-tailored diet, lifestyle, and herbal plans designed specifically for your unique constitution.",
+                title: "Care plans made specially for you",
+                desc: "No two people are the same, and your healing plans shouldn't be either. Receive custom-tailored diet, lifestyle, and herbal plans designed specifically for your unique constitution.",
               },
             ].map((item, index) => (
               <div
@@ -660,7 +660,7 @@ const handleCoachClick = (coachId) => {
       <section id="services" className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
           <h2 className="text-5xl font-bold text-center text-[#C42323] mb-12">
-            Our <span className="text-[#2C8C91]">Services</span>
+            Our <span className="text-[#2C8C91]">Services/What We Offer</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 text-center">
@@ -693,7 +693,7 @@ const handleCoachClick = (coachId) => {
               Meet Our <span className="text-[#2C8C91]">Expert Doctors</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our team of certified Ayurvedic doctors brings decades of experience in traditional healing and modern wellness approaches.
+            Our team of certified Ayurvedic doctors combines traditional Ayurvedic knowledge with a modern, empathetic approach to support you holistically
             </p>
           </div>
 
@@ -797,11 +797,11 @@ const handleCoachClick = (coachId) => {
       <section id="dosha-quiz" className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">Explore Our Wellness Quizzes</h2>
-          <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">These short quizzes are designed to give you a glimpse into your unique Ayurvedic profile and current state of balance.</p>
+          <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Curious where you stand on your wellness journey? Our quick, insightful quizzes are a great place to start.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-center">
               <Users className="w-12 h-12 text-[#C42323] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Your Core Constitution (Prakriti)</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Know Your Core Constitution (Prakriti)</h3>
               <p className="text-gray-600 mb-6 flex-grow">Discover your fundamental mind-body type to unlock personalized health insights.</p>
               <button 
                 className="mt-auto bg-[#C42323] text-white px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition" 
@@ -812,7 +812,7 @@ const handleCoachClick = (coachId) => {
             </div>
             <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-center">
               <Scale className="w-12 h-12 text-[#2C8C91] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Your Current Imbalance (Vikriti)</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Assess Your Current Imbalance (Vikriti)</h3>
               <p className="text-gray-600 mb-6 flex-grow">Assess your current symptoms to understand which doshas are presently out of balance.</p>
               <button 
                 className="mt-auto bg-[#C42323] text-white px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition" 
@@ -823,7 +823,7 @@ const handleCoachClick = (coachId) => {
             </div>
             <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-center">
               <Brain className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Mental Wellness (Manas)</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Check In On Your Mental Wellness (Manas)</h3>
               <p className="text-gray-600 mb-6 flex-grow">Evaluate your mental and emotional state to cultivate more peace and clarity.</p>
               <button 
                 className="mt-auto bg-[#C42323] text-white px-6 py-2 rounded-full font-semibold hover:bg-opacity-90 transition" 

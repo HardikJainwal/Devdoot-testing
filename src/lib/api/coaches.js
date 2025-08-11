@@ -2,7 +2,7 @@
 const API_BASE_URL = 'https://devdoot-backend.onrender.com/v1/api';
 
 // Token for authentication
-const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MzQzNTkxZjJlNDJjMDNmZGM1YzBmMCIsInVzZXJUeXBlIjoiY2FyZS1naXZlciIsImVtYWlsIjoic2hhcm1hYXJpY2s2NjlAZ21haWwuY29tIn0sImlzVmVyaWZpZWQiOnRydWUsImlhdCI6MTc1NDI5NDU4OSwiZXhwIjoxNzU0NTUzNzg5fQ.BE5Bk5s2lkQRPSJYMhnVpnSkCQ8leArM6yttPudzrMc';
+const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MGYwZjM4ZjdjY2UwOTgyN2IxODE0NSIsInVzZXJUeXBlIjoicGF0aWVudCIsImVtYWlsIjoibWFkYWFuZGhydXY1NEBnbWFpbC5jb20ifSwiaXNWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzU0ODg4NTQyLCJleHAiOjE3NTUxNDc3NDJ9.wSgyE506jwo38siNwmrglNxflqW4HB2twbTHJn8A-Eg';
 
 export const fetchCoaches = async (page = 1, limit = 12) => {
   try {

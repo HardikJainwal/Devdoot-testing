@@ -69,7 +69,7 @@ export default function CertificationCarousel() {
     <div className="max-w-6xl mx-auto"> {/* Add this wrapper */}
       <Slider {...settings}>
         {certifications.map((cert, idx) => (
-          <div key={idx} className="flex justify-center items-center p-4">
+          <div key={idx} className="flex bg-white justify-center items-center p-4">
             <img src={cert.src} alt={cert.alt} className="w-36 h-36 object-contain" />
           </div>
         ))}

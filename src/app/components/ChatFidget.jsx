@@ -131,9 +131,9 @@ const ChatFidget = () => {
     <div className="fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 z-50">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-full sm:w-96 h-[calc(100vh-120px)] sm:h-[500px] max-h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col animate-in slide-in-from-bottom-2 duration-300">
+        <div className="mb-4 w-full sm:w-96  sm:h-[500px] max-h-[600px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col animate-in slide-in-from-bottom-2 duration-300">
           {/* Header */}
-          <div className="bg-white text-white p-3 rounded-t-lg flex items-center justify-between relative overflow-hidden">
+          <div className=" p-3 rounded-t-lg flex items-center justify-between relative overflow-hidden">
             <div className="flex items-center space-x-2 sm:space-x-3 z-10 min-w-0 flex-1">
               <img
                 src="/images/Logo.png"
@@ -167,7 +167,7 @@ const ChatFidget = () => {
             <div
               className="absolute inset-0 bg-[#2C8C91]"
               style={{
-                left: "60px",
+                left: "100px",
                 clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0% 100%)",
               }}
             ></div>

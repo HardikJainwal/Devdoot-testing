@@ -19,7 +19,7 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
-import { fetchCoaches } from "@/lib/api/coaches";
+import { fetchCoaches, fetchCoachesBySpecialization } from "@/lib/api/coaches";
 import Shimmer from "../components/Shimmer";
 
 const poppins = Poppins({
@@ -38,7 +38,6 @@ export default function AllDoctorsPage() {
   const [showFilters, setShowFilters] = useState(false);
 
   const [filters, setFilters] = useState({
-    specialization: "",
     language: "",
     priceRange: [0, 5000],
     experienceRange: [0, 50],
@@ -47,13 +46,12 @@ export default function AllDoctorsPage() {
   });
 
   const [availableFilters, setAvailableFilters] = useState({
-    specializations: [],
     languages: [],
     countries: [],
   });
 
   useEffect(() => {
-    loadDoctors(currentPage);
+    loadMentalHealthCoaches(currentPage);
   }, [currentPage]);
 
   useEffect(() => {
@@ -62,65 +60,70 @@ export default function AllDoctorsPage() {
     }
   }, [doctors]);
 
-  const loadDoctors = async (page) => {
+  // Fixed function to fetch Mental Health Coaches using the API function
+  const loadMentalHealthCoaches = async (page) => {
     try {
       setLoading(true);
-      const response = await fetchCoaches(page, 12);
+      setError(null);
+      
+      // Use the existing API function with proper authentication
+      const response = await fetchCoachesBySpecialization(
+        "Mental Health Support Coach", 
+        page, 
+        10
+      );
 
       if (!response || !response.success) {
-        setError(response?.message || "Failed to load doctors");
+        setError(response?.message || "Failed to load Mental Health coaches");
         setLoading(false);
         return;
       }
 
-      const doctorsData = response.data?.data || [];
+      const coachesData = response.data?.data || [];
       const totalCount = response.data?.total_results || 0;
 
-      if (!Array.isArray(doctorsData)) {
+      if (!Array.isArray(coachesData)) {
         setError("Invalid data format received from API");
         setLoading(false);
         return;
       }
 
-      const mappedDoctors = doctorsData.map((doctor, index) => ({
-        _id: doctor._id || `doctor-${index}`,
-        name: doctor.coachName || `Doctor ${index + 1}`,
-        specialization: doctor.specialization,
-        profilePicture: doctor.profilePhoto,
-        experience: doctor.experienceYear || 5,
-        rating: doctor.rating || Math.random() * 2 + 3.5,
-        sessionTime: doctor.sessionTime || 45,
-        pricePerMinute: doctor.pricePerMinute || 20,
-        languages: doctor.languages || ["English"],
-        currency: doctor.currency || "INR",
+      const mappedCoaches = coachesData.map((coach, index) => ({
+        _id: coach._id || `coach-${index}`,
+        name: coach.coachName || `Mental Health Coach ${index + 1}`,
+        specialization: "Mental Health Support Coach", // Fixed specialization
+        profilePicture: coach.profilePhoto,
+        experience: coach.experienceYear || 5,
+        rating: coach.rating || Math.random() * 2 + 3.5,
+        sessionTime: coach.sessionTime || 45,
+        pricePerMinute: coach.pricePerMinute || 20,
+        languages: coach.languages || ["English"],
+        currency: coach.currency || "INR",
         fees: Math.round(
-          (doctor.pricePerMinute || 20) * (doctor.sessionTime || 45)
+          (coach.pricePerMinute || 20) * (coach.sessionTime || 45)
         ),
         isOnline: Math.random() > 0.5,
         consultationModes: ["video", "home"],
         location: "Available Online",
       }));
 
-      setDoctors(mappedDoctors);
-      setTotalPages(Math.ceil(totalCount / 12));
+      setDoctors(mappedCoaches);
+      setTotalPages(Math.ceil(totalCount / 10));
     } catch (err) {
-      setError(`Error loading doctors: ${err.message}`);
+      setError(`Error loading Mental Health coaches: ${err.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   const extractFilterOptions = () => {
-    const specializations = [
-      ...new Set(doctors.map((d) => d.specialization).filter(Boolean)),
-    ];
+    // Removed specializations since we're only showing Mental Health coaches
     const languages = [...new Set(doctors.flatMap((d) => d.languages || []))];
     const countries = [
       ...new Set(doctors.map((d) => d.location).filter(Boolean)),
     ];
 
     setAvailableFilters({
-      specializations,
       languages,
       countries,
     });
@@ -139,7 +142,6 @@ export default function AllDoctorsPage() {
 
   const clearFilters = () => {
     setFilters({
-      specialization: "",
       language: "",
       priceRange: [0, 5000],
       experienceRange: [0, 50],
@@ -157,10 +159,7 @@ export default function AllDoctorsPage() {
       doctor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       doctor.specialization?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesSpecialization =
-      !filters.specialization ||
-      doctor.specialization === filters.specialization;
-
+    // Removed specialization filter since all are Mental Health coaches
     const matchesLanguage =
       !filters.language || doctor.languages?.includes(filters.language);
 
@@ -178,7 +177,6 @@ export default function AllDoctorsPage() {
 
     return (
       matchesSearch &&
-      matchesSpecialization &&
       matchesLanguage &&
       matchesPrice &&
       matchesExperience &&
@@ -188,7 +186,7 @@ export default function AllDoctorsPage() {
   });
 
   const getInitials = (name) => {
-    if (!name) return "DR";
+    if (!name) return "MH"; // MH for Mental Health
     return name
       .split(" ")
       .map((n) => n[0])
@@ -212,7 +210,7 @@ export default function AllDoctorsPage() {
             {error}
           </p>
           <button
-            onClick={() => loadDoctors(currentPage)}
+            onClick={() => loadMentalHealthCoaches(currentPage)}
             className={`${poppins.className} bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg`}
           >
             Try Again
@@ -232,7 +230,7 @@ export default function AllDoctorsPage() {
               animate={{ opacity: 1, y: 0 }}
               className={`${poppins.className} text-3xl sm:text-4xl font-bold text-white mb-4`}
             >
-              Our Expert Coaches
+              Our Mental Health Coaches
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -20 }}
@@ -240,8 +238,7 @@ export default function AllDoctorsPage() {
               transition={{ delay: 0.2 }}
               className={`${poppins.className} text-lg text-blue-100 max-w-3xl mx-auto`}
             >
-              Connect with qualified healthcare professionals for personalized
-              care
+              Connect with qualified mental health professionals for personalized support
             </motion.p>
           </div>
         </div>
@@ -284,28 +281,6 @@ export default function AllDoctorsPage() {
                 {availableFilters.countries.map((country) => (
                   <option key={country} value={country}>
                     {country}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="mb-6">
-              <label
-                className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}
-              >
-                Specialization
-              </label>
-              <select
-                value={filters.specialization}
-                onChange={(e) =>
-                  handleFilterChange("specialization", e.target.value)
-                }
-                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              >
-                <option value="">All Specializations</option>
-                {availableFilters.specializations.map((spec) => (
-                  <option key={spec} value={spec}>
-                    {spec}
                   </option>
                 ))}
               </select>
@@ -408,7 +383,7 @@ export default function AllDoctorsPage() {
                 <div className="relative flex-1 max-w-md">
                   <input
                     type="text"
-                    placeholder="Search doctors by name or specialty..."
+                    placeholder="Search mental health coaches by name..."
                     value={searchTerm}
                     onChange={handleSearch}
                     className={`${poppins.className} w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
@@ -438,7 +413,7 @@ export default function AllDoctorsPage() {
                   </button>
 
                   <div className={`${poppins.className} text-sm text-gray-600`}>
-                    Showing {filteredDoctors.length} of {doctors.length} doctors
+                    Showing {filteredDoctors.length} of {doctors.length} coaches
                   </div>
                 </div>
               </div>
@@ -448,7 +423,7 @@ export default function AllDoctorsPage() {
               {filteredDoctors.length === 0 ? (
                 <div className="text-center py-12 bg-white rounded-lg">
                   <p className={`${poppins.className} text-lg text-gray-600`}>
-                    No doctors found matching your search criteria.
+                    No mental health coaches found matching your search criteria.
                   </p>
                 </div>
               ) : (
@@ -472,11 +447,11 @@ export default function AllDoctorsPage() {
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                   e.target.src = "/images/devdoot-round.png";
-                                }} // Fallback to logo.png if image fails to load
+                                }} 
                               />
                             ) : (
                               <img
-                                src="/images/devdoot-round.png" // Default to logo.png if no profilePicture
+                                src="/images/devdoot-round.png"
                                 alt="Default Logo"
                                 className="w-14 h-14 object-contain"
                               />
@@ -490,12 +465,12 @@ export default function AllDoctorsPage() {
                               <h3
                                 className={`${poppins.className} text-xl font-semibold text-gray-900 mb-1`}
                               >
-                                {doctor.name || "Dr. Name"}
+                                {doctor.name || "Mental Health Coach"}
                               </h3>
                               <p
                                 className={`${poppins.className} text-sm text-gray-600 mb-1`}
                               >
-                                {doctor.specialization || "General Physician"}
+                                {doctor.specialization || "Mental Health Support Coach"}
                               </p>
                               <p
                                 className={`${poppins.className} text-xs text-blue-600 font-medium`}
@@ -506,7 +481,7 @@ export default function AllDoctorsPage() {
                                 />
                                 {doctor.experience
                                   ? `${doctor.experience} years`
-                                  : "10+ years"}{" "}
+                                  : "5+ years"}{" "}
                                 experience
                               </p>
                             </div>
@@ -549,12 +524,9 @@ export default function AllDoctorsPage() {
                           <p
                             className={`${poppins.className} text-sm text-gray-600 mb-4 line-clamp-2`}
                           >
-                            Energetic, motivated, loving healthcare professional
-                            with extensive experience in{" "}
-                            {doctor.specialization?.toLowerCase() ||
-                              "healthcare"}
-                            . Dedicated to providing excellent patient care and
-                            treatment.
+                            Compassionate and experienced mental health professional 
+                            dedicated to providing personalized support and guidance 
+                            for your emotional wellbeing and mental health journey.
                           </p>
 
                           <div className="flex flex-wrap gap-2 mb-4">
@@ -588,7 +560,7 @@ export default function AllDoctorsPage() {
                             <span
                               className={`${poppins.className} text-2xl font-bold text-gray-900`}
                             >
-                              ₹{doctor.fees || "1200"}
+                              ₹{doctor.fees || "900"}
                             </span>
                             <span
                               className={`${poppins.className} text-sm text-gray-600 block`}

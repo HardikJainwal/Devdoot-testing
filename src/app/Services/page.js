@@ -197,12 +197,14 @@ export default function Services() {
                     router.push("/coaches");
                   } else if (service.title === "AyurCare") {
                     router.push("/AyurCare");
+                  } else if (service.title === "Mental Health") {
+                    router.push("/MentalHealth");
                   } else {
                     showToast(service);
                   }
                 }}
               >
-                 {(service.title === "AyurCare" || service.title === "Coach Match") && (
+                 {(service.title === "AyurCare" || service.title === "Coach Match" || service.title === "Mental Health") && (
     <div className="absolute top-3 right-3 z-10">
       <div className="bg-[#C42323] text-white p-1.5 rounded-full shadow-lg animate-pulse">
         <TrendingUp className="w-4 h-4" />
@@ -229,10 +231,11 @@ export default function Services() {
                   </h3>
 
                   {/* Coming soon badge */}
-                  <div className="inline-flex items-center gap-1 bg-white/70 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                  <div className="inline-flex items-center gap-1  text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
                     {/* Status badge */}
                     {service.title === "AyurCare" ||
-                    service.title === "Coach Match" ? (
+                    service.title === "Coach Match" ||
+                    service.title === "Mental Health" ? (
                       <div className="inline-flex items-center gap-1 bg-[#C42323] text-white px-3 py-1 rounded-full text-xs font-medium shadow-md animate-pulse">
                         <TrendingUp className="w-3 h-3" />
                         Live Now

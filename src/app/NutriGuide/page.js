@@ -1,385 +1,458 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Star, CheckCircle, Users, TrendingUp, Award, Heart, ArrowRight, Play, User, Clock, DollarSign } from 'lucide-react'
 
-export default function Home() {
-  const [waterProgress, setWaterProgress] = useState(0)
-  const [coachIndex, setCoachIndex] = useState(0)
-  const [slidesInView, setSlidesInView] = useState(3)
+export default function CoachingPlatform() {
+  const [coaches, setCoaches] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [testimonialIndex, setTestimonialIndex] = useState(0)
+  const [stats, setStats] = useState({
+    totalCoaches: 0,
+    successStories: 2847,
+    averageRating: 4.9,
+    transformations: 15000
+  })
 
-  const coaches = [
+
+  const mockNutritionCoaches = [
     {
       id: 1,
-      name: "Dr. Priya Sharma",
-      title: "Certified Nutrition Expert",
-      image: "https://i.pravatar.cc/300?img=5"
+      name: "Dr. Sarah Mitchell",
+      title: "Certified Nutrition Specialist",
+      rating: 4.9,
+      reviews: 127,
+      experience: "8 years",
+      price: 150,
+      image: "https://i.pravatar.cc/400?img=1",
+      specialties: ["Weight Management", "Sports Nutrition", "Meal Planning"],
+      bio: "Transforming lives through personalized nutrition strategies and sustainable lifestyle changes.",
+      featured: true,
+      sessionsCompleted: 850
     },
     {
       id: 2,
-      name: "Mark Johnson",
-      title: "Fitness & Performance Coach",
-      image: "https://i.pravatar.cc/300?img=8"
+      name: "Marcus Johnson",
+      title: "Performance Nutrition Coach",
+      rating: 4.8,
+      reviews: 89,
+      experience: "12 years",
+      price: 200,
+      image: "https://i.pravatar.cc/400?img=7",
+      specialties: ["Athletic Performance", "Body Composition", "Supplement Guidance"],
+      bio: "Helping athletes and fitness enthusiasts optimize their performance through targeted nutrition.", 
+      featured: false,
+      sessionsCompleted: 1200
     },
     {
       id: 3,
-      name: "Emily Chen",
-      title: "Holistic Wellness Guide",
-      image: "https://i.pravatar.cc/300?img=7"
+      name: "Dr. Emily Chen",
+      title: "Holistic Nutrition Expert",
+      rating: 5.0,
+      reviews: 156,
+      experience: "6 years",
+      price: 120,
+      image: "https://i.pravatar.cc/400?img=5",
+      specialties: ["Gut Health", "Anti-inflammatory Diet", "Hormonal Balance"],
+      bio: "Combining traditional nutrition science with holistic wellness approaches for optimal health.",
+      
+      featured: true,
+      sessionsCompleted: 750
     },
     {
       id: 4,
-      name: "David Lee",
-      title: "Mindfulness Practitioner",
-      image: "https://i.pravatar.cc/300?img=10"
+      name: "Alex Rodriguez",
+      title: "Clinical Nutritionist",
+      rating: 4.9,
+      reviews: 203,
+      experience: "10 years",
+      price: 180,
+      image: "https://i.pravatar.cc/400?img=8",
+      specialties: ["Diabetes Management", "Heart Health", "Weight Loss"],
+      bio: "Clinical expertise in managing chronic conditions through evidence-based nutrition therapy.",
+      
+      featured: false,
+      sessionsCompleted: 950
+    },
+    {
+      id: 5,
+      name: "Jennifer Adams",
+      title: "Family Nutrition Coach",
+      rating: 4.7,
+      reviews: 94,
+      experience: "7 years",
+      price: 130,
+      image: "https://i.pravatar.cc/400?img=9",
+      specialties: ["Child Nutrition", "Family Meal Planning", "Picky Eaters"],
+      bio: "Helping families develop healthy eating habits that work for everyone around the table.",
+      
+      featured: false,
+      sessionsCompleted: 680
+    },
+    {
+      id: 6,
+      name: "David Park",
+      title: "Plant-Based Nutrition Expert",
+      rating: 4.8,
+      reviews: 112,
+      experience: "9 years",
+      price: 160,
+      image: "https://i.pravatar.cc/400?img=6",
+      specialties: ["Vegan Nutrition", "Plant-Based Transitions", "Sustainable Eating"],
+      bio: "Guiding individuals towards thriving plant-based lifestyles with proper nutritional balance.",
+      featured: true,
+      sessionsCompleted: 820
     }
   ]
 
-  const meals = [
+  const testimonials = [
     {
-      type: "Breakfast",
-      name: "Oatmeal with Berries",
-      calories: 350,
-      image: "https://placehold.co/80x80/03989e/F7F8FC?text=Oats",
-      color: "bg-brand-cyan"
+      name: "Sarah Thompson",
+      role: "Working Mother",
+      content: "My nutrition coach helped me lose 30 pounds while maintaining energy for my busy lifestyle. The personalized meal plans were game-changing!",
+      image: "https://i.pravatar.cc/100?u=a",
+      rating: 5
     },
     {
-      type: "Lunch",
-      name: "Grilled Chicken Salad",
-      calories: 450,
-      image: "https://placehold.co/80x80/2c8c91/F7F8FC?text=Salad",
-      color: "bg-brand-teal"
-    },
-    {
-      type: "Dinner",
-      name: "Baked Salmon & Asparagus",
-      calories: 550,
-      image: "https://placehold.co/80x80/345268/F7F8FC?text=Salmon",
-      color: "bg-brand-slate"
-    },
-    {
-      type: "Snacks",
-      name: "Apple with Peanut Butter",
-      calories: 200,
-      image: "https://placehold.co/80x80/c42323/F7F8FC?text=Apple",
-      color: "bg-brand-red"
-    }
-  ]
-
-  const communityStories = [
-    {
-      name: "Sarah J.",
-      achievement: "Lost 10kg in 3 months",
-      quote: "The coaching was a game-changer. Finally found a plan that works for me!",
+      name: "Michael Chen",
+      role: "Professional Athlete", 
+      content: "My performance improved dramatically with proper nutrition guidance. Recovery time decreased and strength gains increased significantly.",
       image: "https://i.pravatar.cc/100?u=b",
-      gradient: "from-brand-cyan to-brand-teal"
+      rating: 5
     },
     {
-      name: "Mike R.",
-      achievement: "Energy Levels Up 50%",
-      quote: "My energy levels are through the roof. I feel more focused and in control of my health.",
-      image: "https://i.pravatar.cc/100?u=c",
-      gradient: "from-brand-red to-red-500"
-    },
-    {
-      name: "Chloe T.",
-      achievement: "Built a Healthy Lifestyle",
-      quote: "Learned so much about nutrition. It's not a diet, it's a lifestyle that I actually enjoy.",
-      image: "https://i.pravatar.cc/100?u=d",
-      gradient: "from-brand-slate to-slate-600"
-    },
-    {
-      name: "James F.",
-      achievement: "Ran First 5k Race",
-      quote: "Never thought I could be a runner. The structured plan made it possible!",
-      image: "https://i.pravatar.cc/100?u=e",
-      gradient: "from-brand-teal to-cyan-700"
+      name: "Lisa Rodriguez",
+      role: "Health Enthusiast",
+      content: "Finally found a sustainable approach to healthy eating. My energy levels and overall wellbeing have never been better.",
+      image: "https://i.pravatar.cc/100?u=c", 
+      rating: 5
     }
   ]
 
+  // Simulate API call
   useEffect(() => {
-    // Animate water progress bar on load
-    const timer = setTimeout(() => {
-      setWaterProgress(75) // 6 out of 8 glasses
-    }, 300)
+    const fetchCoaches = async () => {
+      setLoading(true)
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      setCoaches(mockNutritionCoaches)
+      setStats(prev => ({ ...prev, totalCoaches: mockNutritionCoaches.length }))
+      setLoading(false)
+    }
 
-    return () => clearTimeout(timer)
+    fetchCoaches()
   }, [])
 
+  // Auto-rotate testimonials
   useEffect(() => {
-    const updateSlidesInView = () => {
-      if (window.innerWidth < 768) {
-        setSlidesInView(1)
-      } else if (window.innerWidth < 1024) {
-        setSlidesInView(2)
-      } else {
-        setSlidesInView(3)
-      }
-    }
-
-    updateSlidesInView()
-    window.addEventListener('resize', updateSlidesInView)
-    return () => window.removeEventListener('resize', updateSlidesInView)
+    const interval = setInterval(() => {
+      setTestimonialIndex((prev) => (prev + 1) % testimonials.length)
+    }, 4000)
+    return () => clearInterval(interval)
   }, [])
 
-  const nextCoach = () => {
-    if (coachIndex < coaches.length - slidesInView) {
-      setCoachIndex(coachIndex + 1)
-    }
-  }
-
-  const prevCoach = () => {
-    if (coachIndex > 0) {
-      setCoachIndex(coachIndex - 1)
-    }
-  }
+  const featuredCoaches = coaches.filter(coach => coach.featured)
 
   return (
-    <div className="min-h-screen bg-brand-light">
-      {/* Header */}
-      
-
-      <main className="container mx-auto px-4 sm:px-6 py-6 space-y-8">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-brand-slate via-brand-slate to-brand-teal rounded-2xl p-8 text-center flex flex-col items-center justify-center min-h-[280px] shadow-xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[#345268] to-transparent"></div>
-          <div className="relative z-10">
-            <h1 className="text-3xl md:text-5xl font-bold text-brand-light mb-4 text-white animate-slide-up">
-              Transform Your Health! 
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Hero Section */}
+      <section className="relative py-20 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10"></div>
+        <div className="container mx-auto text-center relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+              Transform Your Health
+              <br />
+              <span className="text-gray-800">With Expert Nutrition Coaching</span>
             </h1>
-            <p className="max-w-md mb-8 text-slate-200 text-lg animate-fade-in items-center align-middle">
-              Your personalized journey to wellness starts now. Connect with top experts who guide you every step of the way.
+            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Connect with certified nutrition experts who will create personalized plans to help you achieve your health and wellness goals.
             </p>
-            <button className="bg-[#c42323]  text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              Meet Our Coaches 
-            </button>
-          </div>
-        </section>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                <ArrowRight className="w-5 h-5" />
+                Find Your Nutrition Coach
+              </button>
+            </div>
 
-        {/* User Greeting */}
-        <section className="animate-fade-in">
-          <h2 className="text-2xl font-bold text-brand-dark mb-4">Hello, Alex! 👋</h2>
-          <div className="flex justify-between items-center bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <p className="text-gray-600 italic text-lg">The journey of a thousand miles begins with a single step.</p>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-brand-red animate-bounce-gentle">🔥 12</div>
-              <div className="text-xs text-gray-500 font-medium">Day Streak</div>
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="flex items-center justify-center mb-3">
+                  <Users className="w-8 h-8 text-blue-600" />
+                </div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">{stats.totalCoaches}+</div>
+                <div className="text-gray-600 font-medium">Expert Coaches</div>
+              </div>
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="flex items-center justify-center mb-3">
+                  <Heart className="w-8 h-8 text-purple-600" />
+                </div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">{stats.successStories.toLocaleString()}</div>
+                <div className="text-gray-600 font-medium">Success Stories</div>
+              </div>
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="flex items-center justify-center mb-3">
+                  <Star className="w-8 h-8 text-pink-600 fill-current" />
+                </div>
+                <div className="text-3xl font-bold text-pink-600 mb-2">{stats.averageRating}</div>
+                <div className="text-gray-600 font-medium">Average Rating</div>
+              </div>
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="flex items-center justify-center mb-3">
+                  <TrendingUp className="w-8 h-8 text-indigo-600" />
+                </div>
+                <div className="text-3xl font-bold text-indigo-600 mb-2">{stats.transformations.toLocaleString()}+</div>
+                <div className="text-gray-600 font-medium">Lives Transformed</div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Progress Tracker */}
-        <section className="animate-slide-up">
-          <h3 className="text-xl font-bold mb-4 text-brand-dark">Todays Progress</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-sm text-gray-500 mb-1">Calories</div>
-              <div className="text-2xl font-bold text-brand-teal">1,280</div>
-              <div className="text-xs text-gray-400">/ 2,000 kcal</div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                <div className="bg-brand-teal h-1.5 rounded-full" style={{width: '64%'}}></div>
-              </div>
+      {/* Featured Coaches Preview */}
+      <section className="py-16 px-6" id="featured">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Award className="w-8 h-8 text-yellow-500" />
+              <h2 className="text-4xl font-bold text-gray-800">Featured Nutrition Experts</h2>
             </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-sm text-gray-500 mb-1">Protein</div>
-              <div className="text-2xl font-bold text-brand-slate">80</div>
-              <div className="text-xs text-gray-400">/ 120 g</div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                <div className="bg-brand-slate h-1.5 rounded-full" style={{width: '67%'}}></div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-sm text-gray-500 mb-1">Carbs</div>
-              <div className="text-2xl font-bold text-brand-red">150</div>
-              <div className="text-xs text-gray-400">/ 250 g</div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                <div className="bg-brand-red h-1.5 rounded-full" style={{width: '60%'}}></div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-              <div className="text-sm text-gray-500 mb-1">Water</div>
-              <div className="text-2xl font-bold text-brand-cyan">6</div>
-              <div className="text-xs text-gray-400">/ 8 glasses</div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                <div className="bg-brand-cyan h-1.5 rounded-full" style={{width: '75%'}}></div>
-              </div>
-            </div>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Meet our top-rated nutrition coaches who have helped thousands transform their health
+            </p>
           </div>
           
-          <button className="w-full bg-gradient-to-r from-brand-cyan to-brand-teal text-brand-light py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
-            📝 Log Todays Meals
-          </button>
-        </section>
-
-        {/* Daily Challenge */}
-        <section className="animate-fade-in">
-          <div className="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 text-brand-dark p-6 rounded-2xl shadow-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-brand-red flex items-center gap-2">
-                💧 Daily Hydration Challenge
-              </h3>
-              <div className="flex items-center space-x-1 font-semibold text-brand-red bg-white px-3 py-1 rounded-full">
-                <span>⭐</span>
-                <span>+50 Points</span>
-              </div>
+          {loading ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {[1,2,3].map(i => (
+                <div key={i} className="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+                  <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded mb-4 w-2/3 mx-auto"></div>
+                  <div className="h-8 bg-gray-200 rounded"></div>
+                </div>
+              ))}
             </div>
-            <p className="text-sm mb-4 text-gray-700">
-              Drink 8 glasses of water today to earn your reward!
-            </p>
-            <div className="w-full bg-red-200/50 rounded-full h-3 overflow-hidden">
-              <div 
-                className="bg-gradient-to-r from-brand-red to-red-600 h-3 rounded-full progress-bar-animated shadow-sm"
-                style={{width: `${waterProgress}%`}}
-              ></div>
-            </div>
-            <div className="text-right text-sm text-gray-600 mt-2">
-              6 of 8 glasses completed
-            </div>
-          </div>
-        </section>
-
-        {/* Service Shortcuts */}
-        <section className="animate-slide-up">
-          <h3 className="text-xl font-bold mb-4 text-brand-dark">Quick Actions</h3>
-          <div className="grid grid-cols-4 gap-4 text-center">
-            <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border border-gray-100">
-              <div className="text-3xl text-brand-cyan mb-3">👨‍⚕️</div>
-              <div className="text-sm font-medium text-brand-dark">Coach</div>
-            </button>
-            
-            <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border border-gray-100">
-              <div className="text-3xl text-brand-cyan mb-3">🍽️</div>
-              <div className="text-sm font-medium text-brand-dark">Meal Plan</div>
-            </button>
-            
-            <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border border-gray-100">
-              <div className="text-3xl text-brand-cyan mb-3">💪</div>
-              <div className="text-sm font-medium text-brand-dark">Workout</div>
-            </button>
-            
-            <button className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border border-gray-100">
-              <div className="text-3xl text-brand-cyan mb-3">📈</div>
-              <div className="text-sm font-medium text-brand-dark">Progress</div>
-            </button>
-          </div>
-        </section>
-
-        {/* Featured Coach Section */}
-        <section className="relative animate-fade-in">
-          <h3 className="text-xl font-bold mb-6 text-brand-dark">Meet Our Expert Coaches</h3>
-          <div className="relative">
-            <div className="overflow-hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out -mx-2"
-                style={{transform: `translateX(-${coachIndex * (100 / slidesInView)}%)`}}
-              >
-                {coaches.map((coach) => (
-                  <div key={coach.id} className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-2">
-                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden text-center h-full border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                      <div className="relative overflow-hidden">
-                        <img 
-                          src={coach.image} 
-                          alt={coach.name} 
-                          className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8">
+              {featuredCoaches.slice(0, 3).map(coach => (
+                <div key={coach.id} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden group">
+                  <div className="relative">
+                    <img 
+                      src={coach.image} 
+                      alt={coach.name}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium flex items-center gap-1">
+                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                      {coach.rating}
+                    </div>
+                    
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{coach.name}</h3>
+                    <p className="text-gray-600 mb-4">{coach.title}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {coach.specialties.slice(0, 2).map(specialty => (
+                        <span key={specialty} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <User className="w-4 h-4" />
+                        {coach.sessionsCompleted} sessions
                       </div>
-                      <div className="p-6">
-                        <h4 className="text-xl font-bold text-brand-slate mb-2">{coach.name}</h4>
-                        <p className="font-medium text-gray-500 mb-4">{coach.title}</p>
-                        <button className="bg-gradient-to-r from-brand-cyan to-brand-teal text-brand-light px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300 text-sm transform hover:scale-105">
+                      <div className="flex items-center gap-1 text-sm text-gray-600">
+                        <Clock className="w-4 h-4" />
+                        {coach.experience}
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="w-5 h-5 text-gray-600" />
+                        <span className="text-2xl font-bold text-gray-800">{coach.price}</span>
+                        <span className="text-gray-600">/session</span>
+                      </div>
+                      <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* All Nutrition Coaches */}
+      <section className="py-16 px-6 bg-white/50" id="coaches">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">All Nutrition Coaches</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Browse our complete roster of certified nutrition experts, each specializing in different aspects of health and wellness
+            </p>
+          </div>
+
+          {/* Coaches Grid */}
+          {loading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+                  <div className="w-20 h-20 bg-gray-200 rounded-full mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-8 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {coaches.map(coach => (
+                <div key={coach.id} className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group">
+                  <div className="p-6">
+                    <div className="flex items-center mb-4">
+                      <img 
+                        src={coach.image} 
+                        alt={coach.name}
+                        className="w-16 h-16 rounded-full object-cover mr-4 group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="flex-grow">
+                        <h3 className="text-lg font-bold text-gray-800">{coach.name}</h3>
+                        <p className="text-gray-600 text-sm">{coach.title}</p>
+                        <div className="flex items-center mt-1 gap-2">
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                            <span className="text-sm text-gray-600">
+                              {coach.rating} ({coach.reviews} reviews)
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                    <p className="text-gray-600 text-sm mb-4">{coach.bio}</p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {coach.specialties.map(specialty => (
+                        <span key={specialty} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs">
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <User className="w-4 h-4" />
+                        {coach.sessionsCompleted} sessions
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {coach.experience}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="w-5 h-5 text-gray-600" />
+                        <span className="text-xl font-bold text-gray-800">{coach.price}</span>
+                        <span className="text-gray-600 text-sm">/session</span>
+                      </div>
+                      <div className="space-y-2">
+                        <button className="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-1">
+                          <ArrowRight className="w-4 h-4" />
+                          Book Session
+                        </button>
+                        <button className="block w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-50 transition-all duration-300">
                           View Profile
                         </button>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white" id="testimonials">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-12">What Our Clients Say</h2>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="relative h-64 flex items-center justify-center">
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-all duration-500 ${
+                    index === testimonialIndex ? 'opacity-100 transform scale-100' : 'opacity-0 transform scale-95'
+                  }`}
+                >
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                    <div className="flex justify-center mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-6 h-6 text-yellow-300 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-xl mb-6 italic">{testimonial.content}</p>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name}
+                        className="w-12 h-12 rounded-full mr-4"
+                      />
+                      <div>
+                        <div className="font-bold">{testimonial.name}</div>
+                        <div className="text-sm opacity-75">{testimonial.role}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
             
-            {/* Slider Controls */}
-            {coachIndex > 0 && (
-              <button 
-                onClick={prevCoach}
-                className="absolute top-1/2 -left-4 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg z-10 transition-all duration-300 hover:scale-110"
-              >
-                <div className="text-brand-slate">⬅️</div>
-              </button>
-            )}
-            
-            {coachIndex < coaches.length - slidesInView && (
-              <button 
-                onClick={nextCoach}
-                className="absolute top-1/2 -right-4 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg z-10 transition-all duration-300 hover:scale-110"
-              >
-                <div className="text-brand-slate">➡️</div>
-              </button>
-            )}
-          </div>
-        </section>
-
-        {/* Meal Plan Preview */}
-        <section className="animate-slide-up">
-          <h3 className="text-xl font-bold mb-6 text-brand-dark">Todays Meal Plan</h3>
-          <div className="space-y-4">
-            {meals.map((meal, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg flex items-center space-x-4 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <img 
-                  src={meal.image} 
-                  alt={meal.name} 
-                  className="w-20 h-20 rounded-lg object-cover shadow-md"
+            {/* Dots Indicator */}
+            <div className="flex justify-center space-x-2 mt-8">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setTestimonialIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === testimonialIndex ? 'bg-white' : 'bg-white/50'
+                  }`}
                 />
-                <div className="flex-grow">
-                  <h4 className="font-bold text-brand-dark text-lg">{meal.type}</h4>
-                  <p className="text-gray-600 mb-1">{meal.name}</p>
-                  <p className="text-sm text-gray-500 font-medium">{meal.calories} kcal</p>
-                </div>
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-                  <button className="bg-gradient-to-r from-brand-cyan to-brand-teal text-brand-light px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    Log
-                  </button>
-                  <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300">
-                    Swap
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Community Spotlight */}
-        <section className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 shadow-lg border border-gray-200 animate-fade-in">
-          <h3 className="text-xl font-bold mb-6 text-center text-brand-dark">Community Spotlight ⭐</h3>
-          <div className="flex overflow-x-auto space-x-6 pb-4 community-scroll">
-            {communityStories.map((story, index) => (
-              <div key={index} className={`flex-shrink-0 w-72 bg-gradient-to-br ${story.gradient} text-brand-light rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300`}>
-                <img 
-                  src={story.image} 
-                  alt="User Avatar" 
-                  className="w-20 h-20 rounded-full mb-4 border-4 border-white/50 shadow-lg"
-                />
-                <p className="font-bold text-lg">{story.name}</p>
-                <p className="text-sm opacity-90 mb-3 font-medium">{story.achievement}</p>
-                <p className="text-sm italic opacity-95 leading-relaxed">{story.quote}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Promo Section */}
-        <section className="animate-slide-up">
-          <div className="bg-white p-8 rounded-2xl shadow-xl text-center border-2 border-dashed border-brand-cyan hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
-            <div className="text-4xl mb-4">🎉</div>
-            <h3 className="text-2xl font-bold text-brand-slate mb-3">20% OFF Your First Coaching Session!</h3>
-            <p className="text-gray-600 mb-6 text-lg">Limited time offer for new members. Start your journey with an expert guide.</p>
-            <button className="bg-gradient-to-r from-brand-red to-red-600 text-brand-light px-8 py-4 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
-              🎯 Claim Discount Now
+      {/* CTA Section */}
+      <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-5xl font-bold mb-6">Ready to Transform Your Nutrition?</h2>
+          <p className="text-xl mb-12 max-w-2xl mx-auto text-gray-300">
+            Start your personalized nutrition journey today with our certified experts.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
+              <ArrowRight className="w-5 h-5" />
+              Start Your Journey
+            </button>
+            <button className="border-2 border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
+              <Users className="w-5 h-5" />
+              Talk to an Expert
             </button>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
     </div>
   )
 }

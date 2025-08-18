@@ -1,4 +1,4 @@
-// lib/gemini.js
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI("AIzaSyAVvU_hbzHhsWhWBVosrE8UyDaB1GOLgbQ");

@@ -112,6 +112,18 @@ const services = [
     color: "from-violet-500 to-purple-500",
     bgColor: "bg-violet-50",
   },
+   {
+    title: "Home Check",
+    icon: Sparkles,
+    color: "from-violet-500 to-purple-500",
+    bgColor: "bg-violet-50",
+  },
+   {
+    title: "",
+    icon: Sparkles,
+    color: "from-violet-500 to-purple-500",
+    bgColor: "bg-violet-50",
+  },
 ];
 
 export default function Services() {

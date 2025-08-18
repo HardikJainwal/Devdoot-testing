@@ -51,9 +51,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import Slider from "react-slick"; // Import react-slick for carousel
-import "slick-carousel/slick/slick.css"; // Import slick carousel styles
-import "slick-carousel/slick/slick-theme.css"; // Import slick theme styles
+import Slider from "react-slick"; 
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css"; 
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -61,7 +61,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-// Updated medical services array including new services
+
 const medicalServices = [
   {
     icon: Ambulance,
@@ -226,7 +226,7 @@ const DoctorsSection = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // IDs of paid coaches that should be prioritized
+  
   const PAID_COACH_IDS = ['67efda37e6e95655b525b82f',,'67ee6ffce6e95655b525a75d', '681c58a244d01de413649c15'];
 
   useEffect(() => {
@@ -270,15 +270,15 @@ const DoctorsSection = () => {
         isPaid: PAID_COACH_IDS.includes(doctor._id), // Add paid flag
       }));
 
-      // Separate paid and unpaid coaches
+     
       const paidCoaches = mappedDoctors.filter(doctor => doctor.isPaid);
       const unpaidCoaches = mappedDoctors.filter(doctor => !doctor.isPaid);
 
-      // Prioritize paid coaches first, then fill with unpaid coaches
+      
       const featuredDoctors = [
-        ...paidCoaches, // All paid coaches first
-        ...unpaidCoaches.slice(0, 4 - paidCoaches.length) // Fill remaining slots with unpaid coaches
-      ].slice(0, 4); // Ensure we only show 4 total
+        ...paidCoaches, 
+        ...unpaidCoaches.slice(0, 4 - paidCoaches.length) 
+      ].slice(0, 4); 
 
       setDoctors(featuredDoctors);
       setError(null);
@@ -1411,7 +1411,7 @@ const handleServiceClick = (service) => {
       </section>
 
      <section
-  className="py-8 mt-4  "
+  className="py-8  bg-white "
   style={{ fontFamily: "Poppins, sans-serif" }}
 >
   <div className="max-w-6xl mx-auto px-6">

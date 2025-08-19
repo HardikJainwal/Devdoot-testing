@@ -1,5 +1,5 @@
 "use client";
-
+import { authUtils } from "@/lib/api/auth";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -38,7 +38,6 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-// Fixed function to fetch appointment slots
 const fetchAppointmentSlots = async (
   coachId,
   startDate,
@@ -47,8 +46,6 @@ const fetchAppointmentSlots = async (
 ) => {
   try {
     const API_BASE_URL = "https://devdoot-backend.onrender.com/v1/api";
-    const DUMMY_TOKEN =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY4MGYwZjM4ZjdjY2UwOTgyN2IxODE0NSIsInVzZXJUeXBlIjoicGF0aWVudCIsImVtYWlsIjoibWFkYWFuZGhydXY1NEBnbWFpbC5jb20ifSwiaXNWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzUzOTQ0OTg3LCJleHAiOjE3NTQyMDQxODd9.7QfzGpYXEcdITZkndHatifccptag_wmISAkJR5ZiOj0";
 
     const url = `${API_BASE_URL}/booking/appointment-slot?coachId=${coachId}&startDate=${startDate}&endDate=${endDate}&timeZone=${encodeURIComponent(
       timeZone
@@ -56,10 +53,7 @@ const fetchAppointmentSlots = async (
 
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": DUMMY_TOKEN,
-      },
+      headers: authUtils.getAuthHeaders(), 
     });
 
     if (!response.ok) {

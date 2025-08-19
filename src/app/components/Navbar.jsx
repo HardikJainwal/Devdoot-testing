@@ -3,10 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Handshake } from "lucide-react";
+import { Handshake, User, LogOut, Settings } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = ({ onSignupClick, onLoginClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { user, isAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,6 +19,8 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
     setIsMenuOpen(false);
   };
 
+ 
+
   const handleSignupClick = () => {
     closeMenu();
     onSignupClick();
@@ -24,6 +29,12 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
   const handleLoginClick = () => {
     closeMenu();
     onLoginClick();
+  };
+
+  const handleLogout = () => {
+    logout();
+    closeProfile();
+    closeMenu();
   };
 
   return (
@@ -70,27 +81,41 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
           </li>
         </ul>
 
-        {/* Right: Buttons (Desktop) */}
+        {/* Right: Buttons/Profile (Desktop) */}
         <div className="hidden md:flex items-center space-x-6 text-sm font-['Poppins']">
-            <Link href="/BeOurPartner">
+          <Link href="/BeOurPartner">
             <span className="text-[#C42323] hover:text-white hover:bg-[#C42323] px-2 py-1 rounded-3xl text-lg font-medium transition-all duration-400 ease-in-out flex items-center space-x-1">
-              
               <span>Be Our Partner</span>
               <Handshake size={20} />
             </span>
           </Link>
-          <button
-            onClick={handleSignupClick}
-            className="text-gray-700 text-lg"
-          >
-            Sign Up
-          </button>
-          <button
-            onClick={handleLoginClick}
-            className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded-3xl hover:bg-teal-200 transition"
-          >
-            Log in
-          </button>
+          
+          {isAuthenticated ? (
+  <Link
+    href="/UserProfile"
+    className="flex items-center space-x-2 bg-[#2C8C91] text-white px-3 py-2 rounded-full hover:bg-teal-700 transition"
+  >
+    <User size={20} />
+    <span className="text-sm">{user?.name || 'Profile'}</span>
+  </Link>
+) : (
+
+            /* Login/Signup Buttons */
+            <>
+              <button
+                onClick={handleSignupClick}
+                className="text-gray-700 text-lg"
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={handleLoginClick}
+                className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded-3xl hover:bg-teal-200 transition"
+              >
+                Log in
+              </button>
+            </>
+          )}
         </div>
 
         {/* Hamburger Menu Button (Mobile) */}
@@ -148,32 +173,57 @@ const Navbar = ({ onSignupClick, onLoginClick }) => {
             </li>
           </ul>
 
-          {/* Mobile Buttons */}
+          {/* Mobile Buttons/Profile */}
           <div className="pt-4 border-t border-gray-200 space-y-3 font-['Poppins']">
             <Link href="/BeOurPartner" onClick={closeMenu}>
               <div className="text-[#C42323] hover:text-white text-lg font-semibold flex items-center space-x-1">
-                
                 <span>Be Our Partner</span>
                 <Handshake size={20} />
               </div>
             </Link>
-            <div className="flex flex-col space-y-3">
-              <button
-                onClick={handleSignupClick}
-                className="text-gray-700 text-lg hover:underline text-left"
-              >
-                Sign Up
-              </button>
-              <button
-                onClick={handleLoginClick}
-                className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full"
-              >
-                Log in
-              </button>
-            </div>
+            
+            {isAuthenticated ? (
+  <div className="space-y-3">
+    <Link
+      href="/UserProfile"
+      onClick={closeMenu}
+      className="flex items-center space-x-2 text-gray-700 text-lg hover:text-teal-600 transition-colors"
+    >
+      <User size={20} />
+      <span>{user?.name || 'Profile'}</span>
+    </Link>
+    <button
+      onClick={handleLogout}
+      className="flex items-center space-x-2 text-gray-700 hover:text-red-600 transition-colors"
+    >
+      <LogOut size={16} />
+      <span>Logout</span>
+    </button>
+  </div>
+) : (
+
+              /* Mobile Login/Signup */
+              <div className="flex flex-col space-y-3">
+                <button
+                  onClick={handleSignupClick}
+                  className="text-gray-700 text-lg hover:underline text-left"
+                >
+                  Sign Up
+                </button>
+                <button
+                  onClick={handleLoginClick}
+                  className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full"
+                >
+                  Log in
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      
+     
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');

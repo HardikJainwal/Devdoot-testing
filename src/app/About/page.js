@@ -103,9 +103,9 @@ export default function AboutUsPage() {
 
   return (
     <div className="min-h-[70vh] bg-white font-['Poppins']">
-      {/* Hero Section */}
+     
       <div className="relative min-h-[80vh] flex items-center justify-center">
-        {/* Background Image */}
+        
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -113,7 +113,7 @@ export default function AboutUsPage() {
           ></div>
         </div>
 
-        {/* Hero Content */}
+       
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             Empowering Health, Enriching Lives
@@ -134,11 +134,11 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Our Story Section */}
+      
       <div className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Left Column - Text Content */}
+           
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-[#2B2B2A] mb-8">
                 Our Story
@@ -146,33 +146,43 @@ export default function AboutUsPage() {
 
               <div className="space-y-6 text-gray-700 leading-relaxed text-base">
                 <p>
-                  Founded in 2010, DeviceX began as a small clinic with a big
-                  vision – to transform healthcare delivery through innovation
-                  and compassionate care. What started as a humble initiative
-                  has now grown into a trusted multi-specialty healthcare
-                  provider serving communities across the region.
+                  Devdoot is a dedicated healthcare platform engineered to
+                  connect individuals with reliable, on-demand medical services.
+                  We leverage innovative technology to bridge the gap between
+                  patients and care, building a future where no one faces a
+                  health crisis alone. Our India-wide network is comprised of
+                  certified emergency responders, doctors, mental health
+                  professionals, and trained caregivers, all committed to
+                  providing expert, compassionate support at every step of the
+                  healthcare journey. The Devdoot Story
                 </p>
 
                 <p>
-                  Our journey has been guided by a simple yet powerful belief:
-                  every patient deserves access to world-class medical care
-                  delivered with dignity and respect. Over the years, we have
-                  invested in cutting-edge technologies while maintaining our
-                  focus on the human connection that defines quality healthcare.
+                  The concept for Devdoot was born from a critical observation
+                  on a remote Florida road in 2023. Our founder witnessed an
+                  ambulance traveling a great distance to reach a single patient
+                  and identified a fundamental flaw in emergency response
+                  logistics. This led to a pivotal question: if essential
+                  services like transport and food can be summoned in minutes,
+                  why not life-saving medical care?
                 </p>
 
                 <p>
-                  Today, DeviceX stands as a beacon of healthcare excellence,
-                  combining advanced medical expertise with a holistic approach
-                  to wellness. Our patient-first philosophy continues to drive
-                  our growth and innovations in medical care.
+                  This insight revealed broader challenges in the global
+                  healthcare landscape, including long appointment wait times
+                  and a scarcity of accessible mental health resources. The
+                  vision was clear: to build a platform that transcends
+                  geographical barriers and provides immediate access to
+                  essential health and wellness services. Devdoot was founded
+                  not merely as an on-demand ambulance service, but as a
+                  comprehensive, remote healthcare ecosystem designed for a
+                  healthier world.
                 </p>
               </div>
             </div>
 
-            {/* Right Column - Images */}
             <div className="space-y-4">
-              {/* Top Image - Medical Professional */}
+      
               <div className="rounded-lg overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
@@ -181,9 +191,8 @@ export default function AboutUsPage() {
                 />
               </div>
 
-              {/* Bottom Row - Two smaller images */}
               <div className="grid grid-cols-2 gap-4">
-                {/* Doctor with Patient */}
+
                 <div className="rounded-lg overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
@@ -192,7 +201,6 @@ export default function AboutUsPage() {
                   />
                 </div>
 
-                {/* Healthy Lifestyle */}
                 <div className="rounded-lg overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
@@ -206,10 +214,9 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Timeline Section - The Devdoot Story */}
       <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">
         <div className="max-w-4xl mx-auto">
-          {/* Section Header */}
+
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#2B2B2A] mb-4">
               The Devdoot Story
@@ -217,14 +224,13 @@ export default function AboutUsPage() {
             <div className="w-16 h-1 bg-[#C42323] mx-auto"></div>
           </div>
 
-          {/* Timeline Container */}
+
           <div className="relative">
-            {/* Central Line */}
+   
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-[#C42323]"></div>
 
-            {/* Timeline Items */}
             <div className="space-y-24">
-              {/* 2018 - The Beginning */}
+       
               <div
                 id="timeline-2018"
                 className={`timeline-item flex items-center transition-all duration-1000 ease-out ${
@@ -248,7 +254,7 @@ export default function AboutUsPage() {
                 <div className="w-1/2 pl-8"></div>
               </div>
 
-              {/* 2020 - Digital Launch */}
+  
               <div
                 id="timeline-2020"
                 className={`timeline-item flex items-center transition-all duration-1000 ease-out delay-200 ${
@@ -272,7 +278,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              {/* 2022 - Nationwide Expansion */}
+  
               <div
                 id="timeline-2022"
                 className={`timeline-item flex items-center transition-all duration-1000 ease-out delay-400 ${
@@ -295,7 +301,7 @@ export default function AboutUsPage() {
                 <div className="w-1/2 pl-8"></div>
               </div>
 
-              {/* 2023 & Beyond */}
+         
               <div
                 id="timeline-2023"
                 className={`timeline-item flex items-center transition-all duration-1000 ease-out delay-600 ${
@@ -322,10 +328,10 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Our Dedicated Team Section */}
+  
       <div className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
+          
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#2B2B2A] mb-4">
               Our Dedicated Team
@@ -336,9 +342,9 @@ export default function AboutUsPage() {
             </p>
           </div>
 
-          {/* Team Cards */}
+          
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Sarah Johnson */}
+          
             <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
@@ -359,7 +365,7 @@ export default function AboutUsPage() {
               </div>
             </div>
 
-            {/* Michael Chen */}
+            
             <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
@@ -380,7 +386,6 @@ export default function AboutUsPage() {
               </div>
             </div>
 
-            {/* Priya Desai */}
             <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="aspect-[4/3] overflow-hidden">
                 <img
@@ -402,7 +407,7 @@ export default function AboutUsPage() {
             </div>
           </div>
 
-          {/* View All Team Members Button */}
+         
           <div className="text-center">
             <button className="bg-[#2C8C91] hover:bg-[#345268] text-white px-8 py-3 rounded-md font-medium transition-all duration-300 transform hover:scale-105">
               View All Team Members
@@ -411,31 +416,33 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Our Guiding Principles Section */}
+      
       <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
+          
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#2B2B2A] mb-4">
               Our Guiding Principles
             </h2>
             <p className="text-gray-600 text-lg">
-              The foundation of everything we do at DeviceX
+              The foundation of everything we do at Devdoot
             </p>
           </div>
 
-          {/* Principles Cards */}
+          
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Our Mission */}
+           
             <div className="text-center group">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#2C8C91] to-[#345268] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300"></div>
+              <div className="w-20 h-20 bg-gradient-to-br from-[#2C8C91] to-[#345268] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300">
+                <TrophyIcon className="w-10 h-10 text-white" />{" "}
+               
+              </div>
               <h3 className="text-2xl font-bold text-[#2B2B2A] mb-4">
                 Our Mission
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                To deliver patient-centric healthcare with empathy and
-                excellence, making advanced medical care accessible to all
-                communities we serve.
+                To make emergency and non-emergency medical services accessible,
+                affordable, and consistently available for all.
               </p>
             </div>
 
@@ -448,9 +455,8 @@ export default function AboutUsPage() {
                 Our Vision
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                To become the most trusted healthcare partner across regions,
-                setting benchmarks in medical innovation and patient-centered
-                care.
+                To build a future where immediate and reliable medical services
+                are accessible to everyone, everywhere
               </p>
             </div>
 
@@ -463,7 +469,7 @@ export default function AboutUsPage() {
                 Our Promise
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Every patient receives personalized attention, ethical
+                To ensure every patient receives personalized attention, ethical
                 treatment, and the highest standard of medical expertise.
               </p>
             </div>
@@ -525,14 +531,16 @@ export default function AboutUsPage() {
                   Giving Back to Our Community
                 </h2>
 
-                <div className="space-y-6 text-gray-700 leading-relaxed text-base mb-8">
+                <div className="space-y-6 text-gray-700 leading-relaxed text-base mb-2">
                   <p>
-                    At DeviceX, we believe that quality healthcare is a right,
-                    not a privilege. Our community outreach efforts are designed
-                    to bridge healthcare gaps and create lasting impact in
-                    underserved populations.
+                    At Devdoot, we believe quality healthcare is a fundamental
+                    right. Our community outreach initiatives are structured to
+                    address healthcare disparities and create a lasting impact
+                    in underserved populations. Through targeted programs, we
+                    have provided complimentary medical care to over 50,000
+                    individuals who would otherwise lack access to specialized
+                    treatment.
                   </p>
-
                   <p>
                     Through our various outreach programs, we haveve provided
                     free medical care to over 50,000 individuals who otherwise
@@ -553,8 +561,10 @@ export default function AboutUsPage() {
                       Mobile Health Units
                     </h4>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                      Fully equipped vans bringing healthcare to remote villages
-                      and urban slums.
+                      We deploy fully equipped mobile clinics to deliver
+                      essential healthcare directly to remote villages and urban
+                      slums.Fully equipped vans bringing healthcare to remote
+                      villages and urban slums.
                     </p>
                   </div>
                 </div>
@@ -569,14 +579,14 @@ export default function AboutUsPage() {
                       Health Education Programs
                     </h4>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                      Workshops on preventive care, nutrition, and hygiene in
-                      schools and communities.
+                      We conduct workshops in schools and community centers
+                      focused on preventive care, nutrition, and hygiene to
+                      empower individuals with health literacy.
                     </p>
                   </div>
                 </div>
 
                 {/* Pro Bono Surgeries */}
-               
               </div>
             </div>
 

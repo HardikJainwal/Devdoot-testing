@@ -41,7 +41,7 @@ export default function AllDoctorsPage() {
     specialization: "",
     language: "",
     priceRange: [0, 5000],
-    experienceRange: [0, 50],
+    experienceRange: [0, 25],
     rating: 0,
     country: "",
   });
@@ -65,7 +65,7 @@ export default function AllDoctorsPage() {
   const loadDoctors = async (page) => {
     try {
       setLoading(true);
-      const response = await fetchCoaches(page, 12);
+      const response = await fetchCoaches(page, 10);
 
       if (!response || !response.success) {
         setError(response?.message || "Failed to load doctors");
@@ -102,7 +102,7 @@ export default function AllDoctorsPage() {
       }));
 
       setDoctors(mappedDoctors);
-      setTotalPages(Math.ceil(totalCount / 12));
+      setTotalPages(Math.ceil(totalCount / 10));
     } catch (err) {
       setError(`Error loading doctors: ${err.message}`);
     } finally {
@@ -142,7 +142,7 @@ export default function AllDoctorsPage() {
       specialization: "",
       language: "",
       priceRange: [0, 5000],
-      experienceRange: [0, 50],
+      experienceRange: [0, 25],
       rating: 0,
       country: "",
     });
@@ -271,18 +271,18 @@ export default function AllDoctorsPage() {
 
             <div className="mb-6">
               <label
-                className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}
+                className={`${poppins.className} block text-sm font-medium text-black mb-2`}
               >
                 Country
               </label>
               <select
                 value={filters.country}
                 onChange={(e) => handleFilterChange("country", e.target.value)}
-                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
-                <option value="">All Countries</option>
+                <option value="" className="text-black">All Countries</option>
                 {availableFilters.countries.map((country) => (
-                  <option key={country} value={country}>
+                  <option className="text-black" key ={country} value={country}>
                     {country}
                   </option>
                 ))}
@@ -291,7 +291,7 @@ export default function AllDoctorsPage() {
 
             <div className="mb-6">
               <label
-                className={`${poppins.className} block text-sm font-medium text-gray-700 mb-2`}
+                className={`${poppins.className} block text-sm font-medium text-black mb-2`}
               >
                 Specialization
               </label>
@@ -300,11 +300,11 @@ export default function AllDoctorsPage() {
                 onChange={(e) =>
                   handleFilterChange("specialization", e.target.value)
                 }
-                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="">All Specializations</option>
                 {availableFilters.specializations.map((spec) => (
-                  <option key={spec} value={spec}>
+                  <option className="text-black" key={spec} value={spec}>
                     {spec}
                   </option>
                 ))}
@@ -321,7 +321,7 @@ export default function AllDoctorsPage() {
               <select
                 value={filters.language}
                 onChange={(e) => handleFilterChange("language", e.target.value)}
-                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="">All Languages</option>
                 {availableFilters.languages.map((lang) => (
@@ -363,19 +363,20 @@ export default function AllDoctorsPage() {
                 Experience: {filters.experienceRange[0]}+ years
               </label>
               <input
-                type="range"
-                min="0"
-                max="50"
-                step="1"
-                value={filters.experienceRange[0]}
-                onChange={(e) =>
-                  handleFilterChange("experienceRange", [
-                    parseInt(e.target.value),
-                    filters.experienceRange[1],
-                  ])
-                }
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-              />
+  type="range"
+  min="0"
+  max="25"
+  step="1"
+  value={filters.experienceRange[0]}
+  onChange={(e) =>
+    handleFilterChange("experienceRange", [
+      parseInt(e.target.value),
+      filters.experienceRange[1],
+    ])
+  }
+  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+/>
+
             </div>
 
             <div className="mb-6">
@@ -411,7 +412,7 @@ export default function AllDoctorsPage() {
                     placeholder="Search doctors by name or specialty..."
                     value={searchTerm}
                     onChange={handleSearch}
-                    className={`${poppins.className} w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                    className={`${poppins.className} w-full px-4 py-3 pl-10 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   />
                   <svg
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"
@@ -608,18 +609,16 @@ export default function AllDoctorsPage() {
                         </div>
 
                         <button
-                          className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCoachClick(doctor._id);
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faCalendarAlt}
-                            className="w-4 h-4"
-                          />
-                          <span>Book Session</span>
-                        </button>
+  className={`${poppins.className} w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 whitespace-nowrap`}
+  onClick={(e) => {
+    e.stopPropagation();
+    handleCoachClick(doctor._id);
+  }}
+>
+  <FontAwesomeIcon icon={faCalendarAlt} className="w-4 h-4" />
+  <span>Book Session</span>
+</button>
+
                       </div>
                     </div>
                   </motion.div>

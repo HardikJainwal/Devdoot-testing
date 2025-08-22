@@ -808,9 +808,9 @@ export default function CoachProfilePage() {
       setSelectedDate(e.target.value);
       setSelectedTimeSlot(""); // Reset selected time slot when date changes
     }}
-    className={`${poppins.className} w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
+    className={`${poppins.className} w-full px-4 py-3 border border-gray-300 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
   >
-    <option value="">Choose a date</option>
+    <option value="" className="text-black">Choose a date</option>
     {[...Array(7)].map((_, index) => {
       const date = new Date();
       date.setDate(date.getDate() + index);
@@ -821,7 +821,7 @@ export default function CoachProfilePage() {
         day: "numeric",
       });
       return (
-        <option key={dateString} value={dateString}>
+        <option  className="text-black" key={dateString} value={dateString}>
           {displayDate}
         </option>
       );
@@ -832,7 +832,7 @@ export default function CoachProfilePage() {
               {selectedDate && (
                 <div className="mb-4">
                   <label
-                    className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                    className={`${poppins.className} block text-sm font-semibold text-black mb-3`}
                   >
                     Preferred Time
                   </label>

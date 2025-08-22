@@ -4,8 +4,8 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <div className="relative flex justify-center items-center min-h-screen">
-      {/* Text over the GIF */}
+    <div className="relative  bg-white flex justify-center items-center min-h-screen">
+      
       <div className="absolute top-10 z-10 text-center px-4 mb-10">
         {/* <h1 className="text-black text-3xl font-bold mb-4 ">
           The frontend requested this page. <br />
@@ -15,7 +15,7 @@ export default function NotFound() {
           Page Not Found
         </h1>
         <p className="text-black text-lg ">
-          Maybe it ran away, maybe it never existed, maybe it just ghosted you like your ex.<br />
+          Maybe it ran away, maybe it never existed, maybe it just ghosted you.<br />
           <Link
             href="/"
             className="text-[#2c8c91] font-bold underline"

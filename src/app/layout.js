@@ -15,10 +15,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <AuthProvider>
-        <NavbarWrapper />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <ChatFidget />
+          <NavbarWrapper />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          <ChatFidget />
         </AuthProvider>
       </body>
     </html>

@@ -1,407 +1,180 @@
-  'use client';
-  import { useState, useRef, useEffect } from 'react';
+'use client';
+import { useState, useRef, useEffect } from 'react';
 
-  const LoginModal = ({ isOpen, onClose }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [otp, setOtp] = useState(['', '', '', '']);
-    const [isOtpSent, setIsOtpSent] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [usePasswordLogin, setUsePasswordLogin] = useState(true);
-    const modalRef = useRef();
+const LoginModal = ({ isOpen, onClose }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const modalRef = useRef();
 
-    const otpRefs = [useRef(), useRef(), useRef(), useRef()];
-
-    useEffect(() => {
-      if (!isOpen) {
-        setEmail('');
-        setPassword('');
-        setOtp(['', '', '', '']);
-        setIsOtpSent(false);
-        setIsLoading(false);
-        setError('');
-        setUsePasswordLogin(true);
-      }
-    }, [isOpen]);
-
-   
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (modalRef.current && !modalRef.current.contains(event.target)) {
-          onClose();
-        }
-      };
-
-      if (isOpen) {
-        document.addEventListener('mousedown', handleClickOutside);
-        document.body.style.overflow = 'hidden';
-      }
-
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.body.style.overflow = '';
-      };
-    }, [isOpen, onClose]);
-
-    const handlePasswordLogin = async (e) => {
-      e.preventDefault();
-      if (!email || !password) {
-        setError('Please enter both email and password');
-        return;
-      }
-      
-      setIsLoading(true);
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail('');
+      setPassword('');
+      setIsLoading(false);
       setError('');
+    }
+  }, [isOpen]);
 
-      try {
-        const response = await fetch('https://devdoot-backend.onrender.com/v1/api/user/login', {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
+  const handlePasswordLogin = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setError('Please enter both email and password');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(
+        'https://devdoot-backend.onrender.com/v1/api/user/login',
+        {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: email,
-            password: password,
-            fcmToken: "" 
+            email,
+            password,
+            fcmToken: '',
           }),
-        });
-
-        const data = await response.json();
-        console.log('Login response:', data);
-
-        if (response.ok && data.success) {
-         
-          localStorage.setItem('authToken', data.data.token);
-          localStorage.setItem('userData', JSON.stringify(data.data.user));
-          
-          console.log('Login successful');
-          onClose();
-         
-          window.location.reload();
-        } else {
-          setError(data.message || 'Login failed. Please check your credentials.');
         }
-      } catch (error) {
-        console.error('Login error:', error);
-        setError('Network error. Please check your connection and try again.');
-      } finally {
-        setIsLoading(false);
+      );
+
+      const data = await response.json();
+      console.log('Login response:', data);
+
+      if (response.ok && data.success) {
+        localStorage.setItem('authToken', data.data.token);
+        localStorage.setItem('userData', JSON.stringify(data.data.user));
+
+        console.log('Login successful');
+        onClose();
+        window.location.reload();
+      } else {
+        setError(data.message || 'Login failed. Please check your credentials.');
       }
-    };
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    const handleSendOtp = async (e) => {
-      e.preventDefault();
-      if (!email) {
-        setError('Please enter your email address');
-        return;
-      }
-      
-      setIsLoading(true);
-      setError('');
+  if (!isOpen) return null;
 
-      try {
-        const response = await fetch('https://devdoot-backend.onrender.com/v1/api/user/send-login-otp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email
-          }),
-        });
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
+      <div
+        ref={modalRef}
+        className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl max-h-[90vh] overflow-y-auto"
+      >
+        <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
+          {/* Left Side - Form */}
+          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-900">
+            <div className="flex justify-center mb-4 sm:mb-6">
+              <img
+                src="/images/Logo.png"
+                alt="Devdoot Logo"
+                className="h-10 sm:h-12 w-auto"
+              />
+            </div>
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] dark:text-teal-400 font-['Poppins'] whitespace-nowrap">
+                Welcome Back to
+                <span className="text-[#C42323] dark:text-red-400"> Devdoot</span>
+              </h2>
+            </div>
 
-        const data = await response.json();
-        console.log('Send OTP response:', data);
+            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
+              Access emergency medical help, doctor consults, medicine delivery &
+              more.
+            </p>
 
-        if (response.ok && data.success) {
-          setIsOtpSent(true);
-          // Focus first OTP input
-          setTimeout(() => {
-            otpRefs[0].current?.focus();
-          }, 100);
-        } else {
-          setError(data.message || 'Failed to send OTP. Please try again.');
-        }
-      } catch (error) {
-        console.error('Send OTP error:', error);
-        setError('Network error. Please check your connection and try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+                {error}
+              </div>
+            )}
 
-    const handleOtpChange = (index, value) => {
-      if (value.length > 1) return; // Only allow single digit
-      
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-      
-      // Auto-focus next input
-      if (value && index < 3) {
-        otpRefs[index + 1].current?.focus();
-      }
-    };
-
-    const handleOtpKeyDown = (index, e) => {
-      // Handle backspace
-      if (e.key === 'Backspace' && !otp[index] && index > 0) {
-        otpRefs[index - 1].current?.focus();
-      }
-    };
-
-    const handleVerifyOtp = async (e) => {
-      e.preventDefault();
-      const otpValue = otp.join('');
-      if (otpValue.length !== 4) {
-        setError('Please enter the 4-digit OTP');
-        return;
-      }
-      
-      setIsLoading(true);
-      setError('');
-
-      try {
-        console.log('Verifying OTP:', otpValue, 'for email:', email);
-
-        const response = await fetch('https://devdoot-backend.onrender.com/v1/api/user/verify-login-otp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            otp: otpValue
-          }),
-        });
-
-        const data = await response.json();
-        console.log('OTP verification response:', data);
-
-        if (response.ok && data.success) {
-          // Store token and user data
-          localStorage.setItem('authToken', data.data.token);
-          localStorage.setItem('userData', JSON.stringify(data.data.user));
-          
-          console.log('OTP Login successful');
-          onClose();
-          // Refresh page or redirect
-          window.location.reload();
-        } else {
-          setError(data.message || 'OTP verification failed. Please try again.');
-        }
-      } catch (error) {
-        console.error('OTP verification error:', error);
-        setError('Network error. Please check your connection and try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (!isOpen) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
-        <div ref={modalRef} className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl max-h-[90vh] overflow-y-auto">
-          <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
-            {/* Left Side - Form */}
-            <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-900">
-              <div className="flex justify-center mb-4 sm:mb-6">
-                <img
-                  src="/images/Logo.png"
-                  alt="Devdoot Logo"
-                  className="h-10 sm:h-12 w-auto"
+            {/* Password Login Form */}
+            <form onSubmit={handlePasswordLogin}>
+              <div className="mb-4 sm:mb-6">
+                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  required
                 />
               </div>
+
               <div className="mb-4 sm:mb-6">
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] dark:text-teal-400 font-['Poppins'] whitespace-nowrap">
-                  Welcome Back to<span className="text-[#C42323] dark:text-red-400"> Devdoot</span>
-                </h2>
-              </div>
-              
-              <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
-                Access emergency medical help, doctor consults, medicine delivery & more.
-              </p>
-
-              {error && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
-                  {error}
-                </div>
-              )}
-
-              {/* Login Method Toggle */}
-              <div className="mb-4 flex space-x-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setUsePasswordLogin(true);
-                    setIsOtpSent(false);
-                    setError('');
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    usePasswordLogin
-                      ? 'bg-red-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Password Login
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setUsePasswordLogin(false);
-                    setIsOtpSent(false);
-                    setError('');
-                  }}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    !usePasswordLogin
-                      ? 'bg-red-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  OTP Login
-                </button>
+                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  required
+                />
               </div>
 
-              {usePasswordLogin ? (
-                /* Password Login Form */
-                <div>
-                  <div className="mb-4 sm:mb-6">
-                    <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                      required
-                    />
-                  </div>
+              <button
+                type="submit"
+                disabled={!email || !password || isLoading}
+                className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base transition-colors"
+              >
+                {isLoading ? 'Signing In...' : 'Sign In'}
+              </button>
+            </form>
 
-                  <div className="mb-4 sm:mb-6">
-                    <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handlePasswordLogin}
-                    disabled={!email || !password || isLoading}
-                    className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
-                  >
-                    {isLoading ? 'Signing In...' : 'Sign In'}
-                  </button>
-                </div>
-              ) : (
-                /* OTP Login Form */
-                !isOtpSent ? (
-                  <div>
-                    <div className="mb-4 sm:mb-6">
-                      <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                        required
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handleSendOtp}
-                      disabled={!email || isLoading}
-                      className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
-                    >
-                      {isLoading ? 'Sending...' : 'Send OTP'}
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="mb-4 sm:mb-6">
-                      <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
-                        Enter OTP sent to {email}
-                      </label>
-                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
-                        Please enter the 4-digit OTP sent to your email
-                      </p>
-                      <div className="flex space-x-2 sm:space-x-3 justify-center">
-                        {otp.map((digit, index) => (
-                          <input
-                            key={index}
-                            ref={otpRefs[index]}
-                            type="text"
-                            value={digit}
-                            onChange={(e) => handleOtpChange(index, e.target.value)}
-                            onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                            className="w-12 h-12 sm:w-14 sm:h-14 text-center text-lg sm:text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                            maxLength="1"
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handleVerifyOtp}
-                      disabled={otp.join('').length !== 4 || isLoading}
-                      className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
-                    >
-                      {isLoading ? 'Verifying...' : 'Verify OTP'}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsOtpSent(false);
-                        setError('');
-                        setOtp(['', '', '', '']);
-                      }}
-                      className="w-full text-red-600 dark:text-red-400 py-2 rounded-lg font-medium hover:bg-red-50 dark:hover:bg-gray-800 text-sm sm:text-base transition-colors"
-                    >
-                      Back to Email
-                    </button>
-                  </div>
-                )
-              )}
-
-              {/* Forgot Password Link */}
-              {usePasswordLogin && (
-                <div className="text-center mb-4">
-                  <a href="#" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                    Forgot your password?
-                  </a>
-                </div>
-              )}
-
-              <div className="text-center text-sm text-gray-600 dark:text-gray-300">
-                Don't have an account?{' '}
-                <button 
-                  onClick={() => {
-                    // You can add logic here to switch to signup modal
-                    console.log('Switch to signup modal');
-                  }}
-                  className="text-red-600 dark:text-red-400 hover:underline font-medium"
-                >
-                  Sign up here
-                </button>
-              </div>
+            {/* Forgot Password Link */}
+            <div className="text-center mt-4">
+              <a
+                href="#"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Forgot your password?
+              </a>
             </div>
+
+            <div className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
+              Don&apos;t have an account?{' '}
+              <button
+                onClick={() => console.log('Switch to signup modal')}
+                className="text-red-600 dark:text-red-400 hover:underline font-medium"
+              >
+                Sign up here
+              </button>
+            </div>
+          </div>
 
             {/* Right Side - Marketing */}
             <div className="flex-1 bg-[#2C8C91] text-white p-4 sm:p-6 md:p-8 flex flex-col relative">

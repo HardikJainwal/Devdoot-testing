@@ -48,6 +48,6 @@ export const API_ENDPOINTS = {
   SIGNUP: 'https://devdoot-backend.onrender.com/v1/api/user/signup',
   LOGIN: 'https://devdoot-backend.onrender.com/v1/api/user/login',
   VERIFY_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/otp',
-  SEND_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/send-login-otp', // You may need to confirm this endpoint
-  VERIFY_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/verify-login-otp' // You may need to confirm this endpoint
+  SEND_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/send-login-otp', 
+  VERIFY_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/verify-login-otp' 
 };

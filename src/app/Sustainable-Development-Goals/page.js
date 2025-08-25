@@ -79,8 +79,8 @@ const SDGPage = () => {
                   <span className="text-white">Development Goals</span>
                 </h1>
                 <p className="text-white/90 text-lg md:text-xl font-medium leading-relaxed">
-                  Devdoot's Commitment to Sustainable Development Goals
-                </p>
+  Devdoot&apos;s Commitment to Sustainable Development Goals
+</p>
                 {/* Decorative element */}
                 <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-emerald-400 mt-4 rounded-full"></div>
               </div>
@@ -94,7 +94,7 @@ const SDGPage = () => {
         {/* Main Heading with modern styling */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-            <span className="text-gray-800">Devdoot's Commitment to</span>
+            <span className="text-gray-800">Devdoot&apos;s Commitment to</span>
             <br />
             <span className="bg-[#C42323] bg-clip-text text-transparent">
               Sustainable Development Goals
@@ -109,7 +109,7 @@ const SDGPage = () => {
         <div className="max-w-5xl mx-auto mb-20">
           <p className="text-center text-gray-700 text-lg md:text-xl leading-relaxed mb-8 font-medium">
             At Devdoot, we believe healthcare is a cornerstone of sustainable progress.
-            Our innovative services align with the United Nations' Sustainable Development Goals (SDGs),
+            Our innovative services align with the United Nations&apos; Sustainable Development Goals (SDGs),
             a global framework to create a better future by 2030. Below, we showcase how Devdoot
             contributes to <span className="font-bold text-[#C42323]">Good Health and Well-being (SDG 3), Quality Education (SDG 4), Gender Equality (SDG 5),
             Clean Water and Sanitation (SDG 6), Reduced Inequalities (SDG 10), and Sustainable Cities and Communities (SDG 11)</span>, 

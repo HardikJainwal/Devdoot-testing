@@ -99,40 +99,7 @@ export default function BeOurPartner() {
       </section>
 
       {/* Why Partner Section */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C8C91] mb-4">
-              Why Partner with<span className='text-[#C42323]'> Devdoot?</span>
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {partnerBenefits.map((benefit, index) => {
-              const IconComponent = benefit.icon;
-              return (
-                <div
-                  key={index}
-                  className="group bg-gradient-to-br from-gray-50 to-white p-6 lg:p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
-                >
-                  <div className={`inline-flex p-3 lg:p-4 rounded-2xl bg-gradient-to-br ${benefit.color} shadow-lg group-hover:scale-110 transition-transform duration-300 mb-4 lg:mb-6`}>
-                    <IconComponent className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
-                  </div>
-                  
-                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2 lg:mb-3 group-hover:text-gray-800 transition-colors">
-                    {benefit.title}
-                  </h3>
-                  
-                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
-                    {benefit.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Partnership Opportunities Section */}
       <section className="py-12 lg:py-16 bg-white">
@@ -301,6 +268,41 @@ export default function BeOurPartner() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C8C91] mb-4">
+              Why Partner with<span className='text-[#C42323]'> Devdoot?</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {partnerBenefits.map((benefit, index) => {
+              const IconComponent = benefit.icon;
+              return (
+                <div
+                  key={index}
+                  className="group bg-gradient-to-br from-gray-50 to-white p-6 lg:p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                >
+                  <div className={`inline-flex p-3 lg:p-4 rounded-2xl bg-gradient-to-br ${benefit.color} shadow-lg group-hover:scale-110 transition-transform duration-300 mb-4 lg:mb-6`}>
+                    <IconComponent className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+                  </div>
+                  
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2 lg:mb-3 group-hover:text-gray-800 transition-colors">
+                    {benefit.title}
+                  </h3>
+                  
+                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

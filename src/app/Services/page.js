@@ -19,6 +19,7 @@ import {
   Sparkles,
   UserCheck,
   TrendingUp,
+   PersonStanding,
 } from "lucide-react";
 
 const services = [
@@ -112,18 +113,19 @@ const services = [
     color: "from-violet-500 to-purple-500",
     bgColor: "bg-violet-50",
   },
+  {
+    title: "Yoga",
+    icon:  PersonStanding,
+    color: "from-orange-500 to-amber-500",
+    bgColor: "bg-violet-50",
+  },
    {
     title: "Home Check",
     icon: Sparkles,
     color: "from-violet-500 to-purple-500",
     bgColor: "bg-violet-50",
   },
-   {
-    title: "",
-    icon: Sparkles,
-    color: "from-violet-500 to-purple-500",
-    bgColor: "bg-violet-50",
-  },
+   
 ];
 
 export default function Services() {

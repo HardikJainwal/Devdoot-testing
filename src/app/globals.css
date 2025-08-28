@@ -1,10 +1,20 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); */
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #2C8C91;
+  --primary-light: #EAF6F6;
+  --accent: #C42323;
+  --accent-hover: #A11C1C;
+  --dark: #2B2B2A;
   --font-poppins: 'Poppins', sans-serif;
+
 }
 
 @theme inline {
@@ -16,8 +26,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-   /* --background: #0a0a0a;*/
-    --foreground: #ededed;
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #2C8C91;
+  --primary-light: #EAF6F6;
+  --accent: #C42323;
+  --accent-hover: #A11C1C;
+  --dark: #2B2B2A;
   }
 }
 
@@ -26,3 +41,55 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+
+
+/* Custom utility classes for your colors */
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary-light {
+  background-color: var(--primary-light);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-accent-hover {
+  background-color: var(--accent-hover);
+}
+
+.bg-primary-light-hover:hover {
+  background-color: rgb(44 140 145 / 0.2);
+}
+
+.bg-dark {
+  background-color: var(--dark);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-primary-light {
+  color: var(--primary-light);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.text-accent-hover {
+  color: var(--accent-hover);
+}
+
+.text-dark {
+  color: var(--dark);
+}
+
+.group:hover .group-hover\:bg-accent {
+  background-color: var(--accent);
+}
+

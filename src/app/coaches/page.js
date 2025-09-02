@@ -19,7 +19,7 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
-import { fetchCoaches } from "@/lib/api/coaches";
+import { fetchCoaches } from "@/api/coaches";
 import Shimmer from "../components/Shimmer";
 
 const poppins = Poppins({
@@ -473,11 +473,11 @@ export default function AllDoctorsPage() {
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                   e.target.src = "/images/devdoot-round.png";
-                                }} // Fallback to logo.png if image fails to load
+                                }} 
                               />
                             ) : (
                               <img
-                                src="/images/devdoot-round.png" // Default to logo.png if no profilePicture
+                                src="/images/devdoot-round.png" 
                                 alt="Default Logo"
                                 className="w-14 h-14 object-contain"
                               />

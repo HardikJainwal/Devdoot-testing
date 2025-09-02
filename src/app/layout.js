@@ -4,6 +4,7 @@ import "./globals.css";
 import NavbarWrapper from "./components/NavbarWrapper";
 import ChatFidget from "./components/ChatFidget";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ModalProvider } from "@/contexts/ModalContext";
 
 export const metadata = {
   title: "Devdoot",
@@ -15,10 +16,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <AuthProvider>
+          <ModalProvider>
           <NavbarWrapper />
           <main className="min-h-screen">{children}</main>
           <Footer />
           <ChatFidget />
+          </ModalProvider>
         </AuthProvider>
       </body>
     </html>

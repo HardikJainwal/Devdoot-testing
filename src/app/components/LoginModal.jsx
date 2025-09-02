@@ -86,11 +86,11 @@ const LoginModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
       <div
         ref={modalRef}
-        className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl max-h-[90vh] overflow-y-auto"
+        className="bg-white  rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl max-h-[90vh] overflow-y-auto"
       >
         <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
           {/* Left Side - Form */}
-          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-900">
+          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white">
             <div className="flex justify-center mb-4 sm:mb-6">
               <img
                 src="/images/Logo.png"
@@ -99,13 +99,13 @@ const LoginModal = ({ isOpen, onClose }) => {
               />
             </div>
             <div className="mb-4 sm:mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] dark:text-teal-400 font-['Poppins'] whitespace-nowrap">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91]  font-['Poppins'] whitespace-nowrap">
                 Welcome Back to
-                <span className="text-[#C42323] dark:text-red-400"> Devdoot</span>
+                <span className="text-[#C42323] "> Devdoot</span>
               </h2>
             </div>
 
-            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
+            <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
               Access emergency medical help, doctor consults, medicine delivery &
               more.
             </p>
@@ -119,7 +119,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             {/* Password Login Form */}
             <form onSubmit={handlePasswordLogin}>
               <div className="mb-4 sm:mb-6">
-                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                   Email Address
                 </label>
                 <input
@@ -127,13 +127,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white  text-gray-900 "
                   required
                 />
               </div>
 
               <div className="mb-4 sm:mb-6">
-                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                   Password
                 </label>
                 <input
@@ -141,7 +141,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white  text-gray-900 "
                   required
                 />
               </div>
@@ -149,7 +149,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 disabled={!email || !password || isLoading}
-                className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base transition-colors"
+                className="w-full bg-red-600  text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700  disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base transition-colors"
               >
                 {isLoading ? 'Signing In...' : 'Sign In'}
               </button>
@@ -159,17 +159,17 @@ const LoginModal = ({ isOpen, onClose }) => {
             <div className="text-center mt-4">
               <a
                 href="#"
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-sm text-blue-600  hover:underline"
               >
                 Forgot your password?
               </a>
             </div>
 
-            <div className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
+            <div className="text-center text-sm text-gray-600  mt-4">
               Don&apos;t have an account?{' '}
               <button
                 onClick={() => console.log('Switch to signup modal')}
-                className="text-red-600 dark:text-red-400 hover:underline font-medium"
+                className="text-red-600  hover:underline font-medium"
               >
                 Sign up here
               </button>
@@ -180,14 +180,14 @@ const LoginModal = ({ isOpen, onClose }) => {
             <div className="flex-1 bg-[#2C8C91] text-white p-4 sm:p-6 md:p-8 flex flex-col relative">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-white hover:text-gray-200 dark:hover:text-gray-300 text-xl sm:text-2xl transition-colors"
+                className="absolute top-4 right-4 text-white hover:text-gray-200  text-xl sm:text-2xl transition-colors"
               >
                 ×
               </button>
               <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 mt-12 sm:mt-16">
                 Your Health, Our Priority
               </h3>
-              <p className="text-teal-100 dark:text-teal-200 mb-6 sm:mb-8 text-sm sm:text-lg">
+              <p className="text-teal-100  mb-6 sm:mb-8 text-sm sm:text-lg">
                 Experience seamless healthcare services with India's leading on-demand medical platform.
               </p>
               

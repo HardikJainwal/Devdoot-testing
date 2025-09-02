@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { sendMessage } from "@/lib/gemini";
+
 
 const ChatFidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,68 +44,86 @@ const ChatFidget = () => {
     setHasAutoOpened(true);
   };
 
-  const handleSendMessage = async (e) => {
-    if (e) e.preventDefault();
-    if (!inputMessage.trim() && !selectedFile) return;
-    if (isLoading) return;
+  // In your ChatFidget component, replace the handleSendMessage function with this:
 
-    const newMessages = [];
+const handleSendMessage = async (e) => {
+  if (e) e.preventDefault();
+  if (!inputMessage.trim() && !selectedFile) return;
+  if (isLoading) return;
 
-    // Add user text message if present
-    if (inputMessage.trim()) {
-      const userMessage = {
-        type: "user",
-        text: inputMessage.trim(),
-        timestamp: new Date(),
-      };
-      newMessages.push(userMessage);
-    }
+  const newMessages = [];
 
-    // Add file message if a file is selected
-    if (selectedFile) {
-      const fileMessage = {
-        type: "user",
-        file: selectedFile,
-        fileName: selectedFile.name,
-        fileType: selectedFile.type,
-        timestamp: new Date(),
-      };
-      newMessages.push(fileMessage);
-    }
+  // Add user text message if present
+  if (inputMessage.trim()) {
+    const userMessage = {
+      type: "user",
+      text: inputMessage.trim(),
+      timestamp: new Date(),
+    };
+    newMessages.push(userMessage);
+  }
 
-    setMessages((prev) => [...prev, ...newMessages]);
-    setInputMessage("");
-    setSelectedFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    setIsLoading(true);
+  // Add file message if a file is selected
+  if (selectedFile) {
+    const fileMessage = {
+      type: "user",
+      file: selectedFile,
+      fileName: selectedFile.name,
+      fileType: selectedFile.type,
+      timestamp: new Date(),
+    };
+    newMessages.push(fileMessage);
+  }
 
-    try {
-      // Handle text message
-      let response = "";
-      if (inputMessage.trim()) {
-        response = await sendMessage(inputMessage.trim());
-      } else if (selectedFile) {
-        // Placeholder for file upload handling
-        response =
-          "File received. Please provide additional details about your medical query.";
+  setMessages((prev) => [...prev, ...newMessages]);
+  const currentMessage = inputMessage.trim();
+  setInputMessage("");
+  setSelectedFile(null);
+  if (fileInputRef.current) fileInputRef.current.value = "";
+  setIsLoading(true);
+
+  try {
+    let response = "";
+    if (currentMessage) {
+      // Call the new chat API route
+      const apiResponse = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: currentMessage }),
+      });
+
+      const data = await apiResponse.json();
+      
+      if (!apiResponse.ok) {
+        throw new Error(data.error || 'Failed to get response');
       }
-      const botMessage = {
-        type: "bot",
-        text: response,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      const errorMessage = {
-        type: "bot",
-        text: "Sorry, I encountered an error. Please try again.",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
+      
+      response = data.message;
+    } else if (selectedFile) {
+      // Placeholder for file upload handling
+      response = "File received. Please provide additional details about your medical query.";
     }
-  };
+    
+    const botMessage = {
+      type: "bot",
+      text: response,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, botMessage]);
+  } catch (error) {
+    console.error('Error:', error);
+    const errorMessage = {
+      type: "bot",
+      text: "Sorry, I encountered an error. Please try again.",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, errorMessage]);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

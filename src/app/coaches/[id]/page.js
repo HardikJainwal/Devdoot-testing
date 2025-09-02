@@ -1,5 +1,5 @@
 "use client";
-import { authUtils } from "@/lib/api/auth";
+import { authUtils } from "@/api/auth";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -30,7 +30,7 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
-import { fetchCoachById, fetchCoaches } from "@/lib/api/coaches";
+import { fetchCoachById, fetchCoaches } from "@/api/coaches";
 import Shimmer from "@/app/components/Shimmer";
 
 const poppins = Poppins({
@@ -81,8 +81,8 @@ export default function CoachProfilePage() {
   const [error, setError] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
+  // const [showReviewModal, setShowReviewModal] = useState(false);
+  // const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
   const [selectedTimeCategory, setSelectedTimeCategory] = useState("morning");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -157,18 +157,18 @@ export default function CoachProfilePage() {
     }
   };
 
-  // Helper function to get date range for API call
+ 
   const getDateRange = (selectedDate) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Start of today
 
-  // Parse the selected date (format: YYYY-MM-DD)
+ 
   const selected = new Date(selectedDate);
   selected.setHours(0, 0, 0, 0);
 
   const startDate = new Date(selected);
   const endDate = new Date(selected);
-  endDate.setDate(selected.getDate() + 1); // End of the selected day
+  endDate.setDate(selected.getDate() + 1); 
 
   return {
     startDate: startDate.toISOString(),
@@ -195,15 +195,13 @@ export default function CoachProfilePage() {
       console.log("API Response:", response);
 
       if (response.success && response.data && Array.isArray(response.data)) {
-        // Process the slots from API response
+        
         const processedSlots = response.data.map((slot, index) => {
-          // Parse the local time strings
-          const localStartStr = slot.local[0]; // "2025-07-30 22:30:00"
-          const localEndStr = slot.local[1];   // "2025-07-31 02:30:00"
           
-          // Extract just the time part for display
-          const startTime = localStartStr.split(' ')[1]; // "22:30:00"
-          const endTime = localEndStr.split(' ')[1];     // "02:30:00"
+          const localStartStr = slot.local[0]; 
+          const localEndStr = slot.local[1];  
+          const startTime = localStartStr.split(' ')[1]; 
+          const endTime = localEndStr.split(' ')[1];     
           
           return {
             id: `slot-${index}`,
@@ -231,7 +229,7 @@ export default function CoachProfilePage() {
     }
   };
 
-  // Function to format time for display
+  
   const formatTimeDisplay = (startTime, endTime) => {
     const formatTime = (timeStr) => {
       const [hour, minute] = timeStr.split(':');
@@ -244,7 +242,7 @@ export default function CoachProfilePage() {
     return `${formatTime(startTime)} - ${formatTime(endTime)}`;
   };
 
-  // Updated categorization function
+  
   const categorizeSlots = (slots) => {
     const categorized = {
       morning: [],
@@ -253,7 +251,6 @@ export default function CoachProfilePage() {
     };
 
     slots.forEach((slot) => {
-      // Extract hour from startTime (format: "22:30:00")
       const hour = parseInt(slot.startTime.split(':')[0]);
 
       if (hour >= 6 && hour < 12) {
@@ -268,17 +265,17 @@ export default function CoachProfilePage() {
     return categorized;
   };
 
-  useEffect(() => {
-    if (showReviewModal) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
+  // useEffect(() => {
+  //   if (showReviewModal) {
+  //     document.body.classList.add("overflow-hidden");
+  //   } else {
+  //     document.body.classList.remove("overflow-hidden");
+  //   }
 
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [showReviewModal]);
+  //   return () => {
+  //     document.body.classList.remove("overflow-hidden");
+  //   };
+  // }, [showReviewModal]);
 
   const loadRelatedCoaches = async () => {
     try {
@@ -340,12 +337,12 @@ export default function CoachProfilePage() {
     router.push(`/coaches/${coachId}`);
   };
 
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    console.log("Review submitted:", newReview);
-    setShowReviewModal(false);
-    setNewReview({ rating: 5, comment: "" });
-  };
+  // const handleReviewSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Review submitted:", newReview);
+  //   setShowReviewModal(false);
+  //   setNewReview({ rating: 5, comment: "" });
+  // };
 
   if (loading) {
     return <Shimmer />;
@@ -377,7 +374,7 @@ export default function CoachProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Enhanced Header with gradient */}
+      
       <div className="bg-gradient-to-r from-[#2C8C91] to-[#345268] shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
@@ -392,9 +389,9 @@ export default function CoachProfilePage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
+          
           <div className="lg:col-span-2 space-y-8">
-            {/* Enhanced Doctor Profile Card */}
+            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -585,7 +582,7 @@ export default function CoachProfilePage() {
               </p>
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -750,7 +747,7 @@ export default function CoachProfilePage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </motion.div> */}
           </div>
 
           <div className="lg:col-span-1">
@@ -1032,7 +1029,7 @@ export default function CoachProfilePage() {
         )}
       </div>
 
-      {showReviewModal && (
+      {/* {showReviewModal && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -1118,7 +1115,7 @@ export default function CoachProfilePage() {
             </form>
           </motion.div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

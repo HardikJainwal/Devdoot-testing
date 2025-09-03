@@ -292,8 +292,9 @@ const RepowellHealthPage = () => {
               Your Personalized AI Wellness Coach
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Tell us how you're feeling and your goals, and get a custom plan in seconds.
-            </p>
+  Tell us how you&apos;re feeling and your goals, and get a custom plan in seconds.
+</p>
+
           </div>
 
           <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl flex flex-col md:flex-row items-center gap-12">
@@ -401,7 +402,7 @@ const RepowellHealthPage = () => {
                 key={index}
                 className="relative bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border border-blue-100 hover:shadow-xl transition-all duration-500 group"
               >
-                <div className="absolute top-4 right-4 text-4xl text-blue-200 font-serif">"</div>
+                <div className="absolute top-4 right-4 text-4xl text-blue-200 font-serif"></div>
                 <div className="flex items-center mb-6">
                   <img
                     src={testimonial.image}

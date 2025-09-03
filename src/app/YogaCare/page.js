@@ -519,7 +519,7 @@ const YogaCarePage = () => {
                 key={index}
                 className="relative bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100 hover:shadow-xl transition-all duration-500 group"
               >
-                <div className="absolute top-4 right-4 text-4xl text-purple-200 font-serif">"</div>
+                <div className="absolute top-4 right-4 text-4xl text-purple-200 font-serif"></div>
                 <div className="flex items-center mb-6">
                   <img
                     src={testimonial.image}

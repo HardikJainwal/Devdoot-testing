@@ -26,4 +26,4 @@ const planGenAiAPI = async () => {
     return samplePlan;
 }
 
-module.export = {skinAiAPI, planGenAiAPI}
+module.exports = {skinAiAPI, planGenAiAPI}

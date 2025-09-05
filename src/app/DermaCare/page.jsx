@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { skinAiAPI, planGenAiAPI } from '@/services/aiCalls';
+import {searchAPI} from '@/services/searchApi';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCameraRetro,faTimes, faFileWaveform, faUserDoctor, faRobot, faCloudArrowUp, faCamera, faQuoteLeft, 
     faTint, faBookOpen,
@@ -88,6 +89,10 @@ export default function DermaCare(){
                 setError(true);
             }
         }
+        const searchData = async () =>{
+            const data = await searchAPI({limit: 2, specialization: "Dermatologist Consultant"});
+            setDoctors(data);
+        }
         if (show && modalTitleRef.current && modalBodyRef){
             let spinner = `
 <div class="flex justify-center items-center p-8">
@@ -102,6 +107,7 @@ export default function DermaCare(){
             planGenAiData(); 
             setPlanLoading(false);
         }
+        searchData();
 
     },[show, planLoading])
 
@@ -230,15 +236,18 @@ export default function DermaCare(){
                             return (
                         <div key={index} className="doctor-card bg-white rounded-xl shadow-lg p-6 text-center group transform hover:-translate-y-2 transition-transform duration-300">
                             <div className="relative inline-block">
-                                <img src={doctor.image} alt="Dr. Riya" className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md" />
+                                <img src={doctor.profilePhoto} alt="Dr. Riya" className="w-32 h-32 rounded-full  mb-4 border-4 border-white shadow-md object-contain" />
+                                        {/*
                                 <span className="absolute bottom-4 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
                                     <span className="w-2 h-2 bg-white rounded-full live-dot"></span>
                                     LIVE
                                 </span>
+                            */}
                             </div>
-                            <h4 className="font-bold text-xl text-dark">{doctor.name}</h4>
+
+                            <h4 className="font-bold text-xl text-dark">{doctor.coachName}</h4>
                             <p className="text-primary font-semibold text-sm">{doctor.specialization}</p>
-                            <p className="text-gray-500 text-sm my-4">{doctor.describe}</p>
+                            <p className="text-gray-500 text-sm my-4">{doctor.bio}</p>
                             <button className="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg group-hover:bg-accent cursor-pointer transition-colors duration-300">Book Video Consult</button>
                         </div>)
                         })}

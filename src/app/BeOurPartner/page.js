@@ -80,12 +80,12 @@ export default function BeOurPartner() {
               <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
                 <div className="w-full h-full rounded-full shadow-2xl flex items-center justify-center">
                   <div className="text-center p-4 sm:p-8">
-                    <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 mx-auto">
+                    <div className="relative w-32 h-32 sm:w-64 sm:h-64 lg:w-80 lg:h-80 mx-auto">
                       <Image
                         src="/images/Logo-round.png"
                         alt="Devdoot Logo"
-                        width={300}
-                        height={300}
+                        width={100}
+                        height={100}
                         className="rounded-full object-contain w-full h-full"
                         priority
                       />

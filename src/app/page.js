@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CertificationCarousel from "@/app/components/CertificationCarousel";
 import SDGGoalsSection from "./components/Home/SDG";
 import DoctorsSection from "./components/Home/CoachSection";
+import StressDetectionWidget from "@/app/components/StressDetectionWidget";
 
 import {
   faVideo,
@@ -27,7 +28,7 @@ import {
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { fetchCoaches } from "@/lib/api/coaches";
+import { fetchCoaches } from "@/api/coaches";
 import {
   Heart,
   Users,
@@ -62,7 +63,6 @@ const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
 });
-
 
 const medicalServices = [
   {
@@ -182,7 +182,6 @@ const medicalServices = [
     buttonText: "Get Support",
     badge: "Coming Soon",
   },
-
   {
     icon: Droplets,
     title: "Social Wall",
@@ -221,8 +220,6 @@ const medicalServices = [
   },
 ];
 
-
-
 export default function Home() {
   const router = useRouter();
   const [toasts, setToasts] = useState([]);
@@ -246,17 +243,16 @@ export default function Home() {
   const removeToast = (id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
-const handleServiceClick = (service) => {
-  if (service.title === "Coach Match") {
-    router.push("coaches");
-  } else if (service.title === "AyurCare") {
-    router.push("AyurCare");
-  } else {
-    showToast(service);
-  }
-};
 
-
+  const handleServiceClick = (service) => {
+    if (service.title === "Coach Match") {
+      router.push("coaches");
+    } else if (service.title === "AyurCare") {
+      router.push("AyurCare");
+    } else {
+      showToast(service);
+    }
+  };
 
   // Carousel settings
   const carouselSettings = {
@@ -330,7 +326,6 @@ const handleServiceClick = (service) => {
               <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed max-w-md">
                 <span className="text-gray-200 sm:text-gray-700">
                   Book doctors, order medicines, schedule lab tests, and
-                  
                   access wellness services - all in one place.
                 </span>
               </p>
@@ -346,60 +341,9 @@ const handleServiceClick = (service) => {
           </div>
         </div>
         
-     <div className="absolute left-0 right-0 px-10 sm:px-6 lg:px-50 -bottom-16  ">
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-            {/* Service */}
-            <div className="sm:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Service
-              </label>
-              <select 
-                className="w-full p-3 border border-gray-300 rounded-md text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a5a5] focus:border-[#00a5a5] appearance-none cursor-pointer"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '1.5em 1.5em',
-                  paddingRight: '2.5rem'
-                }}
-              >
-                <option value="">Select a service</option>
-                <option value="doctor">Doctor Consultation</option>
-                <option value="lab">Lab Tests</option>
-                <option value="medicine">Medicine Delivery</option>
-                <option value="wellness">Wellness Services</option>
-              </select>
-            </div>
-
-            {/* Location */}
-            <div className="sm:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Location
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Enter your location"
-                  className="w-full p-3 border border-gray-300 rounded-md text-sm pl-10 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00a5a5] focus:border-[#00a5a5]"
-                />
-                <MapPin className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Button */}
-            <div className="sm:col-span-1 mt-2 sm:mt-6">
-              <button 
-                className="w-full bg-[#00a5a5] text-white p-3 rounded-md font-semibold text-sm hover:bg-[#008f8f] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#00a5a5] focus:ring-offset-2"
-                onClick={() => alert('Search functionality would be implemented here')}
-              >
-                Find Services
-              </button>
-            </div>
-          </div>
-        </div>
+     
+        <StressDetectionWidget router={router} />
       </div>
-    </div>
     
 
       {/* Our Medical Services Section with Carousel */}

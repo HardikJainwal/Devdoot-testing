@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { authUtils } from '@/lib/api/auth';
+import { authUtils } from '@/api/auth';
 import { 
   User, 
   Phone, 

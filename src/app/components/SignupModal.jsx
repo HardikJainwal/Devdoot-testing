@@ -1,8 +1,7 @@
-
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-const SignupModal = ({ isOpen, onClose }) => {
+const SignupModal = ({ isOpen, onClose, onSwitchToLogin }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -21,6 +20,8 @@ const SignupModal = ({ isOpen, onClose }) => {
   const modalRef = useRef();
 
   const otpRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
+
+  console.log("SignupModal rendered - isOpen:", isOpen, "onSwitchToLogin:", typeof onSwitchToLogin);
 
   useEffect(() => {
     if (!isOpen) {
@@ -210,7 +211,6 @@ const SignupModal = ({ isOpen, onClose }) => {
     setError('');
 
     try {
-      // Debug logs
       console.log('Token being sent:', userToken);
       console.log('Email being sent:', email);
       console.log('OTP being sent:', otpValue);
@@ -260,21 +260,35 @@ const SignupModal = ({ isOpen, onClose }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const handleSwitchToLogin = () => {
+    console.log('Switch to login modal clicked');
+    if (onSwitchToLogin) {
+      onSwitchToLogin();
+    } else {
+      console.error('onSwitchToLogin function not provided');
+    }
+  };
+
+  if (!isOpen) {
+    console.log("SignupModal: Not rendering because isOpen is false");
+    return null;
+  }
+
+  console.log("SignupModal: Rendering modal");
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
-      <div ref={modalRef} className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl h-auto max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4 sm:p-6">
+      <div ref={modalRef} className="bg-white rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl h-auto max-h-[90vh] overflow-y-auto">
         <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
           {/* Left Side - Form */}
-          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white dark:bg-gray-900">
+          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white">
             <div className="mb-4 sm:mb-4">
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] dark:text-teal-400 font-['Poppins'] whitespace-nowrap">
-                Sign Up to<span className="text-[#C42323] dark:text-red-400"> Devdoot</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] font-['Poppins'] whitespace-nowrap">
+                Sign Up to<span className="text-[#C42323]"> Devdoot</span>
               </h2>
             </div>
 
-            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-4 text-sm sm:text-base">
+            <p className="text-gray-600 mb-6 sm:mb-4 text-sm sm:text-base">
               Create an account to access emergency medical help, doctor consults, medicine delivery & more.
             </p>
 
@@ -286,8 +300,9 @@ const SignupModal = ({ isOpen, onClose }) => {
 
             {!isOtpSent ? (
               <div>
+                {/* All your existing form fields remain the same */}
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Full Name *
                   </label>
                   <input
@@ -295,13 +310,13 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Enter your full name"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Email Address *
                   </label>
                   <input
@@ -309,17 +324,17 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Mobile Number *
                   </label>
                   <div className="flex">
-                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-l-lg text-sm sm:text-base">
+                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-200 text-gray-700 rounded-l-lg text-sm sm:text-base">
                       +91
                     </span>
                     <input
@@ -327,18 +342,18 @@ const SignupModal = ({ isOpen, onClose }) => {
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       placeholder="Enter your mobile number"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     WhatsApp Number *
                   </label>
                   <div className="flex">
-                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-l-lg text-sm sm:text-base">
+                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-200 text-gray-700 rounded-l-lg text-sm sm:text-base">
                       +91
                     </span>
                     <input
@@ -346,14 +361,14 @@ const SignupModal = ({ isOpen, onClose }) => {
                       value={whatsappNumber}
                       onChange={(e) => setWhatsappNumber(e.target.value)}
                       placeholder="Enter your WhatsApp number"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Password *
                   </label>
                   <input
@@ -361,14 +376,14 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                     minLength="8"
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                     Confirm Password *
                   </label>
                   <input
@@ -376,44 +391,44 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm your password"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent text-sm sm:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500  focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500 "
                     required
                     minLength="8"
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-2">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                     Gender *
                   </label>
                   <div className="flex space-x-4">
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="male"
                         checked={gender === 'male'}
                         onChange={(e) => setGender(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Male
                     </label>
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="female"
                         checked={gender === 'female'}
                         onChange={(e) => setGender(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Female
                     </label>
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="other"
                         checked={gender === 'other'}
                         onChange={(e) => setGender(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Other
                     </label>
@@ -421,27 +436,27 @@ const SignupModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="mb-4 sm:mb-2">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                     User Type *
                   </label>
                   <div className="flex space-x-4">
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="patient"
                         checked={userType === 'patient'}
                         onChange={(e) => setUserType(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Patient
                     </label>
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="care-giver"
                         checked={userType === 'care-giver'}
                         onChange={(e) => setUserType(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600 bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Care-Giver
                     </label>
@@ -449,27 +464,27 @@ const SignupModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="mb-4 sm:mb-2">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                     Coach Type *
                   </label>
                   <div className="flex space-x-4">
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="senior care"
                         checked={coachType === 'senior care'}
                         onChange={(e) => setCoachType(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       Senior Care
                     </label>
-                    <label className="flex items-center text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                    <label className="flex items-center text-sm sm:text-base text-gray-700 ">
                       <input
                         type="radio"
                         value="general care"
                         checked={coachType === 'general care'}
                         onChange={(e) => setCoachType(e.target.value)}
-                        className="mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-red-500 dark:focus:ring-red-400"
+                        className="mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  focus:ring-red-500 "
                       />
                       General Care
                     </label>
@@ -480,7 +495,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                   type="button"
                   onClick={handleGetOtp}
                   disabled={!fullName || !email || !mobile || !whatsappNumber || !password || !gender || !userType || !coachType || !isAgreed || isLoading}
-                  className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
+                  className="w-full bg-red-600  text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700  disabled:bg-gray-400  disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
                 >
                   {isLoading ? 'Creating Account...' : 'Get OTP'}
                 </button>
@@ -491,15 +506,15 @@ const SignupModal = ({ isOpen, onClose }) => {
                     id="terms"
                     checked={isAgreed}
                     onChange={(e) => setIsAgreed(e.target.checked)}
-                    className="mt-1 mr-2 h-4 w-4 text-red-600 dark:text-red-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-red-500 dark:focus:ring-red-400"
+                    className="mt-1 mr-2 h-4 w-4 text-red-600  bg-white  border-gray-300  rounded focus:ring-red-500 "
                   />
-                  <label htmlFor="terms" className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  <label htmlFor="terms" className="text-xs sm:text-sm text-gray-600 ">
                     I agree to the{' '}
-                    <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    <a href="#" className="text-blue-600  hover:underline">
                       Terms of Service
                     </a>{' '}
                     and{' '}
-                    <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    <a href="#" className="text-blue-600 hover:underline">
                       Privacy Policy
                     </a>
                   </label>
@@ -508,10 +523,10 @@ const SignupModal = ({ isOpen, onClose }) => {
             ) : (
               <div>
                 <div className="mb-4 sm:mb-6">
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
                     Enter OTP sent to {email}
                   </label>
-                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <p className="text-xs sm:text-sm text-gray-500  mb-4">
                     Please enter the 6-digit OTP sent to your email
                   </p>
                   <div className="flex space-x-2 sm:space-x-3 justify-center">
@@ -523,7 +538,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                         value={digit}
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                        className="w-12 h-12 sm:w-14 sm:h-14 text-center text-lg sm:text-xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-12 h-12 sm:w-14 sm:h-14 text-center text-lg sm:text-xl font-bold border-2 border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500  focus:border-transparent bg-white  text-gray-900 "
                         maxLength="1"
                       />
                     ))}
@@ -534,7 +549,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                   type="button"
                   onClick={handleVerifyOtp}
                   disabled={otp.join('').length !== 6 || isLoading}
-                  className="w-full bg-red-600 dark:bg-red-500 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700 dark:hover:bg-red-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
+                  className="w-full bg-red-600  text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-red-700  disabled:bg-gray-400  disabled:cursor-not-allowed mb-4 text-sm sm:text-base transition-colors"
                 >
                   {isLoading ? 'Verifying...' : 'Verify OTP'}
                 </button>
@@ -546,7 +561,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                     setError('');
                     setOtp(['', '', '', '', '', '']);
                   }}
-                  className="w-full text-red-600 dark:text-red-400 py-2 rounded-lg font-medium hover:bg-red-50 dark:hover:bg-gray-800 text-sm sm:text-base transition-colors"
+                  className="w-full text-red-600  py-2 rounded-lg font-medium hover:bg-red-50  text-sm sm:text-base transition-colors"
                 >
                   Back to Form
                 </button>
@@ -558,14 +573,14 @@ const SignupModal = ({ isOpen, onClose }) => {
           <div className="flex-1 bg-[#2C8C91] text-white p-4 sm:p-6 md:p-8 flex flex-col relative">
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-white hover:text-gray-200 dark:hover:text-gray-300 text-xl sm:text-2xl transition-colors"
+              className="absolute top-4 right-4 text-white hover:text-gray-200  text-xl sm:text-2xl transition-colors"
             >
               ×
             </button>
             <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 mt-12 sm:mt-16">
               Your Health, Our Priority
             </h3>
-            <p className="text-teal-100 dark:text-teal-200 mb-6 sm:mb-8 text-sm sm:text-lg">
+            <p className="text-teal-100  mb-6 sm:mb-8 text-sm sm:text-lg">
               Experience seamless healthcare services with India's leading on-demand medical platform.
             </p>
 

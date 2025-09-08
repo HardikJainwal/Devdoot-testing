@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    // Check if user is logged in on app start
+    
     const token = localStorage.getItem('authToken');
     const user = localStorage.getItem('userData');
     
@@ -93,3 +93,4 @@ export const useAuth = () => {
   }
   return context;
 };
+

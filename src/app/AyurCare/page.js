@@ -4,7 +4,7 @@ import { Sparkles, ChevronLeft, ChevronRight, Star, Award, Calendar, MapPin, Use
 import ExpertCard from '../components/ExpertCard';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { fetchCoaches , fetchCoachesBySpecialization } from '@/lib/api/coaches';
+import { fetchCoaches , fetchCoachesBySpecialization } from '@/api/coaches';
 
 // Quiz Data Configuration (unchanged)
 const quizData = {

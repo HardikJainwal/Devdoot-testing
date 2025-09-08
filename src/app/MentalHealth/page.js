@@ -19,7 +19,7 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
-import { fetchCoaches, fetchCoachesBySpecialization } from "@/lib/api/coaches";
+import { fetchCoaches, fetchCoachesBySpecialization } from "@/api/coaches";
 import Shimmer from "../components/Shimmer";
 
 const poppins = Poppins({

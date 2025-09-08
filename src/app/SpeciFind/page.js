@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   UserIcon, 
   EnvelopeIcon, 
@@ -16,40 +16,22 @@ import {
   ExclamationTriangleIcon,
   ClockIcon,
   BoltIcon,
-  TruckIcon
+  TruckIcon,
+  MapPinIcon,
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 
-// Auth utilities using localStorage
+
 const authUtils = {
   isAuthenticated: () => {
     if (typeof window === 'undefined') return false;
     const token = localStorage.getItem('authToken');
     return !!token;
   },
-
   getToken: () => {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem('authToken');
   },
-
-  getUser: () => {
-    if (typeof window === 'undefined') return null;
-    const userData = localStorage.getItem('userData');
-    return userData ? JSON.parse(userData) : null;
-  },
-
-  setAuth: (token, userData) => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('authToken', token);
-    localStorage.setItem('userData', JSON.stringify(userData));
-  },
-
-  clearAuth: () => {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-  },
-
   getAuthHeaders: () => {
     const token = authUtils.getToken();
     return {
@@ -59,13 +41,30 @@ const authUtils = {
   }
 };
 
-// API endpoints
 const API_ENDPOINTS = {
-  SIGNUP: 'https://devdoot-backend.onrender.com/v1/api/user/signup',
-  LOGIN: 'https://devdoot-backend.onrender.com/v1/api/user/login',
-  VERIFY_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/otp',
-  SEND_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/send-login-otp',
-  VERIFY_LOGIN_OTP: 'https://devdoot-backend.onrender.com/v1/api/user/verify-login-otp'
+  SPECIALIST_FINDER: 'https://devdoot-backend-1-uat.onrender.com/v1/api/specialist-finder'
+};
+
+const specialistService = {
+  submitSpecialistRequest: async (formData) => {
+    const headers = authUtils.getAuthHeaders();
+    
+    const response = await fetch(API_ENDPOINTS.SPECIALIST_FINDER, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        ...formData,
+        preferredDate: new Date(formData.preferredDate).toISOString()
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `Server error: ${response.status}`);
+    }
+
+    return response.json();
+  }
 };
 
 const SpecialistFinderForm = () => {
@@ -73,6 +72,8 @@ const SpecialistFinderForm = () => {
     name: '',
     email: '',
     mobile: '',
+    state: '',
+    city: '',
     specialist: '',
     consultationType: '',
     preferredDate: '',
@@ -86,12 +87,10 @@ const SpecialistFinderForm = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Check authentication status on component mount
-  useState(() => {
+  useEffect(() => {
     setIsAuthenticated(authUtils.isAuthenticated());
   }, []);
 
-  // Function to test token manually
-  
   const specialists = [
     'Cardiologist',
     'Dermatologist', 
@@ -143,43 +142,16 @@ const SpecialistFinderForm = () => {
         throw new Error('Please login first to submit the form');
       }
 
-      // Debug token information
-      const token = authUtils.getToken();
-      const user = authUtils.getUser();
-      console.log('Current token:', token);
-      console.log('Token length:', token ? token.length : 0);
-      console.log('Current user:', user);
-      
-      // Check token format
-      if (token && token.includes(' ')) {
-        console.warn('Token contains spaces, this might be an issue');
-      }
+      const result = await specialistService.submitSpecialistRequest(formData);
 
-      const submitData = {
-        ...formData,
-        preferredDate: new Date(formData.preferredDate).toISOString()
-      };
-
-      const headers = authUtils.getAuthHeaders();
-      console.log('Request headers:', headers);
-      console.log('Submit data:', submitData);
-
-      const response = await fetch('https://devdoot-backend-1-uat.onrender.com/v1/api/specialist-finder', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(submitData)
-      });
-
-      const result = await response.json();
-      console.log('Response status:', response.status);
-      console.log('Response result:', result);
-
-      if (response.ok && result.success) {
+      if (result.success) {
         setMessage({ type: 'success', text: 'Specialist form submitted successfully!' });
         setFormData({
           name: '',
           email: '',
           mobile: '',
+          state: '',
+          city: '',
           specialist: '',
           consultationType: '',
           preferredDate: '',
@@ -188,7 +160,7 @@ const SpecialistFinderForm = () => {
           aboutUs: ''
         });
       } else {
-        throw new Error(result.message || `Server error: ${response.status}`);
+        throw new Error(result.message || 'Submission failed');
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -212,8 +184,6 @@ const SpecialistFinderForm = () => {
   return (
     <div className="min-h-screen bg-white p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
-       
-
         {/* Authentication Check */}
         {!isAuthenticated && (
           <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 mb-6 flex items-center gap-3">
@@ -268,7 +238,7 @@ const SpecialistFinderForm = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                    className="w-full px-4  text-black py-4 bg-gray-50 border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                   />
                   <UserIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
@@ -288,13 +258,13 @@ const SpecialistFinderForm = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="your.email@example.com"
-                    className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                    className="w-full px-4 py-4 text-black bg-gray-50 border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                   />
                   <EnvelopeIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
               </div>
 
-              
+              {/* Mobile */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                   <PhoneIcon className="w-4 h-4" />
@@ -308,13 +278,53 @@ const SpecialistFinderForm = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="+1234567890"
-                    className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                    className="w-full px-4 py-4 text-black bg-gray-50 border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                   />
                   <PhoneIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 </div>
               </div>
 
-              
+              {/* State */}
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <MapPinIcon className="w-4 h-4" />
+                  State *
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your state"
+                    className="w-full px-4 py-4 bg-gray-50 text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
+                  />
+                  <MapPinIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+
+              {/* City */}
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <BuildingOfficeIcon className="w-4 h-4" />
+                  City *
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your city"
+                    className="w-full px-4 py-4 bg-gray-50 text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
+                  />
+                  <BuildingOfficeIcon className="absolute  right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+
+              {/* Specialist */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                   <UserCircleIcon className="w-4 h-4" />
@@ -325,7 +335,7 @@ const SpecialistFinderForm = () => {
                   value={formData.specialist}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                  className="w-full px-4 py-4 bg-gray-50 text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                 >
                   <option value="">Select a specialist</option>
                   {specialists.map((spec) => (
@@ -334,7 +344,7 @@ const SpecialistFinderForm = () => {
                 </select>
               </div>
 
-              
+              {/* Consultation Type */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                   <VideoCameraIcon className="w-4 h-4" />
@@ -345,7 +355,7 @@ const SpecialistFinderForm = () => {
                   value={formData.consultationType}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                  className="w-full px-4 py-4 bg-gray-50  text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                 >
                   <option value="">Select consultation type</option>
                   {consultationTypes.map((type) => (
@@ -354,8 +364,8 @@ const SpecialistFinderForm = () => {
                 </select>
               </div>
 
-              
-              <div className="space-y-2">
+              {/* Preferred Date */}
+              <div className="space-y-2 lg:col-span-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                   <CalendarDaysIcon className="w-4 h-4" />
                   Preferred Date & Time *
@@ -367,12 +377,12 @@ const SpecialistFinderForm = () => {
                   onChange={handleInputChange}
                   min={getCurrentDateTime()}
                   required
-                  className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white"
+                  className="w-full px-4 py-4 bg-gray-50 text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white"
                 />
               </div>
             </div>
 
-            
+            {/* Urgency Level */}
             <div className="mt-6 space-y-3">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <ExclamationCircleIcon className="w-4 h-4" />
@@ -409,7 +419,7 @@ const SpecialistFinderForm = () => {
               </div>
             </div>
 
-            
+            {/* Description */}
             <div className="mt-6 space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <ChatBubbleLeftRightIcon className="w-4 h-4" />
@@ -422,11 +432,11 @@ const SpecialistFinderForm = () => {
                 required
                 rows={4}
                 placeholder="Please describe your symptoms, concerns, or reason for seeking consultation..."
-                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white resize-vertical"
+                className="w-full px-4 py-4 text-black bg-gray-50 border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white resize-vertical"
               />
             </div>
 
-            
+            {/* Additional Information */}
             <div className="mt-6 space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
                 <InformationCircleIcon className="w-4 h-4" />
@@ -438,14 +448,14 @@ const SpecialistFinderForm = () => {
                 onChange={handleInputChange}
                 rows={3}
                 placeholder="Any additional information about your medical history, current medications, or specific preferences..."
-                className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 hover:bg-white resize-vertical"
+                className="w-full px-4 py-4 bg-gray-50 text-black border-2 border-gray-200 rounded-xl  transition-all duration-200 hover:bg-white resize-vertical"
               />
             </div>
 
-            
+            {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isAuthenticated}
               className="w-full mt-8 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 focus:ring-4 focus:ring-indigo-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
               <div className="flex items-center justify-center gap-3">

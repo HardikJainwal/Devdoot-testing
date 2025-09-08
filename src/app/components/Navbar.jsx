@@ -5,13 +5,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { Handshake, User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useModal } from "@/contexts/ModalContext"; // Import the modal context
+import { useModal } from "@/contexts/ModalContext";
 
-const Navbar = () => { // Remove the props since we're using context now
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  // Removed unused state variables: isLoginOpen and isSignupOpen
+  
   const { user, isAuthenticated, logout } = useAuth();
-  const { openLogin, openSignup } = useModal(); // Use the modal context
+  const { openLogin, openSignup } = useModal();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -22,13 +23,15 @@ const Navbar = () => { // Remove the props since we're using context now
   };
 
   const handleSignupClick = () => {
+    console.log("Signup clicked"); // Debug log
     closeMenu();
-    openSignup(); // Use context function
+    openSignup();
   };
 
   const handleLoginClick = () => {
+    console.log("Login clicked"); // Debug log
     closeMenu();
-    openLogin(); // Use context function
+    openLogin();
   };
 
   const handleLogout = () => {
@@ -106,13 +109,13 @@ const Navbar = () => { // Remove the props since we're using context now
             <>
               <button
                 onClick={handleSignupClick}
-                className="text-gray-700 text-lg"
+                className="text-gray-700 text-lg hover:text-teal-600 transition-colors"
               >
                 Sign Up
               </button>
               <button
                 onClick={handleLoginClick}
-                className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded-3xl hover:bg-teal-200 transition"
+                className="bg-[#2C8C91] text-lg text-white px-4 py-1 rounded-3xl hover:bg-teal-700 transition"
               >
                 Log in
               </button>
@@ -223,13 +226,13 @@ const Navbar = () => { // Remove the props since we're using context now
               <div className="flex flex-col space-y-3">
                 <button
                   onClick={handleSignupClick}
-                  className="text-gray-700 text-lg hover:underline text-left"
+                  className="text-gray-700 text-lg hover:text-teal-600 transition-colors text-left"
                 >
                   Sign Up
                 </button>
                 <button
                   onClick={handleLoginClick}
-                  className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-200 transition w-full"
+                  className="bg-[#2C8C91] text-lg text-white px-4 py-2 rounded hover:bg-teal-700 transition w-full"
                 >
                   Log in
                 </button>

@@ -214,98 +214,6 @@ const YogaCarePage = () => {
         </div>
       </section>
 
-      
-      <section
-        id="steps"
-        data-animate
-        className={`py-20 bg-white ${isVisible["steps"] ? "animate" : ""}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Simple Steps to Mindful Movement
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Begin your yoga journey with our structured approach designed to cultivate mindfulness and physical well-being.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {yogaSteps.map((step, index) => (
-              <div
-                key={index}
-                className={`group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-purple-500 transition-all duration-500 cursor-pointer transform hover:scale-105 ${
-                  activeStep === index ? 'bg-purple-50 border-purple-500' : 'bg-white hover:shadow-xl'
-                }`}
-                onClick={() => setActiveStep(index)}
-              >
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 transition-colors duration-300 ${
-                  activeStep === index ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-500 group-hover:bg-purple-500 group-hover:text-white'
-                }`}>
-                  {step.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                <div className="absolute top-4 right-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-bold text-gray-600">
-                  {index + 1}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      
-      <section
-        id="instructors"
-        data-animate
-        className={`py-20 bg-gray-50 ${isVisible["instructors"] ? "animate" : ""}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Meet Our Certified Yoga Instructors
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Hand-picked specialists dedicated to guiding you on your wellness journey with expertise, compassion, and mindful practice.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {instructors.map((instructor) => (
-              <div
-                key={instructor.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 group"
-              >
-                <div className="relative">
-                  <img
-                    src={instructor.image}
-                    alt={instructor.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-gray-900">{instructor.name}</h3>
-                    <div className="flex items-center space-x-1">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="text-sm font-medium text-gray-600">{instructor.rating}</span>
-                    </div>
-                  </div>
-                  <p className="text-purple-600 font-semibold mb-1">{instructor.specialization}</p>
-                  <p className="text-gray-600 text-sm mb-2">{instructor.experience} Experience</p>
-                  <p className="text-gray-500 text-xs mb-4">{instructor.certification}</p>
-                  <div className="flex items-center text-purple-600 hover:text-purple-700 cursor-pointer group">
-                    <span className="text-sm font-medium">View Profile</span>
-                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      
       <section
         id="ai-yoga-plan"
         data-animate
@@ -497,6 +405,98 @@ const YogaCarePage = () => {
           </div>
         </div>
       </section>
+     
+
+      
+      <section
+        id="instructors"
+        data-animate
+        className={`py-20 bg-gray-50 ${isVisible["instructors"] ? "animate" : ""}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Meet Our Certified Yoga Instructors
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Hand-picked specialists dedicated to guiding you on your wellness journey with expertise, compassion, and mindful practice.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {instructors.map((instructor) => (
+              <div
+                key={instructor.id}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 group"
+              >
+                <div className="relative">
+                  <img
+                    src={instructor.image}
+                    alt={instructor.name}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xl font-bold text-gray-900">{instructor.name}</h3>
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="text-sm font-medium text-gray-600">{instructor.rating}</span>
+                    </div>
+                  </div>
+                  <p className="text-purple-600 font-semibold mb-1">{instructor.specialization}</p>
+                  <p className="text-gray-600 text-sm mb-2">{instructor.experience} Experience</p>
+                  <p className="text-gray-500 text-xs mb-4">{instructor.certification}</p>
+                  <div className="flex items-center text-purple-600 hover:text-purple-700 cursor-pointer group">
+                    <span className="text-sm font-medium">View Profile</span>
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+       <section
+        id="steps"
+        data-animate
+        className={`py-20 bg-white ${isVisible["steps"] ? "animate" : ""}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Simple Steps to Mindful Movement
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Begin your yoga journey with our structured approach designed to cultivate mindfulness and physical well-being.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {yogaSteps.map((step, index) => (
+              <div
+                key={index}
+                className={`group relative p-8 rounded-2xl border-2 border-gray-100 hover:border-purple-500 transition-all duration-500 cursor-pointer transform hover:scale-105 ${
+                  activeStep === index ? 'bg-purple-50 border-purple-500' : 'bg-white hover:shadow-xl'
+                }`}
+                onClick={() => setActiveStep(index)}
+              >
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 transition-colors duration-300 ${
+                  activeStep === index ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-500 group-hover:bg-purple-500 group-hover:text-white'
+                }`}>
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                <div className="absolute top-4 right-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-bold text-gray-600">
+                  {index + 1}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       
       <section

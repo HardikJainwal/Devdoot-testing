@@ -33,7 +33,7 @@ const ChatFidget = () => {
       const timer = setTimeout(() => {
         setIsOpen(true);
         setHasAutoOpened(true);
-      }, 5000);
+      }, 5000000);
 
       return () => clearTimeout(timer);
     }

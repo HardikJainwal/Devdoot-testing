@@ -195,31 +195,8 @@ const DevdootFirstAid = () => {
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Poppins, sans-serif' }}>
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b-2 border-[#C42323]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="p-2 bg-[#C42323] rounded-xl">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Devdoot First Aid</h1>
-                <p className="text-gray-600 font-medium">Professional Emergency Response Training</p>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm font-semibold text-gray-900">John Smith</p>
-                <p className="text-xs text-gray-500">Certified First Responder</p>
-              </div>
-              <div className="w-12 h-12 bg-[#2C8C91] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">JS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+    
+     
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {!selectedCourse ? (

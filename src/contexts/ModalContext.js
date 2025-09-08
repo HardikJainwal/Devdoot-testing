@@ -19,13 +19,13 @@ export const ModalProvider = ({ children }) => {
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
 
   const openLogin = () => {
-    setIsSignupModalOpen(false);
+    setIsSignupModalOpen(false); 
     setIsLoginModalOpen(true);
   };
 
   const openSignup = () => {
-    setIsLoginModalOpen(false);
-    setIsSignupModalOpen(true);
+    setIsLoginModalOpen(false); 
+    setIsSignupModalOpen(true); 
   };
 
   const closeLogin = () => {
@@ -60,8 +60,6 @@ export const ModalProvider = ({ children }) => {
   return (
     <ModalContext.Provider value={value}>
       {children}
-      
-      {/* Render modals at the app level */}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={closeLogin}

@@ -108,7 +108,7 @@ const AuthRequiredModal = ({ isOpen, onClose, onLoginClick, onSignupClick }) => 
 
 const services = [
   {
-    title: "Care Match",
+    title: "Senior Care",
     icon: Heart,
     color: "from-pink-500 to-rose-500",
     bgColor: "bg-pink-50",

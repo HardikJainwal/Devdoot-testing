@@ -1,8 +1,7 @@
-
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-const SignupModal = ({ isOpen, onClose }) => {
+const SignupModal = ({ isOpen, onClose, onSwitchToLogin }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -21,6 +20,8 @@ const SignupModal = ({ isOpen, onClose }) => {
   const modalRef = useRef();
 
   const otpRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
+
+  console.log("SignupModal rendered - isOpen:", isOpen, "onSwitchToLogin:", typeof onSwitchToLogin);
 
   useEffect(() => {
     if (!isOpen) {
@@ -210,7 +211,6 @@ const SignupModal = ({ isOpen, onClose }) => {
     setError('');
 
     try {
-      // Debug logs
       console.log('Token being sent:', userToken);
       console.log('Email being sent:', email);
       console.log('OTP being sent:', otpValue);
@@ -260,17 +260,31 @@ const SignupModal = ({ isOpen, onClose }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const handleSwitchToLogin = () => {
+    console.log('Switch to login modal clicked');
+    if (onSwitchToLogin) {
+      onSwitchToLogin();
+    } else {
+      console.error('onSwitchToLogin function not provided');
+    }
+  };
+
+  if (!isOpen) {
+    console.log("SignupModal: Not rendering because isOpen is false");
+    return null;
+  }
+
+  console.log("SignupModal: Rendering modal");
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6">
-      <div ref={modalRef} className="bg-white  rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl h-auto max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4 sm:p-6">
+      <div ref={modalRef} className="bg-white rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl h-auto max-h-[90vh] overflow-y-auto">
         <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
           {/* Left Side - Form */}
-          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white ">
+          <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white">
             <div className="mb-4 sm:mb-4">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] font-['Poppins'] whitespace-nowrap">
-                Sign Up to<span className="text-[#C42323] "> Devdoot</span>
+                Sign Up to<span className="text-[#C42323]"> Devdoot</span>
               </h2>
             </div>
 
@@ -286,8 +300,9 @@ const SignupModal = ({ isOpen, onClose }) => {
 
             {!isOtpSent ? (
               <div>
+                {/* All your existing form fields remain the same */}
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Full Name *
                   </label>
                   <input
@@ -295,13 +310,13 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Enter your full name"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500  focus:border-transparent text-sm sm:text-base bg-white  text-gray-900  placeholder-gray-500 "
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Email Address *
                   </label>
                   <input
@@ -309,17 +324,17 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white  text-gray-900  placeholder-gray-500 "
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                   />
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Mobile Number *
                   </label>
                   <div className="flex">
-                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300  bg-gray-200 text-gray-700  rounded-l-lg text-sm sm:text-base">
+                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-200 text-gray-700 rounded-l-lg text-sm sm:text-base">
                       +91
                     </span>
                     <input
@@ -327,18 +342,18 @@ const SignupModal = ({ isOpen, onClose }) => {
                       value={mobile}
                       onChange={(e) => setMobile(e.target.value)}
                       placeholder="Enter your mobile number"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500  focus:border-transparent text-sm sm:text-base bg-white  text-gray-900  placeholder-gray-500 "
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="mb-4 sm:mb-4">
-                  <label className="block text-gray-700  font-medium mb-2 text-sm sm:text-base">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     WhatsApp Number *
                   </label>
                   <div className="flex">
-                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300  bg-gray-200  text-gray-700  rounded-l-lg text-sm sm:text-base">
+                    <span className="inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-200 text-gray-700 rounded-l-lg text-sm sm:text-base">
                       +91
                     </span>
                     <input
@@ -346,7 +361,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                       value={whatsappNumber}
                       onChange={(e) => setWhatsappNumber(e.target.value)}
                       placeholder="Enter your WhatsApp number"
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white  text-gray-900  placeholder-gray-500 "
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                       required
                     />
                   </div>
@@ -361,7 +376,7 @@ const SignupModal = ({ isOpen, onClose }) => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500  focus:border-transparent text-sm sm:text-base bg-white text-gray-900  placeholder-gray-500 "
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base bg-white text-gray-900 placeholder-gray-500"
                     required
                     minLength="8"
                   />

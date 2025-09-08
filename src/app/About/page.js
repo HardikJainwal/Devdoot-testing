@@ -214,7 +214,7 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">
+      {/* <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">
         <div className="max-w-4xl mx-auto">
 
           <div className="text-center mb-16">
@@ -222,10 +222,10 @@ export default function AboutUsPage() {
               The Devdoot Story
             </h2>
             <div className="w-16 h-1 bg-[#C42323] mx-auto"></div>
-          </div>
+          </div> */}
 
 
-          <div className="relative">
+          {/* <div className="relative">
    
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-[#C42323]"></div>
 
@@ -326,10 +326,10 @@ export default function AboutUsPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
   
-      <div className="py-20 px-6 bg-white">
+      {/* <div className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           
           <div className="text-center mb-16">
@@ -414,7 +414,7 @@ export default function AboutUsPage() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       
       <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">

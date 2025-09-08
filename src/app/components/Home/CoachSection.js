@@ -48,9 +48,9 @@ const DoctorsSection = ({ poppins, fetchCoaches }) => {
         return;
       }
 
-      console.log("Fetching coaches with token:", token);
-      const response = await fetchCoaches(1, 50, token); // Pass token explicitly if needed
-      console.log("API Response:", response);
+     
+      const response = await fetchCoaches(1, 50, token); 
+     
 
       if (!response || !response.success) {
         if (

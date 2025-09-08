@@ -1,4 +1,3 @@
-// app/repowell-health/page.jsx
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Heart, Activity, Users, Star, ChevronRight, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
@@ -47,7 +46,7 @@ const RepowellHealthPage = () => {
     fetchCoaches();
   }, []);
 
-  // Intersection Observer for animations
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -69,7 +68,7 @@ const RepowellHealthPage = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Handle AI plan generation
+  
   const generateAIPlan = async () => {
     setIsLoading(true);
     setGeneratedPlan(null);
@@ -158,7 +157,7 @@ const RepowellHealthPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Banner Section */}
+      
       <section className="relative min-h-[70vh] bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
@@ -190,7 +189,7 @@ const RepowellHealthPage = () => {
         </div>
       </section>
 
-      {/* Simple Steps Section */}
+      
       <section
         id="steps"
         data-animate
@@ -230,7 +229,7 @@ const RepowellHealthPage = () => {
         </div>
       </section>
 
-      {/* Expert Coaches Section */}
+      
       <section
         id="coaches"
         data-animate
@@ -280,7 +279,7 @@ const RepowellHealthPage = () => {
         </div>
       </section>
 
-      {/* AI Coach Section */}
+      
       <section
         id="ai-coach"
         data-animate
@@ -348,7 +347,7 @@ const RepowellHealthPage = () => {
               </button>
             </div>
             
-            {/* Generated Plan Display */}
+            
             <div className="flex-1 w-full min-h-[300px] flex items-center justify-center">
               {isLoading && !generatedPlan && (
                 <div className="text-center text-gray-500">
@@ -381,7 +380,7 @@ const RepowellHealthPage = () => {
         </div>
       </section>
 
-      {/* Real Stories Section */}
+      
       <section
         id="testimonials"
         data-animate

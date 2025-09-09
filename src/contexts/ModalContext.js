@@ -1,8 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState } from 'react';
-import LoginModal from '@/app/components/LoginModal';
-import SignupModal from '@/app/components/SignupModal';
+import LoginModal from '@/components/LoginModal';
+import SignupModal from '@/components/SignupModal';
 
 const ModalContext = createContext();
 

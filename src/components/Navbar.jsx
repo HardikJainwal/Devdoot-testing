@@ -68,13 +68,13 @@ const Navbar = () => {
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
           </li>
           <li className="relative group">
-            <Link href="/Services" className="block py-2">
+            <Link href="/our-services" className="block py-2">
               Services
             </Link>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
           </li>
           <li className="relative group">
-            <Link href="/Faq" className="block py-2">
+            <Link href="/faq" className="block py-2">
               FAQs
             </Link>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
@@ -89,7 +89,7 @@ const Navbar = () => {
 
        
         <div className="hidden md:flex items-center space-x-6 text-sm font-['Poppins']">
-          <Link href="/BeOurPartner">
+          <Link href="/be-our-partner">
             <span className="text-[#C42323] hover:text-white hover:bg-[#C42323] px-2 py-1 rounded-3xl text-lg font-medium transition-all duration-400 ease-in-out flex items-center space-x-1">
               <span>Be Our Partner</span>
               <Handshake size={20} />
@@ -98,7 +98,7 @@ const Navbar = () => {
 
           {isAuthenticated ? (
             <Link
-              href="/UserProfile"
+              href="/userprofile"
               className="flex items-center  bg-[#2C8C91] text-white px-2 py-2 rounded-full hover:bg-teal-700 transition"
             >
               <User size={20} />
@@ -206,7 +206,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="space-y-3">
                 <Link
-                  href="/UserProfile"
+                  href="/userprofile"
                   onClick={closeMenu}
                   className="flex items-center space-x-2 text-gray-700 text-lg hover:text-teal-600 transition-colors"
                 >

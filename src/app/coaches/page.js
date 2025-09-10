@@ -20,7 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
 import { fetchCoaches } from "@/api/coaches";
-import Shimmer from "../components/Shimmer";
+import Shimmer from "../../components/Shimmer";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],

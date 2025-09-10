@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Sparkles, ChevronLeft, ChevronRight, Star, Award, Calendar, MapPin, Users, Brain, Scale, Stethoscope, Leaf, MessageCircle, Pill, Droplet, User, X, CheckCircle } from 'lucide-react';
-import ExpertCard from '../components/ExpertCard';
+import ExpertCard from '../../components/ExpertCard';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { fetchCoaches , fetchCoachesBySpecialization } from '@/api/coaches';

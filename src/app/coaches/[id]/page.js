@@ -27,13 +27,14 @@ import {
     faPaperPlane,
     faThumbsUp,
     faThumbsDown,
+    faSpinner,
     faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
 import { fetchCoachById, fetchCoaches } from "@/api/coaches";
 import Shimmer from "@/app/components/Shimmer";
 import { loadRazorpay } from "@/lib/loadRazorpay";
-import { createOrderAPI } from "@/services/payment";
+import { createOrderAPI , verifyPaymentAPI } from "@/services/payment";
 import { fetchAppointmentSlots } from "@/services/booking";
 import { useAppStore } from "@/contexts/store";
 
@@ -60,6 +61,7 @@ export default function CoachProfilePage() {
     const [dateSlots, setDateSlots] = useState({}); // Store slots by date
     const paymentSuccess = useAppStore(state => state.paymentSuccess);
     const setPaymentSuccess = useAppStore(state => state.setPaymentSuccess);
+    const [bookingBtn, setBookingBtn] = useState(false);
     const booking = useAppStore(state => state.booking);
     const setBooking = useAppStore(state => state.setBooking);
 
@@ -298,6 +300,7 @@ coachData.specialization?.toLowerCase() || "healthcare"
     };
 
     const handleBookConsultation = () => {
+        setBookingBtn(true)
         if (selectedTimeSlot && selectedDate) {
             console.log("Booking consultation:", {
                 coach: coach._id,
@@ -348,12 +351,14 @@ coachData.specialization?.toLowerCase() || "healthcare"
                     };
                     const rzp = new window.Razorpay(options);
                     rzp.open();
+                    setBookingBtn(false);
                 }catch(err){
+                    setBookingBtn(false);
                     console.error(err)
                 }
             }
             workingWithRazorpay();
-
+            //setBookingBtn(false);
             // Add your booking logic here
             //alert(`Booking consultation with ${coach.name} on ${selectedDate} at ${selectedTimeSlot.displayTime}`);
         }
@@ -362,6 +367,22 @@ coachData.specialization?.toLowerCase() || "healthcare"
         if (!paymentSuccess) {
             return
         }
+        const verifyPayment = async () => {
+            try {
+                await verifyPaymentAPI({
+                    order_id: paymentSuccess.razorpay_order_id, 
+                    razorpay_signature: paymentSuccess.razorpay_signature, 
+                    razorpay_payment_id: paymentSuccess.razorpay_payment_id,
+                    status: "success", 
+                    bookingId: booking.bookingId, 
+                    paymentStatus: "confirm", 
+                    coachId: coach._id
+                });
+            } catch (error) {
+                console.error("Verification failed", error);
+            }
+        };
+        verifyPayment();
     },[paymentSuccess]);
 
     const handleRelatedCoachClick = (coachId) => {
@@ -950,7 +971,7 @@ selectedTimeSlot?.id === slot.id
                             <button
                                 onClick={handleBookConsultation}
                                 disabled={!selectedDate || !selectedTimeSlot}
-                                className={`${
+                                className={`cursor-pointer ${
 poppins.className
 } w-full py-4 px-4 rounded-xl font-semibold transition-all duration-300 transform flex items-center justify-center space-x-2 mb-4 shadow-lg ${
 selectedDate && selectedTimeSlot
@@ -958,7 +979,7 @@ selectedDate && selectedTimeSlot
 : "bg-gray-300 text-gray-500 cursor-not-allowed"
 }`}
                             >
-                                <FontAwesomeIcon icon={faCalendarAlt} className="w-5 h-5" />
+                                <FontAwesomeIcon icon={ !bookingBtn ? faCalendarAlt : faSpinner} className={`w-5 h-5 ${bookingBtn? "animate-spin text-white-500": ""}`} />
                                 <span>
                                     {selectedDate && selectedTimeSlot
                                         ? "Confirm Appointment"

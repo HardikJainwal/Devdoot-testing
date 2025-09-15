@@ -32,7 +32,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Poppins } from "next/font/google";
 import { fetchCoachById, fetchCoaches } from "@/api/coaches";
-import Shimmer from "@/app/components/Shimmer";
+import Shimmer from "@/components/Shimmer";
 import { loadRazorpay } from "@/lib/loadRazorpay";
 import { createOrderAPI , verifyPaymentAPI } from "@/services/payment";
 import { fetchAppointmentSlots } from "@/services/booking";

@@ -2,25 +2,15 @@
 
 import { useState, useEffect } from "react";
 import {
-  HeartIcon,
-  UserGroupIcon,
-  StarIcon,
-  ArrowRightIcon,
-  CheckCircleIcon,
-  PhoneIcon,
-  CalendarIcon,
-  RocketLaunchIcon,
-  GlobeAltIcon,
-  SparklesIcon,
+
   EyeIcon,
   HandRaisedIcon,
   DevicePhoneMobileIcon,
   AcademicCapIcon,
-  ShieldCheckIcon,
   TrophyIcon,
 } from "@heroicons/react/24/outline";
 
-// Counter Animation Hook
+
 const useCountUp = (end, duration = 2000, isVisible = false) => {
   const [count, setCount] = useState(0);
 
@@ -53,7 +43,7 @@ const useCountUp = (end, duration = 2000, isVisible = false) => {
   return count;
 };
 
-// Counter Component
+
 const AnimatedCounter = ({ end, suffix = "", label, isVisible }) => {
   const count = useCountUp(end, 2000, isVisible);
 
@@ -79,7 +69,7 @@ export default function AboutUsPage() {
           if (entry.isIntersecting) {
             setVisibleItems((prev) => new Set([...prev, entry.target.id]));
 
-            // Special handling for impact section
+
             if (entry.target.id === "impact-section") {
               setImpactVisible(true);
             }
@@ -477,10 +467,9 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Our Impact Section */}
+     
       <div id="impact-section" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#2B2B2A] mb-4">
               Our Impact
@@ -490,7 +479,7 @@ export default function AboutUsPage() {
             </p>
           </div>
 
-          {/* Statistics Grid */}
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             <AnimatedCounter
               end={2000}
@@ -520,11 +509,10 @@ export default function AboutUsPage() {
         </div>
       </div>
 
-      {/* Giving Back to Our Community Section */}
+
       <div className="py-20 px-6 bg-gradient-to-br from-slate-50 to-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Left Column - Text Content */}
             <div className="space-y-8">
               <div>
                 <h2 className="text-4xl font-bold text-[#2B2B2A] mb-6">
@@ -549,9 +537,9 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              {/* Community Programs */}
+
               <div className="space-y-8">
-                {/* Mobile Health Units */}
+
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm border-l-4 border-[#2C8C91]">
                   <div className="w-10 h-10 bg-[#2C8C91] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                     <DevicePhoneMobileIcon className="w-6 h-6 text-white" />
@@ -569,7 +557,7 @@ export default function AboutUsPage() {
                   </div>
                 </div>
 
-                {/* Health Education Programs */}
+
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm border-l-4 border-[#C42323]">
                   <div className="w-10 h-10 bg-[#C42323] rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                     <AcademicCapIcon className="w-6 h-6 text-white" />
@@ -586,13 +574,13 @@ export default function AboutUsPage() {
                   </div>
                 </div>
 
-                {/* Pro Bono Surgeries */}
+
               </div>
             </div>
 
-            {/* Right Column - Images */}
+
             <div className="space-y-4">
-              {/* Top Image - Community Health */}
+
               <div className="rounded-lg overflow-hidden shadow-lg">
                 <img
                   src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
@@ -601,9 +589,8 @@ export default function AboutUsPage() {
                 />
               </div>
 
-              {/* Bottom Row - Two smaller images */}
+
               <div className="grid grid-cols-2 gap-4">
-                {/* Doctor with Patient */}
                 <div className="rounded-lg overflow-hidden shadow-lg">
                   <img
                     src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
@@ -612,7 +599,6 @@ export default function AboutUsPage() {
                   />
                 </div>
 
-                {/* Medical Team */}
                 <div className="rounded-lg overflow-hidden shadow-lg">
                   <img
                     src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"

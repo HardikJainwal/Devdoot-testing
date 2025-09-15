@@ -6,21 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "@/contexts/ModalContext";
 import {
-  Heart,
-  Users,
-  Activity,
-  Stethoscope,
-  PawPrint,
-  Leaf,
-  Brain,
-  Cross,
-  Search,
-  Droplets,
-  Baby,
-  Utensils,
-  Sparkles,
   TrendingUp,
-  PersonStanding,
+  X,
 } from "lucide-react";
 
 const AuthRequiredModal = ({ isOpen, onClose, onLoginClick, onSignupClick }) => {
@@ -109,115 +96,131 @@ const AuthRequiredModal = ({ isOpen, onClose, onLoginClick, onSignupClick }) => 
 const services = [
   {
     title: "Senior Care",
-    icon: Heart,
+    image: "/service-img/Care-match.webp", 
     color: "from-pink-500 to-rose-500",
-    bgColor: "bg-pink-540",
+    bgColor: "bg-gradient-to-br from-pink-50 to-rose-50",
     isLive: false,
+    description: "Comprehensive care for seniors with dignity and compassion"
   },
   {
     title: "Coach Match",
-    icon: Users,
+    image: "/service-img/virtual-health.webp",
     color: "from-blue-500 to-cyan-500",
-    bgColor: "bg-blue-50",
+    bgColor: "bg-gradient-to-br from-blue-50 to-cyan-50",
     isLive: true,
+    description: "Connect with certified health and wellness coaches"
   },
   {
     title: "Health Buddy",
-    icon: Activity,
+    image: "/service-img/Health Buddy.png",
     color: "from-green-500 to-emerald-500",
-    bgColor: "bg-green-50",
+    bgColor: "bg-gradient-to-br from-green-50 to-emerald-50",
     isLive: false,
+    description: "Your personal AI-powered health companion"
   },
   {
     title: "MedEquip",
-    icon: Stethoscope,
+    image: "/service-img/medical-equip.webp",
     color: "from-indigo-500 to-blue-500",
-    bgColor: "bg-indigo-50",
+    bgColor: "bg-gradient-to-br from-indigo-50 to-blue-50",
     isLive: false,
+    description: "Medical equipment rental and purchase solutions"
   },
   {
     title: "PetWell",
-    icon: PawPrint,
+    image: "/service-img/petwell.webp",
     color: "from-orange-500 to-amber-500",
-    bgColor: "bg-orange-50",
+    bgColor: "bg-gradient-to-br from-orange-50 to-amber-50",
     isLive: false,
+    description: "Complete healthcare solutions for your pets"
   },
   {
     title: "AyurCare",
-    icon: Leaf,
+    image: "/service-img/Ayurcare.png",
     color: "from-teal-500 to-green-500",
-    bgColor: "bg-teal-50",
+    bgColor: "bg-gradient-to-br from-teal-50 to-green-50",
     isLive: true,
+    description: "Traditional Ayurvedic treatments and consultations"
   },
   {
     title: "Mental Health",
-    icon: Brain,
+    image: "/service-img/Mental Health.png",
     color: "from-rose-500 to-pink-500",
-    bgColor: "bg-rose-50",
+    bgColor: "bg-gradient-to-br from-rose-50 to-pink-50",
     isLive: true,
+    description: "Professional mental health support and therapy"
   },
   {
     title: "AidFirst",
-    icon: Cross,
+    image: "/service-img/First Aid.png",
     color: "from-red-500 to-rose-500",
-    bgColor: "bg-red-50",
+    bgColor: "bg-gradient-to-br from-red-50 to-rose-50",
     isLive: true,
+    description: "Emergency first aid guidance and training"
   },
   {
     title: "SpeciFind",
-    icon: Search,
+    image: "/service-img/specifinder.webp",
     color: "from-slate-500 to-gray-500",
-    bgColor: "bg-slate-50",
+    bgColor: "bg-gradient-to-br from-slate-50 to-gray-50",
     isLive: true,
+    description: "Find and book appointments with specialists"
   },
   {
     title: "Social Wall",
-    icon: Droplets,
+    image: "/service-img/Social Wall.png",
     color: "from-red-600 to-red-500",
-    bgColor: "bg-red-50",
+    bgColor: "bg-gradient-to-br from-red-50 to-red-100",
     isLive: false,
+    description: "Community platform for health discussions"
   },
   {
     title: "ReproWell",
-    icon: Heart,
+    image: "/service-img/Repowell.png",
     color: "from-pink-600 to-rose-500",
-    bgColor: "bg-pink-50",
+    bgColor: "bg-gradient-to-br from-pink-50 to-rose-50",
     isLive: true,
+    description: "Reproductive health and wellness services"
   },
   {
     title: "ChildCare++",
-    icon: Baby,
+    image: "/service-img/Child Care.png",
     color: "from-yellow-500 to-orange-500",
-    bgColor: "bg-yellow-50",
+    bgColor: "bg-gradient-to-br from-yellow-50 to-orange-50",
     isLive: false,
+    description: "Comprehensive pediatric care and guidance"
   },
   {
     title: "NutritiGuide",
-    icon: Utensils,
+    image: "/service-img/nutrition.webp",
     color: "from-lime-500 to-green-500",
-    bgColor: "bg-lime-50",
+    bgColor: "bg-gradient-to-br from-lime-50 to-green-50",
     isLive: true,
+    description: "Personalized nutrition plans and dietary guidance"
   },
   {
     title: "DermaCare",
-    icon: Sparkles,
+    image: "/service-img/Derma.png",
     color: "from-violet-500 to-purple-500",
-    bgColor: "bg-violet-50",
+    bgColor: "bg-gradient-to-br from-violet-50 to-purple-50",
     isLive: true,
+    description: "Expert dermatology consultations and skincare"
   },
   {
     title: "Yoga",
-    icon: PersonStanding,
+    image: "/service-img/Yoga.png",
     color: "from-orange-500 to-amber-500",
-    bgColor: "bg-violet-50",
+    bgColor: "bg-gradient-to-br from-orange-50 to-amber-50",
     isLive: true,
+    description: "Guided yoga sessions and mindfulness practices"
   },
   {
     title: "Home Check",
-    icon: Sparkles,
+    image: "/service-img/Care-match.webp",
     color: "from-violet-500 to-purple-500",
-    bgColor: "bg-violet-50",
+    bgColor: "bg-gradient-to-br from-violet-50 to-purple-50",
     isLive: false,
+    description: "Professional home health assessments"
   },
 ];
 
@@ -239,7 +242,7 @@ export default function Services() {
       id,
       title: service.title,
       color: service.color,
-      icon: service.icon,
+      image: service.image,
     };
 
     setToasts((prev) => [...prev, newToast]);
@@ -254,10 +257,9 @@ export default function Services() {
   };
 
   const handleServiceClick = (service) => {
-    
     if (service.isLive) {
       if (!isLoggedIn) {
-        setShowAuthModal(true); 
+        setShowAuthModal(true);
         return;
       }
 
@@ -286,14 +288,13 @@ export default function Services() {
         case "AidFirst":
           router.push("/first-aid");
           break;
-           case "DermaCare":
+        case "DermaCare":
           router.push("/derma-care");
           break;
         default:
           showToast(service);
       }
     } else {
-    
       showToast(service);
     }
   };
@@ -308,7 +309,6 @@ export default function Services() {
     openSignup();
   };
 
- 
   const sortedServices = [...services].sort((a, b) => {
     if (a.isLive && !b.isLive) return -1;
     if (!a.isLive && b.isLive) return 1;
@@ -317,7 +317,6 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 p-4 sm:p-6">
-      
       <AuthRequiredModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
@@ -325,138 +324,139 @@ export default function Services() {
         onSignupClick={handleSignupClick}
       />
 
-     
+      {/* Toast Notifications */}
       <div className="fixed top-6 right-4 sm:right-6 z-50 space-y-3">
-        {toasts.map((toast) => {
-          const IconComponent = toast.icon;
-          return (
-            <div
-              key={toast.id}
-              className="flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 min-w-[250px] sm:min-w-[300px] animate-in slide-in-from-right duration-300"
-              style={{
-                animation: "slideInRight 0.3s ease-out forwards",
-              }}
-            >
-              <div
-                className={`p-2 rounded-xl bg-gradient-to-br ${toast.color}`}
+        {toasts.map((toast) => (
+          <motion.div
+            key={toast.id}
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            className="flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-4 min-w-[250px] sm:min-w-[300px]"
+          >
+            <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+              <img
+                src={toast.image}
+                alt={toast.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div 
+                className={`hidden w-full h-full bg-gradient-to-br ${toast.color} items-center justify-center text-white font-bold text-lg`}
               >
-                <IconComponent className="w-5 h-5 text-white" />
+                {toast.title.charAt(0)}
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900">{toast.title}</p>
-                <p className="text-sm text-gray-600">Coming Soon!</p>
-              </div>
-              <button
-                onClick={() => removeToast(toast.id)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <Cross className="w-4 h-4" />
-              </button>
             </div>
-          );
-        })}
+            <div className="flex-1">
+              <p className="font-semibold text-gray-900">{toast.title}</p>
+              <p className="text-sm text-gray-600">Coming Soon!</p>
+            </div>
+            <button
+              onClick={() => removeToast(toast.id)}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </motion.div>
+        ))}
       </div>
 
-      
+      {/* Header */}
       <div className="text-center mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#C42323] mt-8 sm:mt-10 mb-4">
-
           Our <span className="text-[#2C8C91]">Services</span>
         </h1>
         <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
-          Comprehensive healthcare solutions designed to meet all your wellness
-          needs
+          Comprehensive healthcare solutions designed to meet all your wellness needs
         </p>
       </div>
 
-      
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {sortedServices.map((service, idx) => {
-            const IconComponent = service.icon;
-            return (
-              <div
-                key={idx}
-                className={`group relative ${service.bgColor} rounded-2xl border border-white/50 shadow-sm hover:shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 overflow-hidden`}
-                onClick={() => handleServiceClick(service)}
-              >
-                {service.isLive && (
-                  <div className="absolute top-3 right-3 z-10">
-                    <div className="bg-[#C42323] text-white p-1.5 rounded-full shadow-lg animate-pulse">
-                      <TrendingUp className="w-4 h-4" />
-                    </div>
-                  </div>
-                )}
+      {/* Services Grid */}
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {sortedServices.map((service, idx) => (
+            <motion.div
+  key={idx}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: idx * 0.1 }}
+  className={`group relative ${service.bgColor} rounded-3xl border border-white/50 shadow-lg hover:shadow-2xl cursor-pointer transition-all duration-500 transform hover:-translate-y-2 overflow-hidden`}
+  onClick={() => handleServiceClick(service)}
+>
+  {/* Live Badge */}
+  {service.isLive && (
+    <div className="absolute top-4 right-4 z-20">
+      <div className="bg-[#C42323] text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1 animate-pulse">
+        <TrendingUp className="w-3 h-3" />
+        <span className="text-xs font-bold">LIVE</span>
+      </div>
+    </div>
+  )}
 
-              
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                />
+  {/* Image Section */}
+  <div className="relative w-full h-48 sm:h-56 lg:h-60 overflow-hidden">
+    <img
+      src={service.image}
+      alt={service.title}
+      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+      onError={(e) => {
+        e.target.style.display = "none";
+        e.target.nextSibling.style.display = "flex";
+      }}
+    />
+    <div
+      className={`hidden absolute inset-0 bg-gradient-to-br ${service.color} items-center justify-center text-white font-bold text-4xl`}
+    >
+      {service.title.charAt(0)}
+    </div>
+  </div>
 
-                
-                <div className="relative p-6 flex flex-col items-center text-center">
-                 
-                  <div
-                    className={`p-4 rounded-2xl bg-gradient-to-br ${service.color} shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
+  {/* Content Section */}
+  <div className="relative p-6 text-center flex flex-col h-full">
+    {/* Service Title */}
+    <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-gray-800 transition-colors">
+      {service.title}
+    </h3>
 
-                
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-2 group-hover:text-gray-800 transition-colors">
-                    {service.title}
-                  </h3>
+    {/* Service Description */}
+    <p className="text-sm text-gray-600 mb-4 leading-relaxed flex-grow">
+      {service.description}
+    </p>
 
-                  
-                  {service.isLive ? (
-                    <div className="inline-flex items-center gap-1 bg-[#C42323] text-white px-3 py-1 rounded-full text-xs font-medium shadow-md animate-pulse">
-                      <TrendingUp className="w-3 h-3" />
-                      Live Now
-                    </div>
-                  ) : (
-                    <div className="inline-flex items-center gap-1 bg-white/70 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
-                      <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                      Coming Soon
-                    </div>
-                  )}
-                </div>
+    {/* Status Badge */}
+    <div className="mt-auto">
+      {service.isLive ? (
+        <div className="inline-flex items-center gap-2 bg-[#C42323] text-white px-4 py-2 rounded-full text-xs font-bold shadow-md">
+          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+          Available Now
+        </div>
+      ) : (
+        <div className="inline-flex items-center gap-2 bg-white/80 text-gray-700 px-4 py-2 rounded-full text-xs font-semibold border border-gray-200">
+          <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+          Coming Soon
+        </div>
+      )}
+    </div>
+  </div>
 
-               
-                <div className="absolute top-2 right-2 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500" />
-                <div className="absolute bottom-2 left-2 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8 group-hover:-translate-x-6 group-hover:translate-y-6 transition-transform duration-500" />
-              </div>
-            );
-          })}
+  {/* Decorative Elements */}
+  <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-700" />
+  <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/5 rounded-full group-hover:scale-125 transition-transform duration-700" />
+</motion.div>
+
+          ))}
         </div>
       </div>
 
-      
+      {/* Footer */}
       <div className="text-center mt-12 sm:mt-16">
         <p className="text-gray-500 text-sm">
           More services launching soon. Stay tuned for updates!
         </p>
       </div>
-
-      <style jsx>{`
-        @keyframes slideInRight {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .animate-in {
-          animation-fill-mode: both;
-        }
-
-        .slide-in-from-right {
-          animation-name: slideInRight;
-        }
-      `}</style>
     </div>
   );
 }

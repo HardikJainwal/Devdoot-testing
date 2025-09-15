@@ -3,13 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Handshake, User, LogOut, Settings } from "lucide-react";
+import { Handshake, User, LogOut, Settings, GraduationCap } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useModal } from "@/contexts/ModalContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // Removed unused state variables: isLoginOpen and isSignupOpen
   
   const { user, isAuthenticated, logout } = useAuth();
   const { openLogin, openSignup } = useModal();
@@ -23,13 +22,13 @@ const Navbar = () => {
   };
 
   const handleSignupClick = () => {
-    console.log("Signup clicked"); // Debug log
+    console.log("Signup clicked"); 
     closeMenu();
     openSignup();
   };
 
   const handleLoginClick = () => {
-    console.log("Login clicked"); // Debug log
+    console.log("Login clicked"); 
     closeMenu();
     openLogin();
   };
@@ -74,8 +73,20 @@ const Navbar = () => {
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
           </li>
           <li className="relative group">
+            <Link href="/school-program" className="block py-2">
+              School Wellness
+            </Link>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
+          </li>
+          <li className="relative group">
             <Link href="/faq" className="block py-2">
               FAQs
+            </Link>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
+          </li>
+          <li className="relative group">
+            <Link href="/blogs" className="block py-2">
+              Blogs
             </Link>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
           </li>
@@ -167,7 +178,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/Services"
+                href="/our-services"
                 className="block py-2 hover:text-teal-600 transition-colors"
                 onClick={closeMenu}
               >
@@ -176,7 +187,17 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/Faq"
+                href="/school-program"
+                className="block py-2 hover:text-teal-600 transition-colors flex items-center space-x-2"
+                onClick={closeMenu}
+              >
+                <GraduationCap size={20} />
+                <span>School Wellness</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/faq"
                 className="block py-2 hover:text-teal-600 transition-colors"
                 onClick={closeMenu}
               >
@@ -185,7 +206,16 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                href="/About"
+                href="/blogs"
+                className="block py-2 hover:text-teal-600 transition-colors"
+                onClick={closeMenu}
+              >
+                Blogs
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/about"
                 className="block py-2 hover:text-teal-600 transition-colors"
                 onClick={closeMenu}
               >
@@ -196,7 +226,7 @@ const Navbar = () => {
 
           
           <div className="pt-4 border-t border-gray-200 space-y-3 font-['Poppins']">
-            <Link href="/BeOurPartner" onClick={closeMenu}>
+            <Link href="/be-our-partner" onClick={closeMenu}>
               <div className="text-[#C42323] hover:text-white text-lg font-semibold flex items-center space-x-1">
                 <span>Be Our Partner</span>
                 <Handshake size={20} />

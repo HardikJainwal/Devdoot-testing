@@ -179,7 +179,7 @@ export default function FAQ() {
     }
   };
 
-  // Update active section on scroll
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = faqSections.map(section => section.id);
@@ -200,7 +200,7 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: "Poppins, sans-serif" }}>
-      {/* Hero Section */}
+      
       <div className="bg-[#2C8C91] text-white">
         <div className="container mx-auto px-6 py-20">
           <div className="flex flex-col lg:flex-row items-center justify-between">
@@ -247,7 +247,6 @@ export default function FAQ() {
 
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Navigation */}
           <div className="lg:w-1/4">
             <div className="sticky top-8">
               <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
@@ -279,7 +278,7 @@ export default function FAQ() {
             </div>
           </div>
 
-          {/* Main Content */}
+          
           <div className="lg:w-3/4">
             <div className="space-y-8">
               {faqSections.map((section, index) => {
@@ -352,7 +351,6 @@ export default function FAQ() {
               })}
             </div>
 
-            {/* Contact Card */}
             <div className="mt-12 bg-[#2C8C91] rounded-2xl shadow-2xl p-8 text-white">
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="md:w-2/3 mb-6 md:mb-0">

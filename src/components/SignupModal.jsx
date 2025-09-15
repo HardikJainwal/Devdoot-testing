@@ -280,7 +280,7 @@ const SignupModal = ({ isOpen, onClose, onSwitchToLogin }) => {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4 sm:p-6">
       <div ref={modalRef} className="bg-white rounded-lg shadow-xl w-full max-w-lg sm:max-w-3xl md:max-w-4xl h-auto max-h-[90vh] overflow-y-auto">
         <div className="flex flex-col md:flex-row min-h-[400px] sm:min-h-[500px]">
-          {/* Left Side - Form */}
+        
           <div className="flex-1 p-4 sm:p-6 md:p-8 bg-white">
             <div className="mb-4 sm:mb-4">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#2C8C91] font-['Poppins'] whitespace-nowrap">
@@ -300,7 +300,7 @@ const SignupModal = ({ isOpen, onClose, onSwitchToLogin }) => {
 
             {!isOtpSent ? (
               <div>
-                {/* All your existing form fields remain the same */}
+             
                 <div className="mb-4 sm:mb-4">
                   <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
                     Full Name *
@@ -569,7 +569,7 @@ const SignupModal = ({ isOpen, onClose, onSwitchToLogin }) => {
             )}
           </div>
 
-          {/* Right Side - Marketing */}
+       
           <div className="flex-1 bg-[#2C8C91] text-white p-4 sm:p-6 md:p-8 flex flex-col relative">
             <button
               onClick={onClose}

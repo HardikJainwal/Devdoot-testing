@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CertificationCarousel from "@/components/CertificationCarousel";
 import SDGGoalsSection from "../components/Home/SDG";
@@ -42,6 +43,7 @@ import {
   Search,
   Droplets,
   MapPin,
+  Moon,
   Baby,
   Utensils,
   Sparkles,
@@ -49,14 +51,17 @@ import {
   Ambulance,
   Video,
   TestTube,
+  Headphones,
+  Smile,
   Plus,
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
-import { MapPinIcon } from "@heroicons/react/24/outline";
-import Slider from "react-slick"; 
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css"; 
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import BannerCarousel from "@/components/Home/HeroBanner";
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -253,8 +258,37 @@ export default function Home() {
       showToast(service);
     }
   };
+  const mentalHealthServices = [
+    {
+      icon: Brain,
+      title: "Therapy Sessions",
+      description: "One-on-one counseling with licensed therapists",
+      color: "from-purple-500 to-indigo-600",
+      bgColor: "bg-purple-50",
+    },
+    {
+      icon: Users,
+      title: "Group Support",
+      description: "Join supportive communities and group sessions",
+      color: "from-blue-500 to-cyan-500",
+      bgColor: "bg-blue-50",
+    },
+    {
+      icon: Moon,
+      title: "Sleep Wellness",
+      description: "Improve your sleep patterns and quality",
+      color: "from-indigo-500 to-purple-500",
+      bgColor: "bg-indigo-50",
+    },
+    {
+      icon: Headphones,
+      title: "Mindfulness",
+      description: "Guided meditation and mindfulness practices",
+      color: "from-teal-500 to-green-500",
+      bgColor: "bg-teal-50",
+    },
+  ];
 
-  // Carousel settings
   const carouselSettings = {
     dots: false,
     infinite: true,
@@ -292,63 +326,13 @@ export default function Home() {
   return (
     <div className="w-full overflow-x-hidden">
       {/* Banner Section */}
-      <div
-        className="relative min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] w-full mb-12 sm:mb-10 md:mb-0"
-        style={{
-          background: "#DEFAFC",
-        }}
-      >
-        <div className="hidden sm:block absolute right-0 top-0 w-3/4 md:w-2/3 lg:w-1/2 h-full">
-          <img
-            src="/images/Banner.jpg"
-            alt="Healthcare Banner"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="sm:hidden absolute inset-0">
-          <img
-            src="/images/Banner.jpg"
-            alt="Healthcare Banner"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
-          <div className="flex items-start sm:items-center min-h-[400px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[300px]">
-            <div className="w-full lg:w-1/2 pr-0 lg:pr-8 pb-40 sm:pb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mt-2 mb-4">
-                <span className="text-white sm:text-gray-900">Healthcare</span>
-                <br />
-                <span className="text-red-400 sm:text-red-600">
-                  on your terms
-                </span>
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed max-w-md">
-                <span className="text-gray-200 sm:text-gray-700">
-                  Book doctors, order medicines, schedule lab tests, and
-                  access wellness services - all in one place.
-                </span>
-              </p>
-              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                <button className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors w-full sm:w-auto text-sm sm:text-base">
-                  Book a service
-                </button>
-                <button className="bg-white/90 sm:bg-white text-red-600 px-6 py-3 font-medium rounded-lg hover:bg-white sm:hover:text-red-700 transition-colors w-full sm:w-auto border border-white/20 sm:border-gray-200 text-sm sm:text-base">
-                  Learn more
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="relative w-full min-h-[600px] sm:min-h-[550px] md:min-h-[600px] lg:min-h-[500px] mb-12 sm:mb-10 md:mb-0">
         
-     
+        <BannerCarousel/>
+
         <StressDetectionWidget router={router} />
       </div>
-    
-
-      {/* Our Medical Services Section with Carousel */}
       <div className="py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-white to-blue-50 ">
-        {/* Toast Container */}
         <div className="fixed top-6 right-6 z-50 space-y-3">
           {toasts.map((toast) => {
             const IconComponent = toast.icon;
@@ -379,7 +363,142 @@ export default function Home() {
             );
           })}
         </div>
+        <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50 py-20">
+          <div className="absolute inset-0">
+            <svg
+              className="absolute top-0 left-0 w-full h-32 text-white"
+              viewBox="0 0 1440 320"
+              fill="currentColor"
+            >
+              <path d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,112C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+            </svg>
 
+            <svg
+              className="absolute bottom-0 left-0 w-full h-32 text-white transform rotate-180"
+              viewBox="0 0 1440 320"
+              fill="currentColor"
+            >
+              <path d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,112C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+            </svg>
+
+            <div className="absolute top-20 left-10 w-20 h-20 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-16 h-16 bg-blue-200 rounded-full opacity-40 animate-bounce"></div>
+            <div className="absolute bottom-32 left-1/4 w-12 h-12 bg-teal-200 rounded-full opacity-50"></div>
+            <div className="absolute top-60 right-1/3 w-8 h-8 bg-indigo-300 rounded-full opacity-60 animate-pulse"></div>
+
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/15 to-teal-400/15 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2
+                className={`${poppins.className} text-4xl md:text-6xl font-bold mb-6`}
+              >
+                <span className="text-gray-900">Your Mind</span>
+                <br />
+                <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
+                  Deserves Care
+                </span>
+              </h2>
+
+              <p
+                className={`${poppins.className} text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed`}
+              >
+                Professional mental health support designed to help you thrive.
+                From therapy sessions to mindfulness practices, we're here for
+                your complete wellbeing journey.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+              >
+                {mentalHealthServices.map((service, index) => {
+                  const IconComponent = service.icon;
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      className={`${service.bgColor} backdrop-blur-sm rounded-2xl p-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group`}
+                    >
+                      <div
+                        className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${service.color} shadow-md group-hover:scale-110 transition-transform duration-300 mb-4`}
+                      >
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      <h3
+                        className={`${poppins.className} font-semibold text-gray-900 text-lg mb-2`}
+                      >
+                        {service.title}
+                      </h3>
+                      <p
+                        className={`${poppins.className} text-gray-600 text-sm leading-relaxed`}
+                      >
+                        {service.description}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <div className="relative bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/50">
+                  <img
+                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    alt="Mental wellness and meditation"
+                    className="w-full h-80 object-cover rounded-2xl shadow-lg"
+                  />
+
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="absolute -top-4 -left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/50"
+                  ></motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    viewport={{ once: true }}
+                    className="absolute -bottom-4 -right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/50"
+                  ></motion.div>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center"
+            ></motion.div>
+          </div>
+        </section>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl  mt-24 font-extrabold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
@@ -391,7 +510,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Carousel */}
           <Slider {...carouselSettings}>
             {medicalServices.map((service, idx) => {
               const IconComponent = service.icon;
@@ -408,24 +526,23 @@ export default function Home() {
                     <div
                       className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                     />
-                    {/* Modern glowing live indicator */}
-{(service.title === "Coach Match" || service.title === "AyurCare") && (
-  <div className="absolute top-4 right-4 z-20">
-    <div className="relative live-badge bg-[#C42323] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-2xl">
-      <div className="flex items-center gap-1.5">
-        <div className="relative">
-          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-          <div className="absolute inset-0 w-2 h-2 bg-white rounded-full animate-ping"></div>
-        </div>
-        <span>LIVE</span>
-      </div>
-      
-      {/* Glow effect */}
-      <div className="absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-60 animate-pulse -z-10"></div>
-    </div>
-  </div>
-)}
-                    {/* Enhanced card depth with inner shadow */}
+
+                    {(service.title === "Coach Match" ||
+                      service.title === "AyurCare") && (
+                      <div className="absolute top-4 right-4 z-20">
+                        <div className="relative live-badge bg-[#C42323] text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-2xl">
+                          <div className="flex items-center gap-1.5">
+                            <div className="relative">
+                              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                              <div className="absolute inset-0 w-2 h-2 bg-white rounded-full animate-ping"></div>
+                            </div>
+                            <span>LIVE</span>
+                          </div>
+
+                          <div className="absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-60 animate-pulse -z-10"></div>
+                        </div>
+                      </div>
+                    )}
                     <div className="absolute inset-0 rounded-2xl shadow-inner opacity-20"></div>
 
                     <div className="relative p-8 h-full flex flex-col items-center justify-between text-center">
@@ -765,15 +882,10 @@ export default function Home() {
         </div>
       </section>
 
-      <SDGGoalsSection/>
+      <SDGGoalsSection />
 
-      {/* Doctors Section */}
-       <DoctorsSection 
-        poppins={poppins} 
-        fetchCoaches={fetchCoaches} 
-      />
+      <DoctorsSection poppins={poppins} fetchCoaches={fetchCoaches} />
 
-      {/* Get the Devdoot App Section */}
       <section className="relative bg-gradient-to-r from-[#246e72] via-[#2C8C91] to-[#3fa4aa] px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="lg:flex lg:items-center lg:justify-between">
@@ -1012,20 +1124,19 @@ export default function Home() {
         </div>
       </section>
 
-     <section
-  className="py-8  bg-white "
-  style={{ fontFamily: "Poppins, sans-serif" }}
->
-  <div className="max-w-6xl mx-auto px-6">
-    <h2 className="text-5xl font-bold text-center text-[#C42323] mb-12">
-      Certified <span className="text-black">By</span>
-    </h2>
-    <div>
-      <CertificationCarousel/>
-    </div>
-  </div>
-</section>
-  
+      <section
+        className="py-8  bg-white "
+        style={{ fontFamily: "Poppins, sans-serif" }}
+      >
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-5xl font-bold text-center text-[#C42323] mb-12">
+            Certified <span className="text-black">By</span>
+          </h2>
+          <div>
+            <CertificationCarousel />
+          </div>
+        </div>
+      </section>
 
       {/* Call to Action Section */}
       <div className="bg-white">

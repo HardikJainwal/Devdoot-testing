@@ -53,7 +53,7 @@ const fetchAppointmentSlots = async (
 
     const response = await fetch(url, {
       method: "GET",
-      headers: authUtils.getAuthHeaders(), 
+      headers: authUtils.getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -95,7 +95,6 @@ export default function CoachProfilePage() {
     }
   }, [params.id]);
 
-  // Load slots when date changes
   useEffect(() => {
     if (selectedDate && coach?._id) {
       loadAvailableSlots();
@@ -114,40 +113,39 @@ export default function CoachProfilePage() {
 
       const coachData = response.data;
 
-      // Transform the API response to match component structure
       const mappedCoach = {
-  _id: coachData._id,
-  name: coachData.coachName || "Dr. Name",
-  specialization: coachData.specialization || "General Physician",
-  profilePicture: coachData.profilePhoto,
-  experience: coachData.experienceYear || 5,
-  rating: coachData.rating || 4.8,
-  sessionTime: coachData.sessionTime || 45,
-  pricePerMinute: coachData.pricePerMinute || 20,
-  languages: coachData.languages || ["English"],
-  currency: coachData.currency || "INR",
-  fees: Math.round(
-    (coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)
-  ),
-  
-  consultationModes: ["video", "home"],
-  location: coachData.location || "Available Online",
-  
-  // Updated this line to use the bio field from API
-  about: coachData.bio || `Dr. ${coachData.coachName} is a highly experienced ${
-    coachData.specialization || "healthcare professional"
-  } with over ${
-    coachData.experienceYear || 5
-  } years of experience. With over ${
-    coachData.experienceYear || 5
-  } years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${
-    coachData.specialization?.toLowerCase() || "healthcare"
-  } and have helped numerous patients achieve better health outcomes.`,
-  
-  totalPatients: Math.floor(Math.random() * 500) + 100,
-  reviewCount: Math.floor(Math.random() * 50) + 10,
-};
+        _id: coachData._id,
+        name: coachData.coachName || "Dr. Name",
+        specialization: coachData.specialization || "General Physician",
+        profilePicture: coachData.profilePhoto,
+        experience: coachData.experienceYear || 5,
+        rating: coachData.rating || 4.8,
+        sessionTime: coachData.sessionTime || 45,
+        pricePerMinute: coachData.pricePerMinute || 20,
+        languages: coachData.languages || ["English"],
+        currency: coachData.currency || "INR",
+        fees: Math.round(
+          (coachData.pricePerMinute || 20) * (coachData.sessionTime || 45)
+        ),
 
+        consultationModes: ["video", "home"],
+        location: coachData.location || "Available Online",
+
+        about:
+          coachData.bio ||
+          `Dr. ${coachData.coachName} is a highly experienced ${
+            coachData.specialization || "healthcare professional"
+          } with over ${
+            coachData.experienceYear || 5
+          } years of experience. With over ${
+            coachData.experienceYear || 5
+          } years of experience in healthcare, they are dedicated to providing excellent patient care and treatment. They specialize in ${
+            coachData.specialization?.toLowerCase() || "healthcare"
+          } and have helped numerous patients achieve better health outcomes.`,
+
+        totalPatients: Math.floor(Math.random() * 500) + 100,
+        reviewCount: Math.floor(Math.random() * 50) + 10,
+      };
 
       setCoach(mappedCoach);
     } catch (err) {
@@ -157,24 +155,22 @@ export default function CoachProfilePage() {
     }
   };
 
- 
   const getDateRange = (selectedDate) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Start of today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
- 
-  const selected = new Date(selectedDate);
-  selected.setHours(0, 0, 0, 0);
+    const selected = new Date(selectedDate);
+    selected.setHours(0, 0, 0, 0);
 
-  const startDate = new Date(selected);
-  const endDate = new Date(selected);
-  endDate.setDate(selected.getDate() + 1); 
+    const startDate = new Date(selected);
+    const endDate = new Date(selected);
+    endDate.setDate(selected.getDate() + 1);
 
-  return {
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
+    return {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
   };
-};
 
   const loadAvailableSlots = async () => {
     try {
@@ -195,14 +191,12 @@ export default function CoachProfilePage() {
       console.log("API Response:", response);
 
       if (response.success && response.data && Array.isArray(response.data)) {
-        
         const processedSlots = response.data.map((slot, index) => {
-          
-          const localStartStr = slot.local[0]; 
-          const localEndStr = slot.local[1];  
-          const startTime = localStartStr.split(' ')[1]; 
-          const endTime = localEndStr.split(' ')[1];     
-          
+          const localStartStr = slot.local[0];
+          const localEndStr = slot.local[1];
+          const startTime = localStartStr.split(" ")[1];
+          const endTime = localEndStr.split(" ")[1];
+
           return {
             id: `slot-${index}`,
             utcStart: slot.utc[0],
@@ -211,7 +205,7 @@ export default function CoachProfilePage() {
             localEnd: localEndStr,
             startTime: startTime,
             endTime: endTime,
-            displayTime: formatTimeDisplay(startTime, endTime)
+            displayTime: formatTimeDisplay(startTime, endTime),
           };
         });
 
@@ -229,20 +223,18 @@ export default function CoachProfilePage() {
     }
   };
 
-  
   const formatTimeDisplay = (startTime, endTime) => {
     const formatTime = (timeStr) => {
-      const [hour, minute] = timeStr.split(':');
+      const [hour, minute] = timeStr.split(":");
       const hourInt = parseInt(hour);
       const hour12 = hourInt > 12 ? hourInt - 12 : hourInt === 0 ? 12 : hourInt;
-      const ampm = hourInt >= 12 ? 'PM' : 'AM';
+      const ampm = hourInt >= 12 ? "PM" : "AM";
       return `${hour12}:${minute} ${ampm}`;
     };
 
     return `${formatTime(startTime)} - ${formatTime(endTime)}`;
   };
 
-  
   const categorizeSlots = (slots) => {
     const categorized = {
       morning: [],
@@ -251,13 +243,13 @@ export default function CoachProfilePage() {
     };
 
     slots.forEach((slot) => {
-      const hour = parseInt(slot.startTime.split(':')[0]);
+      const hour = parseInt(slot.startTime.split(":")[0]);
 
       if (hour >= 6 && hour < 12) {
         categorized.morning.push(slot);
       } else if (hour >= 12 && hour < 17) {
         categorized.afternoon.push(slot);
-      } else {  
+      } else {
         categorized.evening.push(slot);
       }
     });
@@ -326,10 +318,12 @@ export default function CoachProfilePage() {
       console.log("Booking consultation:", {
         coach: coach._id,
         date: selectedDate,
-        timeSlot: selectedTimeSlot
+        timeSlot: selectedTimeSlot,
       });
-      // Add your booking logic here
-      alert(`Booking consultation with ${coach.name} on ${selectedDate} at ${selectedTimeSlot.displayTime}`);
+      //  booking logic will add here
+      alert(
+        `Booking consultation with ${coach.name} on ${selectedDate} at ${selectedTimeSlot.displayTime}`
+      );
     }
   };
 
@@ -369,12 +363,10 @@ export default function CoachProfilePage() {
     );
   }
 
-  // Get categorized slots
   const categorizedSlots = categorizeSlots(availableSlots);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      
       <div className="bg-gradient-to-r from-[#2C8C91] to-[#345268] shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <button
@@ -389,9 +381,7 @@ export default function CoachProfilePage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
           <div className="lg:col-span-2 space-y-8">
-            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -794,37 +784,43 @@ export default function CoachProfilePage() {
               </div>
 
               <div className="mb-6">
-  <label
-    className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
-  >
-    Select Date
-  </label>
-  <select
-    value={selectedDate}
-    onChange={(e) => {
-      setSelectedDate(e.target.value);
-      setSelectedTimeSlot(""); // Reset selected time slot when date changes
-    }}
-    className={`${poppins.className} w-full px-4 py-3 border border-gray-300 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-  >
-    <option value="" className="text-black">Choose a date</option>
-    {[...Array(7)].map((_, index) => {
-      const date = new Date();
-      date.setDate(date.getDate() + index);
-      const dateString = date.toISOString().split("T")[0]; // Format: YYYY-MM-DD
-      const displayDate = date.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "short",
-        day: "numeric",
-      });
-      return (
-        <option  className="text-black" key={dateString} value={dateString}>
-          {displayDate}
-        </option>
-      );
-    })}
-  </select>
-</div>
+                <label
+                  className={`${poppins.className} block text-sm font-semibold text-gray-700 mb-3`}
+                >
+                  Select Date
+                </label>
+                <select
+                  value={selectedDate}
+                  onChange={(e) => {
+                    setSelectedDate(e.target.value);
+                    setSelectedTimeSlot("");
+                  }}
+                  className={`${poppins.className} w-full px-4 py-3 border border-gray-300 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
+                >
+                  <option value="" className="text-black">
+                    Choose a date
+                  </option>
+                  {[...Array(7)].map((_, index) => {
+                    const date = new Date();
+                    date.setDate(date.getDate() + index);
+                    const dateString = date.toISOString().split("T")[0];
+                    const displayDate = date.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "short",
+                      day: "numeric",
+                    });
+                    return (
+                      <option
+                        className="text-black"
+                        key={dateString}
+                        value={dateString}
+                      >
+                        {displayDate}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
 
               {selectedDate && (
                 <div className="mb-4">
@@ -835,9 +831,21 @@ export default function CoachProfilePage() {
                   </label>
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     {[
-                      { key: "morning", label: "Morning", count: categorizedSlots.morning?.length || 0 },
-                      { key: "afternoon", label: "Afternoon", count: categorizedSlots.afternoon?.length || 0 },
-                      { key: "evening", label: "Evening", count: categorizedSlots.evening?.length || 0 },
+                      {
+                        key: "morning",
+                        label: "Morning",
+                        count: categorizedSlots.morning?.length || 0,
+                      },
+                      {
+                        key: "afternoon",
+                        label: "Afternoon",
+                        count: categorizedSlots.afternoon?.length || 0,
+                      },
+                      {
+                        key: "evening",
+                        label: "Evening",
+                        count: categorizedSlots.evening?.length || 0,
+                      },
                     ].map((category) => (
                       <button
                         key={category.key}

@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CertificationCarousel from "@/app/components/CertificationCarousel";
-import SDGGoalsSection from "./components/Home/SDG";
-import DoctorsSection from "./components/Home/CoachSection";
-import StressDetectionWidget from "@/app/components/StressDetectionWidget";
+import CertificationCarousel from "@/components/CertificationCarousel";
+import SDGGoalsSection from "../components/Home/SDG";
+import DoctorsSection from "../components/Home/CoachSection";
+import StressDetectionWidget from "@/components/StressDetectionWidget";
 
 import {
   faVideo,

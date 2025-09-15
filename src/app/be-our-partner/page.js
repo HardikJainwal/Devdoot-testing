@@ -129,7 +129,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-red-500 to-orange-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Ambulance Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/AmbulanceCollaboration')}
+                  onClick={() => handleNavigation('/be-our-partner/AmbulanceCollaboration')}
                   className="bg-white text-red-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -151,7 +151,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Virtual Health Coaches</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/VirtualHealthCoaches')}
+                  onClick={() => handleNavigation('/be-our-partner/VirtualHealthCoaches')}
                   className="bg-white text-blue-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -173,7 +173,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Caregiver & Home Nurse Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/CareGiver&HomeNurse')}
+                  onClick={() => handleNavigation('/be-our-partner/CareGiver&HomeNurse')}
                   className="bg-white text-teal-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -195,7 +195,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-purple-500 to-pink-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Pet Care Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/PetCareServices')}
+                  onClick={() => handleNavigation('/be-our-partner/PetCareServices')}
                   className="bg-white text-purple-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -217,7 +217,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-emerald-500 to-green-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Medical Equipment Rentals</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/MedicalEquipmentRentals')}
+                  onClick={() => handleNavigation('/be-our-partner/MedicalEquipmentRentals')}
                   className="bg-white text-emerald-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -239,7 +239,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-yellow-500 to-amber-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">ChildCare Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/ChildCare')}
+                  onClick={() => handleNavigation('/be-our-partner/ChildCare')}
                   className="bg-white text-yellow-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More
@@ -261,7 +261,7 @@ export default function BeOurPartner() {
               <div className="p-4 sm:p-6 bg-gradient-to-br from-slate-500 to-gray-500 text-white flex-grow flex flex-col justify-between">
                 <h3 className="text-lg sm:text-xl font-bold mb-3">Medical Labs Services</h3>
                 <button 
-                  onClick={() => handleNavigation('/BeOurPartner/MedicalLab')}
+                  onClick={() => handleNavigation('/be-our-partner/MedicalLab')}
                   className="bg-white text-slate-600 px-4 sm:px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-colors text-sm sm:text-base"
                 >
                   Learn More

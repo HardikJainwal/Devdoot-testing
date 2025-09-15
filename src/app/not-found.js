@@ -7,10 +7,10 @@ export default function NotFound() {
     <div className="relative  bg-white flex justify-center items-center min-h-screen">
       
       <div className="absolute top-10 z-10 text-center px-4 mb-10">
-        <h1 className="text-black text-3xl font-bold mb-4 ">
+        {/* <h1 className="text-black text-3xl font-bold mb-4 ">
           The frontend requested this page. <br />
           The backend said, “bro I didn’t even build that API”
-        </h1>
+        </h1> */}
          <h1 className="text-black text-3xl font-bold mb-4 ">
           Page Not Found
         </h1>
@@ -27,8 +27,8 @@ export default function NotFound() {
 
       {/* Background GIF */}
       <Image
-        // src="/images/Animated 404 Page Not Found/bg.gif"
-        src= "/images/notfound.jpg"
+        src="/images/Animated 404 Page Not Found/bg.gif"
+       
         alt="Funny 404"
         width={600}
         height={600}

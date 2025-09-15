@@ -47,9 +47,9 @@ const SDGGoalsSection = () => {
           ))}
         </div>
 
-        {/* Learn More Button */}
+        
         <div className="text-center">
-          <Link href="/Sustainable-Development-Goals">
+          <Link href="/sustainable-development-goals">
             <button className="bg-[#C42323] mt-6 sm:mt-8 text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300">
               Learn More
             </button>

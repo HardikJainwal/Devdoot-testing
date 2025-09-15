@@ -111,7 +111,7 @@ const services = [
     title: "Senior Care",
     icon: Heart,
     color: "from-pink-500 to-rose-500",
-    bgColor: "bg-pink-50",
+    bgColor: "bg-pink-540",
     isLive: false,
   },
   {
@@ -203,7 +203,7 @@ const services = [
     icon: Sparkles,
     color: "from-violet-500 to-purple-500",
     bgColor: "bg-violet-50",
-    isLive: false,
+    isLive: true,
   },
   {
     title: "Yoga",
@@ -266,25 +266,28 @@ export default function Services() {
           router.push("/coaches");
           break;
         case "AyurCare":
-          router.push("/AyurCare");
+          router.push("/ayur-care");
           break;
         case "Mental Health":
-          router.push("/MentalHealth");
+          router.push("/mental-health");
           break;
         case "Yoga":
-          router.push("/YogaCare");
+          router.push("/yoga-care");
           break;
         case "ReproWell":
-          router.push("/Repowell");
+          router.push("/repowell");
           break;
         case "SpeciFind":
-          router.push("/SpeciFind");
+          router.push("/specifind");
           break;
         case "NutritiGuide":
-          router.push("/NutriGuide");
+          router.push("/nutri-guide");
           break;
         case "AidFirst":
-          router.push("/FirstAid");
+          router.push("/first-aid");
+          break;
+           case "DermaCare":
+          router.push("/derma-care");
           break;
         default:
           showToast(service);
@@ -390,7 +393,7 @@ export default function Services() {
                   className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                 />
 
-                {/* Content */}
+                
                 <div className="relative p-6 flex flex-col items-center text-center">
                  
                   <div

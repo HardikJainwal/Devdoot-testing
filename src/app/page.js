@@ -408,13 +408,14 @@ export default function Home() {
                 </span>
               </h2>
 
-              <p
-                className={`${poppins.className} text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed`}
-              >
-                Professional mental health support designed to help you thrive.
-                From therapy sessions to mindfulness practices, we're here for
-                your complete wellbeing journey.
-              </p>
+             <p
+  className={`${poppins.className} text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed`}
+>
+  Professional mental health support designed to help you thrive.
+  From therapy sessions to mindfulness practices, we&apos;re here for
+  your complete wellbeing journey.
+</p>
+
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">

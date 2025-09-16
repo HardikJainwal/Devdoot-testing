@@ -29,7 +29,7 @@ export default function NotFound() {
       <Image
         src="/images/Animated 404 Page Not Found/bg.gif"
        
-        alt="Funny 404"
+        alt=" 404"
         width={600}
         height={600}
         priority
